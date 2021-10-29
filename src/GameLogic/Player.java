@@ -2,7 +2,7 @@ package GameLogic;
 
 /**
 *
-* Class Player.
+* Player Class.
 * 
 * Defines the applicable operations of a Player.
 * 
@@ -40,7 +40,7 @@ public class Player {
     
     /**
      * Set the name of the player.
-     * @param name to be setted player.
+     * @param name to be setted.
      */
     public void setName(String name){
         this.name = name;

@@ -1,6 +1,7 @@
 package GameLogic;
 
 import Elements.*;
+import PickeableElements.Pickeable;
 
 /**
 *

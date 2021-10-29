@@ -2,8 +2,8 @@ package GameLogic;
 
 public class TimerPacMan extends Timer{
 
-	public TimerPacMan(long espera, Game juego) {
-		super(espera, juego);
+	public TimerPacMan(long del, Game juego) {
+		super(del, juego);
 	}
 
 	@Override
