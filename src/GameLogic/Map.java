@@ -11,15 +11,21 @@ package GameLogic;
  */
 public class Map {
     
-    private Game game;
-    private Cell[][] cells;
+    protected Game game;
+    protected static final int height = 20;
+    protected static final int width = 20;
+    protected Cell[][] cells;
 
 
     /**
      * Creates and initializes Map.
      */
     public Map(Game g){
-        game = g;
+   
+    	game = g;
+        cells = new Cell[height][width];
+    
+    
     }
 
     /**
@@ -29,7 +35,7 @@ public class Map {
     * @return true if it's possible, false otherwise.
     */
     public boolean canMoveRight(int row, int col){
-        return true;
+        return false;
     }
     
     /**
@@ -58,6 +64,9 @@ public class Map {
     * @return true if it's possible, false otherwise.
     */
     public boolean canMoveDown(int row, int col){
+    	
+    	
+    	
         return true;
     }
     
@@ -68,7 +77,7 @@ public class Map {
     * @return the cell that it's called searched by it's position.
     */
     public Cell getCell(int row, int col){
-        return null;        
+        return cells[row][col];        
     }
     
     /**
@@ -80,4 +89,21 @@ public class Map {
     public void setCell(Cell cell) {
     	
     }
+    
+    
+    /**
+    * Return the Map height in cells.
+    */
+    public int getHeight() {
+    	return height;
+    }
+    
+    
+    /**
+     * Return the Map width in cells.
+     */
+    public int getWidth() {
+    	return width;
+    }
+    
 }

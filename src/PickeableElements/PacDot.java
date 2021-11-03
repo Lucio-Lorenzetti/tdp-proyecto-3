@@ -1,5 +1,7 @@
 package PickeableElements;
 
+import GUI.GraphicEntity;
+
 /**
 *
 * PacDot Class.
@@ -10,10 +12,21 @@ package PickeableElements;
 *
 */
 public class PacDot extends Pickeable {
+	
+	public PacDot() {
+		super();
+		
+		myGraphicEntity = new GraphicEntity(2);
+	}
 
 	@Override
 	public void consume() {
 		
+	}
+	
+	@Override
+	public Pickeable clone() {
+		return new PacDot();
 	}
 
 }

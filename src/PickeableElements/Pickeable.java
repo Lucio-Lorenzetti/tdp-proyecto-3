@@ -16,7 +16,7 @@ public abstract class Pickeable extends Element{
 	
 	public abstract void consume();
 
-	
+	public abstract Pickeable clone();
 
 	
 }

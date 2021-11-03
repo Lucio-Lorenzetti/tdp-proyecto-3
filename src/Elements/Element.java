@@ -13,7 +13,7 @@ import GUI.GraphicEntity;
 */
 public abstract class Element {
 	
-	private GraphicEntity myGraphicEntity;	
+	protected GraphicEntity myGraphicEntity;	
 
 	/**
      * Returns the GraphicEntity of the Element.

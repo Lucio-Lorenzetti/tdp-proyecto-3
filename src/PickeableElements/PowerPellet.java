@@ -1,5 +1,6 @@
 package PickeableElements;
 
+import GUI.GraphicEntity;
 
 /**
 *
@@ -12,9 +13,21 @@ package PickeableElements;
 */
 public class PowerPellet extends Pickeable {
 
+	public PowerPellet() {
+		super();
+		
+		myGraphicEntity = new GraphicEntity(3);
+	}
+	
+	
 	@Override
 	public void consume() {
 		
+	}
+
+	@Override
+	public Pickeable clone(){
+		return new PowerPellet();
 	}
 
 }

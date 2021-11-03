@@ -1,6 +1,6 @@
 package GameLogic;
 
-import Elements.*;
+import GUI.GraphicEntity;
 import PickeableElements.Pickeable;
 
 /**
@@ -14,44 +14,43 @@ import PickeableElements.Pickeable;
 */
 public class Cell {
 
-	private Element myElement;
 	private boolean walkable;
 	private int column;
 	private int row;
-
+    private Pickeable pickeable;
+	private GraphicEntity myGraphicEntity;
+	
     /**
     * Creates and initialize a cell;
     * @param row where the cell is created.
     * @param col where the cell is created.
     * @param p which the cell contains.
-    * @param walkable decides if the cell can be pass by a character.
+    * @param walkable decides whether the cell can be walked by a character.
     */
-    public Cell(int row, int col, Pickeable p, boolean walkable){
-    	myElement = p;
+    public Cell(int row, int col, Pickeable p, boolean walkable, int image) {
+    	
         this.walkable = walkable;
         this.row = row;
         column = col;
-    }
-    
-    
-    
-    /**
-    * Creates and initialize a cell;
-    * @param row where the cell is created.
-    * @param col where the cell is created.
-    * @param walkable decides if the cell can be pass by a character.
-    */
-    public Cell(int row, int col, boolean walkable){
-        this.walkable = walkable;
-        this.row = row;
-        column = col;
-    }
-
-    /**
-    *Adds a pickeable to the cell.
-    */
-    public void addPickeable(){
         
+        
+        myGraphicEntity = new GraphicEntity(image);
+        
+        if(walkable) {
+            pickeable = p;
+        } else {
+        	pickeable = null;
+        }
+        
+    }
+    
+    
+    /**
+    * Adds a pickeable to the cell.
+    * @param p pickeable to add in the cell.
+    */
+    public void addPickeable(Pickeable p){
+        pickeable = p;
     }
 
     /**
@@ -59,7 +58,81 @@ public class Cell {
     * @Returns the removed pickeable.
     */
     public Pickeable removePickeable(){
-    	
-        return null;
+    	//hacer un pickeable.destroy();
+        pickeable = null;
+        return pickeable;
     }   
+    
+    
+    
+
+    /**
+    * Returns the graphic entity of the cell.
+    * @return graphic entity.
+    */
+    public GraphicEntity getGraphicEntity() {
+    	return myGraphicEntity;
+    }
+    
+    /**
+     * Returns the pickup contained in the cell
+     * @return pickeable element.
+     */
+    public Pickeable getPickup() {
+    	return pickeable;
+    }
+    
+    /**
+    * Sets the row of the cell.
+    * @param r row to be seted.
+    */
+    public void setRow(int r) {
+    	row = r;
+    }
+    
+    /**
+    * Sets the column of the cell.
+    * @param c column to be seted.
+    */
+    public void setColumn(int c) {
+    	column = c;
+    }
+    
+    /**
+     * Clones the values of the cell which is called.
+     */
+     public Cell clone() {
+     	
+     	Cell newCell;
+     	
+     	
+     	Pickeable pickeableClone = null;
+     	
+     	if(pickeable != null)
+     		pickeableClone = pickeable.clone();
+     	
+     	newCell = new Cell(row, column, pickeableClone, walkable, myGraphicEntity.getIndex());
+     	
+     	return newCell;
+     }
+    
+    /**
+    * Clones the cell called by messega and change the position of the cloned one.
+    * @param r new row of the cloned cell.
+    * @param c new column of the cloned cell.
+    * @return the cloned cell with the new position.
+    */
+    public Cell cloneInPosition(int r, int c) {
+    	
+    	Cell newCell;
+    	
+    	newCell = this.clone();
+
+    	newCell.setRow(r);
+    	newCell.setColumn(c);
+    	
+    	return newCell;
+    }
+
+    
 }

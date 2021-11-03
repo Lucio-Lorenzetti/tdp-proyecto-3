@@ -12,29 +12,30 @@ import javax.swing.ImageIcon;
 */
 public class GraphicEntity {
 
-	protected String[] rutasImagenes;
+	protected String[] imageRoute;
 	protected ImageIcon grafico;
-	int color;
+	int index;
 	
-	public GraphicEntity(int colour) {
+	public GraphicEntity(int index) {
 		
-		color = colour;
+		imageRoute = new String[8];
 		
-		rutasImagenes = new String[9];
+		imageRoute[0] = "/Images/road.png";
+		imageRoute[1] = "/Images/wall.png";
+		imageRoute[2] = "/Images/pacDot.png";
+		imageRoute[3] = "/Images/powerPellet.png";
+		imageRoute[4] = "/Images/fruit.png";
+		imageRoute[5] = "/Images/speedPotion.png";
+		imageRoute[6] = "/Images/bombPotion.png";
+		imageRoute[7] = "/Images/ghostHome.png";
 		
-		rutasImagenes[0] = "/Imagenes/BORDE.png";
-		rutasImagenes[1] = "/Imagenes/FONDO.png";
-		rutasImagenes[2] = "/Imagenes/cuadradoRojo.png";
-		rutasImagenes[3] = "/Imagenes/cuadradoVerde.png";
-		rutasImagenes[4] = "/Imagenes/cuadradoAzul.png";
-		rutasImagenes[5] = "/Imagenes/cuadradoVioleta.png";
-		rutasImagenes[6] = "/Imagenes/cuadradoNaranja.png";
-		rutasImagenes[7] = "/Imagenes/cuadradoCeleste.png";
-		rutasImagenes[8] = "/Imagenes/cuadradoAmarillo.png";
 		
-		grafico = new ImageIcon(this.getClass().getResource(rutasImagenes[color]));
+		grafico = new ImageIcon( this.getClass().getResource(imageRoute[this.index]) );
 		
-		this.actualizar(color);
+		this.index = index;
+		
+		this.update(index);
+		
 	}
 	
 	/**
@@ -44,15 +45,13 @@ public class GraphicEntity {
 	 * @param indice indica el indice de la nueva imagen a utilizar
 	 * @return
 	 */
-	public void actualizar(int indice){
+	public void update(int indice){
 		
-		if(indice < rutasImagenes.length) {
+		if(indice < imageRoute.length) {
 			
-			ImageIcon imagen = new ImageIcon(this.getClass().getResource(rutasImagenes[indice]));
+			ImageIcon imagen = new ImageIcon(this.getClass().getResource(imageRoute[indice]));
 			
 			this.grafico.setImage(imagen.getImage());
-			
-			color = indice;
 			
 		}
 
@@ -63,7 +62,7 @@ public class GraphicEntity {
 	 * @return ImageIcon de la entidad gr�fica.
 	 */
 	public String[] getRutasImagenes(){
-		return rutasImagenes;
+		return imageRoute;
 	}
 	
 	/**
@@ -78,8 +77,8 @@ public class GraphicEntity {
 	 * Retorna el atributo color.
 	 * @return int que representa el color de la entidad gr�fica.
 	 */
-	public int getColor() {
-		return color;
+	public int getIndex() {
+		return index;
 	}
 	
 	
@@ -88,7 +87,7 @@ public class GraphicEntity {
 	 * @param nuevasRutas Arreglo de strings que contenga las nuevas rutas.
 	 */
 	public void setRutasImagenes(String[] nuevasRutas){
-		rutasImagenes = nuevasRutas;
+		imageRoute = nuevasRutas;
 	}
 	
 	/**
@@ -103,8 +102,8 @@ public class GraphicEntity {
 	 * Setea el atributo color de la entidad grafica.
 	 * @param nuevoColor
 	 */
-	public void setColor(int nuevoColor) {
-		color = nuevoColor;
+	public void setIndex(int newIndex) {
+		index = newIndex;
 	}
 	
 }

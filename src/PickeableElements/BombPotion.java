@@ -1,5 +1,6 @@
 package PickeableElements;
 
+import GUI.GraphicEntity;
 
 /**
 *
@@ -12,9 +13,21 @@ package PickeableElements;
 */
 public class BombPotion extends Potion {
 
+	
+	public BombPotion() {
+		super();
+		
+		myGraphicEntity = new GraphicEntity(6);
+	}
+	
 	@Override
 	public void consume() {
 		
+	}
+
+	@Override
+	public Pickeable clone(){
+		return new BombPotion();
 	}
 
 }
