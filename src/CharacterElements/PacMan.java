@@ -1,4 +1,5 @@
 package CharacterElements;
+import GUI.GraphicEntity;
 import Visitor.*;
 
 /**
@@ -14,41 +15,30 @@ public class PacMan extends Character{
 
     /**
     * Creates and initialize a PacMan;
-    * @param row where the PacMan is created.
-    * @param col where the PacMan is created.
+    * @param posX where the PacMan is created.
+    * @param posY where the PacMan is created.
+    * @param width of the PacMan.
+    * @param heigth of the PacMan.
     */
-    public PacMan(int col, int row){
-        super(col, row);
+    public PacMan(int posY, int posX, int width, int height){
+    	
+        super(posY, posX, width, height);
+        
+        
         myVisitor = new VisitorPacMan(this);
+        
+        
+        myGraphicEntity = new GraphicEntity(8);
+        
     }
 
-    /**
-    * Moves the character up.
-    */
-    public  void moveUp(){
+	
+    
+    @Override
+    public void doOnMovement() {
 
     }
     
-    /**
-    * Moves the character down.
-    */
-     public  void moveDown(){
-
-     }
-    
-    /**
-    * Moves the character left.
-    */
-     public  void moveLeft(){
-
-     }
-    
-    /**
-    * Moves the character right.
-    */
-    public  void moveRight(){
-
-    }  
     /**
     * Makes the character die..
     */
@@ -56,21 +46,9 @@ public class PacMan extends Character{
 
     }
     
-    /**
-    * The row where the Chacarter is.
-    * @return row.
-    */
-    public  int getRow(){
-        return 0;
-    }
+    
 
-    /**
-    * The column where the Chacarter is.
-    * @return column.
-    */
-    public int getColumn(){
-        return 0;
-    }
+    
     /**
     * Accept the visitor of another Character passed by parameter
     */

@@ -13,9 +13,9 @@ package GameLogic;
 public class MapFactoryB extends MapFactory{
 
 	@Override
-	public Map CreateMap(Game g) {
+	public Map CreateMap(Game g, int cellHeightPX, int cellWidthPX) {
 
-		Map newMap = new MapB(g);
+		Map newMap = new MapB(g, cellHeightPX, cellWidthPX);
 
 		return newMap;
 	}

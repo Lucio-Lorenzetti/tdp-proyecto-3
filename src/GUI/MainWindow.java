@@ -22,8 +22,14 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
-public class MainWindow {
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class MainWindow extends JFrame{
 
 	private JFrame frame;
 
@@ -43,7 +49,9 @@ public class MainWindow {
 	
 	private JPanel BottomLayerPanel;
 	private JPanel PickupLayerPanel;
-
+	private JPanel CharacterLayerPanel;
+	private JPanel contentPane;
+	private JPanel panel;
 	
 	private int gridWidth;
 	private int gridHeight;
@@ -63,6 +71,10 @@ public class MainWindow {
 	public MainWindow() {
 		
 		
+		this.setFocusable(true);
+		this.requestFocus();
+		
+		
 		gameFont = null;
 
 		/*
@@ -75,32 +87,32 @@ public class MainWindow {
 		BottomLayer = new JLabel[gridHeight][gridWidth];
 		PickupLayer = new JLabel[gridHeight][gridWidth];
 		
-		frame = new JFrame();
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 724, 538);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
 		
+		
+		
+		this.setResizable(false);
+		this.setBounds(100, 100, 724, 538);
+		
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		setLocationRelativeTo(null);
+		
+		
+		CharacterLayerPanel = createGamePanel();
+		CharacterLayerPanel.setLayout(null);
 		PickupLayerPanel = createGamePanel();
 		BottomLayerPanel = createGamePanel();
 		
-		PickupLayerPanel.setOpaque(false);
-		BottomLayerPanel.setOpaque(false);
 		
-		JPanel panel = new JPanel();
-		panel.setBounds(480, 25, 218, 448);
-		frame.getContentPane().add(panel);
+		panel = new JPanel();
+		panel.setOpaque(false);
+		panel.setBounds(480, 25, 218, 440);
+		this.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Segoe UI Semibold", Font.BOLD, 11));
-		lblNewLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblNewLabel.setBounds(0, 11, 218, 14);
-		panel.add(lblNewLabel);
-		if(gameFont != null) {
-			lblNewLabel.setFont(gameFont);
-		}
+		
 		
 		cellWidth = BottomLayerPanel.getHeight() / gridHeight;
 		cellHeight = BottomLayerPanel.getWidth() / gridWidth;
@@ -149,19 +161,85 @@ public class MainWindow {
 				
 		}
 		
+		mainCharacter = new JLabel();
+
 		
 		
-		frame.setVisible(true);
+		
+		ImageIcon characterIcon = new ImageIcon(this.getClass().getResource("/Images/sprites1.png"));
+		
+		mainCharacter.setIcon(characterIcon);
+		
+		CharacterLayerPanel.setVisible(true);
+		PickupLayerPanel.setVisible(true);
+		BottomLayerPanel.setVisible(true);
+		
+		
+		setBackground();
+		
+		this.setVisible(true);
+		
+		
+		this.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_UP) {
+					game.doMoveUp();
+				}
+				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+					game.doMoveDown();
+				}
+				if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+					game.doMoveLeft();
+				}
+				if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+					game.doMoveRight();
+				}
+			}
+		});
 		
 		
 	}
 	
+	public void clearGameScreen() {
+		
+		for(int i = 0; i < gridWidth ; i++) {
+			for(int k = 0; k < gridHeight ; k++) {
+							
+				ImageIcon iconoLabel = new ImageIcon(this.getClass().getResource("/Images/road.png"));
+				
+				temp = BottomLayer[i][k];
+				
+				resize(iconoLabel, temp);
+			}
+		}
+		
+		for(int i = 0; i < gridWidth ; i++) {
+			
+			for(int k = 0; k < gridHeight ; k++) {
+					
+				temp = PickupLayer[i][k];				
+				
+				temp.setIcon(null);
+		
+			}
+		}
+		
+		
+		mainCharacter.setIcon(null);
+		
+	}
+	
+	
 	private JPanel createGamePanel() {
 		
 		JPanel GamePanel = new JPanel();
-		GamePanel.setBounds(22, 25, 448, 448);
-		frame.getContentPane().add(GamePanel);
+		GamePanel.setBounds(22, 25, 440, 440);
+		this.getContentPane().add(GamePanel);
 		GamePanel.setLayout(new GridLayout(gridHeight, gridWidth, 0, 0));
+		GamePanel.setOpaque(false);
+		
+		
 		
 		return GamePanel;
 	}
@@ -202,6 +280,7 @@ public class MainWindow {
 		}
 	}
 	
+	
 	public void paintCell(GraphicEntity nuevoGrafico, int posFila, int posColumna) {
 		ImageIcon nuevaImagen = nuevoGrafico.getGrafico();
 		
@@ -216,29 +295,109 @@ public class MainWindow {
 		
 	}
 	
+	public void paintCharacter(GraphicEntity nuevoGrafico) {
+		ImageIcon nuevaImagen = nuevoGrafico.getGrafico();
+		
+		System.out.println("Painting Character");
+		
+		resize(nuevaImagen, mainCharacter);
+	}
+	
+	public void createMainCharacterGraphic(CharacterElements.Character ch) {
+		
+		System.out.println("MC col: " + ch.getColumn());
+		System.out.println("MC row: " + ch.getRow());
+		System.out.println("MC width: " + ch.getWidth());
+		System.out.println("MC height: " + ch.getHeight());
+		
+		mainCharacter = new JLabel();
+		mainCharacter.setBounds(ch.getColumn(), ch.getRow(), ch.getWidth(), ch.getHeight());
+		
+		System.out.println("MC lbl col: " + mainCharacter.getAlignmentX());
+		System.out.println("MC lbl row: " + mainCharacter.getAlignmentY());
+		System.out.println("MC lbl width: " + mainCharacter.getWidth());
+		System.out.println("MC lbl height: " + mainCharacter.getHeight());
+		
+		mainCharacter.setIcon(ch.getGraphicEntity().getGrafico());
+		
+		paintCharacter(ch.getGraphicEntity());
+		
+		CharacterLayerPanel.add(mainCharacter);
+		
+	}
+	
+	
+	public void displaceCharacter(int posX, int posY, int width, int height) {
+		//mainCharacter.setAlignmentX(posX);
+		//miamainCharacter.setAlignmentY(posY);
+		
+		mainCharacter.setBounds(posX, posY, width, height);
+		
+		System.out.println("Posicion Label X: " + mainCharacter.getAlignmentX());
+		System.out.println("Posicion Label Y: " + mainCharacter.getAlignmentY());
+		
+	}
+	
+	
+	private void setBackground(){
+
+		ImageIcon fondo = new ImageIcon(this.getClass().getResource("/Images/background.png"));
+
+		JLabel lblbackground = new JLabel("" ,fondo , JLabel.CENTER);
+
+		Image imagen = fondo.getImage();
+		
+		if(imagen != null) {
+			Image nuevaImagen = imagen.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
+			fondo.setImage(nuevaImagen);
+			lblbackground.setIcon(fondo);
+			lblbackground.repaint();
+		}
+		
+		
+		JLabel background = new JLabel("" ,fondo , JLabel.CENTER);
+
+		background.setBounds(0, 0, this.getWidth(), this.getHeight());
+
+		getContentPane().add(background);
+	
+		background.repaint();
+
+
+
+	}
+	
+	
 	public void setGame(Game g) {
 		game = g;
-	}
-
-	/*
-	public static Font loadFont(String path, float size){   
 		
-		try {
-			URL fontUrl = new URL("/Fonts/textfont.ttf");
-	        Font customFont = Font.createFont(Font.TRUETYPE_FONT, fontUrl.openStream());
-	        
-	        customFont = customFont.deriveFont(16f);
-	        
-	        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-	        ge.registerFont(customFont);
-		    return customFont; 
-		} catch (IOException e) {
-		    e.printStackTrace();
-		} catch(FontFormatException e) {
-		    e.printStackTrace();
-		}
-		return null;
-    }*/
+		JButton nextlvlButton = new JButton("Siguiente Nivel");
+		nextlvlButton.setBounds(0, 109, 218, 95);
+		panel.add(nextlvlButton);
+		nextlvlButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				game.getLevel().passLevel(cellHeight, cellWidth);
+				obtainFocus();
+			}
+		});
+		
+		
+		
+	}
+	
+	public int getCellWidth() {
+		return cellWidth;
+	}
+	
+	public int getCellHeight() {
+		return cellHeight;
+	}
+	
+	
+	public void obtainFocus() {
+		this.requestFocus();
+	}
 	
 	
 }

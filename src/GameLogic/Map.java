@@ -25,7 +25,6 @@ public class Map {
     	game = g;
         cells = new Cell[height][width];
     
-    
     }
 
     /**
@@ -34,9 +33,21 @@ public class Map {
     * @param col to check.
     * @return true if it's possible, false otherwise.
     */
-    public boolean canMoveRight(int row, int col){
-        return false;
+    public boolean canMoveRight(int posX, int posY){
+        boolean can = true;
+       
+        can = checkMovablePosition(posX + 1, posY);
+        
+        return can;
     }
+    
+    //			44		45		
+    //   celdaPosicion  posX
+    //					posX mod 22 -> 1
+    // 44 = posX - (posX mod 22)
+    // 		celdaPosicion / 22
+    
+    
     
     /**
     * Checks if left movement is possible.
@@ -44,8 +55,12 @@ public class Map {
     * @param col to check
     * @return true if it's possible, false otherwise.
     */
-    public boolean canMoveLeft(int row, int col){
-        return true;
+    public boolean canMoveLeft(int posX, int posY){
+        boolean can = true;
+        
+        can = checkMovablePosition(posX-1, posY);
+        
+        return can;
     }
 
     /**
@@ -54,8 +69,12 @@ public class Map {
     * @param col to check
     * @return true if it's possible, false otherwise.
     */
-    public boolean canMoveUp(int row, int col){
-        return true;
+    public boolean canMoveUp(int posX, int posY){
+        boolean can = true;
+        
+        can = checkMovablePosition(posX, posY+1);
+        
+        return can;
     }
     /**
     * Checks if down movement is possible.
@@ -63,12 +82,44 @@ public class Map {
     * @param col to check.
     * @return true if it's possible, false otherwise.
     */
-    public boolean canMoveDown(int row, int col){
+    public boolean canMoveDown(int posX, int posY){
+    	boolean can = true;
+        
+    	can = checkMovablePosition(posX, posY-1);
     	
-    	
-    	
-        return true;
+        return can;
     }
+    
+    /**
+     * Checks if the cell that contains the position posX posY is walkable.
+     * @param posX position of the verification on the X axis.
+     * @param posY position of the verification on the Y axis.
+     * @return true if the cell is walkable, false if it is not.
+     */
+    private boolean checkMovablePosition(int posX, int posY) {
+    	
+    	boolean canMove = true;
+    	
+    	int cellWidth = cells[10][10].getWidth();
+        int cellHeight = cells[10][10].getHeight();
+        
+        System.out.println("cellWidth: " + cellWidth);
+        System.out.println("cellHeight: " + cellHeight);
+        
+        int posCellX = posX - (posX % cellWidth);
+        int posCellY = posY - (posY % cellHeight);
+        
+        int colCell = posCellX / cellWidth;
+        int rowCell = posCellY / cellHeight;
+        
+        canMove = cells[colCell][rowCell].getWalkable();
+    	
+    	return canMove;
+    }
+    
+    
+    
+    
     
     /**
     * Return the cell located to the column and row passed by parameter.

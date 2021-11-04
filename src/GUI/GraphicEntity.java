@@ -18,7 +18,7 @@ public class GraphicEntity {
 	
 	public GraphicEntity(int index) {
 		
-		imageRoute = new String[8];
+		imageRoute = new String[9];
 		
 		imageRoute[0] = "/Images/road.png";
 		imageRoute[1] = "/Images/wall.png";
@@ -28,7 +28,7 @@ public class GraphicEntity {
 		imageRoute[5] = "/Images/speedPotion.png";
 		imageRoute[6] = "/Images/bombPotion.png";
 		imageRoute[7] = "/Images/ghostHome.png";
-		
+		imageRoute[8] = "/Images/sprites1.png";
 		
 		grafico = new ImageIcon( this.getClass().getResource(imageRoute[this.index]) );
 		

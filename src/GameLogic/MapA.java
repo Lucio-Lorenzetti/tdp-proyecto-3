@@ -17,23 +17,23 @@ public class MapA extends Map{
     /**
      * Creates and initializes Map.
      */
-    public MapA(Game g){
+    public MapA(Game g, int cellHeightPX, int cellWidthPX){
     	
     	super(g);
     	
-    	Cell RoadPacdot = new Cell(0, 0, new PacDot(), true, 0);
-    	Cell RoadPowerPellet = new Cell(0, 0, new PowerPellet(), true, 0);
-    	Cell RoadFruit = new Cell(0, 0, new Fruit(), true, 0);
-    	Cell RoadBombPotion = new Cell(0, 0, new BombPotion(), true, 0);
-    	Cell RoadSpeedPotion = new Cell(0, 0, new SpeedPotion(), true, 0);
+    	Cell RoadPacdot = new Cell(0, 0, new PacDot(), true, 0, cellHeightPX, cellWidthPX);
+    	Cell RoadPowerPellet = new Cell(0, 0, new PowerPellet(), true, 0, cellHeightPX, cellWidthPX);
+    	Cell RoadFruit = new Cell(0, 0, new Fruit(), true, 0, cellHeightPX, cellWidthPX);
+    	Cell RoadBombPotion = new Cell(0, 0, new BombPotion(), true, 0, cellHeightPX, cellWidthPX);
+    	Cell RoadSpeedPotion = new Cell(0, 0, new SpeedPotion(), true, 0, cellHeightPX, cellWidthPX);
     	
-    	Cell RoadTeleport = new Cell(0, 0, null, true, 0);
+    	Cell RoadTeleport = new Cell(0, 0, null, true, 0, cellHeightPX, cellWidthPX);
     	
-    	Cell RoadEmpty = new Cell(0, 0, null, true, 0);
+    	Cell RoadEmpty = new Cell(0, 0, null, true, 0, cellHeightPX, cellWidthPX);
     	
-    	Cell GhostHome = new Cell(0, 0, null, true, 7);
+    	Cell GhostHome = new Cell(0, 0, null, false, 7, cellHeightPX, cellWidthPX);
     	
-    	Cell Wall = new Cell(0, 0, null, false, 1);
+    	Cell Wall = new Cell(0, 0, null, false, 1, cellHeightPX, cellWidthPX);
     	
     	
     	

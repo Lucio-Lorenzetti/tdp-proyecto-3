@@ -1,7 +1,11 @@
 package GameLogic;
 
+
+
 import GUI.GraphicEntity;
 import PickeableElements.Pickeable;
+import java.util.LinkedList;
+import CharacterElements.*;
 
 /**
 *
@@ -15,10 +19,20 @@ import PickeableElements.Pickeable;
 public class Cell {
 
 	private boolean walkable;
+
 	private int column;
 	private int row;
-    private Pickeable pickeable;
+    private int posXPX;
+    private int posYPX;
+    private int widthPX;
+    private int heightPX;
+	
+    private LinkedList<CharacterElements.Character> charactersOnTop;
+	
+	private Pickeable pickeable;
 	private GraphicEntity myGraphicEntity;
+	
+	
 	
     /**
     * Creates and initialize a cell;
@@ -26,13 +40,22 @@ public class Cell {
     * @param col where the cell is created.
     * @param p which the cell contains.
     * @param walkable decides whether the cell can be walked by a character.
+    * @param height height of the cell.
+    * @param width width of the cell.
     */
-    public Cell(int row, int col, Pickeable p, boolean walkable, int image) {
+    public Cell(int row, int col, Pickeable p, boolean walkable, int image, int height, int width) {
+    	
     	
         this.walkable = walkable;
         this.row = row;
         column = col;
         
+        
+        widthPX = width;
+        heightPX = height;
+        
+        posXPX = widthPX * col;
+        posYPX = heightPX * row;
         
         myGraphicEntity = new GraphicEntity(image);
         
@@ -82,12 +105,34 @@ public class Cell {
     	return pickeable;
     }
     
+    public int getHeight() {
+    	return heightPX;
+    }
+    
+    public int getWidth() {
+    	return widthPX;
+    }
+    
+    public int getPosX() {
+    	return posXPX;
+    }
+    
+    public int getPosY() {
+    	return posYPX;
+    }
+    
+    
+    public boolean getWalkable() {
+    	return walkable;
+    }
+    
     /**
     * Sets the row of the cell.
     * @param r row to be seted.
     */
     public void setRow(int r) {
     	row = r;
+        posYPX = heightPX * r;	
     }
     
     /**
@@ -96,6 +141,7 @@ public class Cell {
     */
     public void setColumn(int c) {
     	column = c;
+    	posXPX = widthPX * c;
     }
     
     /**
@@ -105,13 +151,12 @@ public class Cell {
      	
      	Cell newCell;
      	
-     	
      	Pickeable pickeableClone = null;
      	
      	if(pickeable != null)
      		pickeableClone = pickeable.clone();
      	
-     	newCell = new Cell(row, column, pickeableClone, walkable, myGraphicEntity.getIndex());
+     	newCell = new Cell(row, column, pickeableClone, walkable, myGraphicEntity.getIndex(), heightPX, widthPX);
      	
      	return newCell;
      }
@@ -131,8 +176,18 @@ public class Cell {
     	newCell.setRow(r);
     	newCell.setColumn(c);
     	
+    	
+    	
     	return newCell;
     }
 
+    
+    public void addCharacterOnTop(CharacterElements.Character ch) {
+    	charactersOnTop.add(ch);
+    }
+    
+    public void removeCharacterOnTop(CharacterElements.Character ch) {
+    	charactersOnTop.remove(ch);
+    }
     
 }

@@ -12,9 +12,9 @@ package GameLogic;
 public class MapFactoryC extends MapFactory{
 
 	@Override
-	public Map CreateMap(Game g) {
+	public Map CreateMap(Game g, int cellHeightPX, int cellWidthPX) {
 		
-		Map newMap = new MapC(g);
+		Map newMap = new MapC(g, cellHeightPX, cellWidthPX);
 		
 		return newMap;
 	}

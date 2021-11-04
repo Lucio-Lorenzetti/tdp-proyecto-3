@@ -15,6 +15,6 @@ public abstract class MapFactory {
     *
     * @param g
     */
-   public abstract Map CreateMap(Game g);
+   public abstract Map CreateMap(Game g, int cellHeightPX, int cellWidthPX);
 
 }

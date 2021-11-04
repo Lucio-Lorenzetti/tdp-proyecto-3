@@ -37,15 +37,15 @@ public class Level {
 			
 	}
 	
-	public void passLevel() {
-		changeMap();
+	public void passLevel(int cellHeightPX, int cellWidthPX) {
+		changeMap(cellHeightPX, cellWidthPX);
 		levelNumber++;
 		System.out.println("PassLevel");
 	}
 	
-	private void changeMap() {
+	private void changeMap(int cellHeightPX, int cellWidthPX) {
 	
-		Map newMap = Factories[levelNumber % cantFactories].CreateMap(myGame);
+		Map newMap = Factories[levelNumber % cantFactories].CreateMap(myGame, cellHeightPX, cellWidthPX);
 		
 		myGame.setMap(newMap);
 	

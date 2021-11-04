@@ -14,8 +14,10 @@ import Visitor.*;
 */
 public abstract class Character extends Element {
 
-    protected int row;
-    protected int col;
+    protected int posXPX;
+    protected int posYPX;
+    protected int widthPX;
+    protected int heightPX;
     protected Visitor myVisitor;
 
     
@@ -25,42 +27,79 @@ public abstract class Character extends Element {
     * @param col where the Character is created.
     * @param v the character´s visitor.
     */
-    public Character(int col, int row){
-        this.col = col;
-        this.row = row;
+    public Character(int posYPX, int posXPX, int width, int height){
+        this.posXPX = posXPX;
+        this.posYPX = posYPX;
+        this.widthPX = width;
+        this.heightPX = height;
     }
 
     /**
     * Moves the character up.
     */
-    public abstract void moveUp();
+    public  void moveUp() {
+    	posYPX--;
+        System.out.println("Posicion en y: "+posYPX);
+    	doOnMovement();
+    }
     
     /**
     * Moves the character down.
     */
-     public abstract void moveDown();
+     public void moveDown() {
+    	posYPX++;
+        System.out.println("Posicion en y: "+posYPX);
+        doOnMovement();
+     }
     
     /**
     * Moves the character left.
     */
-     public abstract void moveLeft();
+     public  void moveLeft() {
+    	 posXPX--;
+        System.out.println("Posicion en x: "+posXPX);
+    	 doOnMovement();
+     }
     
     /**
     * Moves the character right.
     */
-    public abstract void moveRight();
+    public  void moveRight() {
+    	posXPX++;
+        System.out.println("Posicion en x: "+posXPX);
+    	doOnMovement();
+    }
+    
+   
+    public abstract void doOnMovement();
+    
+    
     
     /**
-    * The row where the Character is.
-    * @return row.
-    */
-    public abstract int getRow();
+     * The row where the Chacarter is.
+     * @return row.
+     */
+     public  int getRow(){
+         return posYPX;
+     }
 
     /**
-    * The column where the Character is.
-    * @return column.
-    */
-    public abstract int getColumn();
+     * The column where the Chacarter is.
+     * @return column.
+     */
+     public int getColumn(){
+         return posXPX;
+     }
+     
+     public int getWidth() {
+    	 return widthPX;
+     }
+     
+     public int getHeight() {
+    	 return heightPX;
+     }
+     
+    
     /**
     * Accept the visitor of another Character passed by parameter.
     */

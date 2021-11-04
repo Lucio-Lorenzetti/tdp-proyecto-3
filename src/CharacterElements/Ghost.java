@@ -18,40 +18,17 @@ public abstract class Ghost extends Character {
     * @param col where the Ghost is created.
     */
     public Ghost(int col, int row, boolean d, boolean m){
-        super(col, row);
+        super(col, row, 10, 10);
         this.dead = d;
         this.moving = m;
 
         //myVisitor = new visitorGhost(this);
     }
     
-    /**
-    * Moves the character up.
-    */
-    public  void moveUp(){
+    @Override
+    public void doOnMovement() {
 
     }
-    
-    /**
-    * Moves the character down.
-    */
-     public  void moveDown(){
-
-     }
-    
-    /**
-    * Moves the character left.
-    */
-     public  void moveLeft(){
-
-     }
-    
-    /**
-    * Moves the character right.
-    */
-    public  void moveRight(){
-
-    } 
     
     /**
     * The row where the Chacarter is.

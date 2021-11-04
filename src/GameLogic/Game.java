@@ -2,6 +2,7 @@ package GameLogic;
 
 import Elements.*;
 import GUI.*;
+import CharacterElements.*;
 
 /**
  *
@@ -15,12 +16,12 @@ import GUI.*;
 public class Game {
 
     private Element[] livingGhost;
-    //private LevelFactory factory;
     private ScoreBoard myScoreboard;
     private Timer myTimer;
     private Map myMap;
     private MainWindow myGUI;
     private Level myLevel;
+    private CharacterElements.Character PacMan;
     
     /**
      * Creates and initializes Game.
@@ -32,7 +33,10 @@ public class Game {
     	
     	myLevel = new Level(this);
     	
-    	myLevel.passLevel();
+    	System.out.println("Cell height: " + myGUI.getCellHeight() + " Cell width: " + myGUI.getCellWidth());
+    	
+    	myLevel.passLevel(myGUI.getCellHeight(), myGUI.getCellWidth());
+    	
     }
     
     public Game() {
@@ -53,14 +57,33 @@ public class Game {
      * Moves the PacMan up.
      */
     public void doMoveUp(){
+    	
+    	int check1col = PacMan.getColumn();
+    	int check1row = PacMan.getRow();
+    	int check2col = PacMan.getColumn() + PacMan.getWidth();
+    	int check2row = PacMan.getRow();
         
+       	if( myMap.canMoveUp(check1row, check1col)  &&  myMap.canMoveUp(check2row, check2col) ){
+          PacMan.moveUp();
+          onMove();
+        }
+       	
     }
 
     /**
      * Moves the PacMan down.
      */
     public void doMoveDown(){
-        
+    	
+    	int check1col = PacMan.getColumn();
+    	int check1row = PacMan.getRow() + PacMan.getWidth();
+    	int check2col = PacMan.getColumn() + PacMan.getWidth();
+    	int check2row = PacMan.getRow() + PacMan.getWidth();
+    	
+        if(myMap.canMoveDown(check1row, check1col)  &&  myMap.canMoveDown(check2row, check2col)){
+          PacMan.moveDown();
+          onMove();
+        }
     }
     
     /**
@@ -68,7 +91,14 @@ public class Game {
     *
     */
     public void doMoveLeft(){
-        
+        int check1col = PacMan.getColumn();
+        int check1row = PacMan.getRow();
+        int check2col = PacMan.getColumn();
+        int check2row = PacMan.getRow() + PacMan.getHeight();
+        if(myMap.canMoveLeft(check1row, check1col)  &&  myMap.canMoveLeft(check2row, check2col)){
+          PacMan.moveLeft();
+          onMove();
+        }
     }
     
     /**
@@ -76,8 +106,25 @@ public class Game {
     *
     */
     public void doMoveRight(){
-        
+    	
+    	
+    	int check1col = PacMan.getColumn() + PacMan.getWidth();
+    	int check1row = PacMan.getRow();
+    	int check2col = PacMan.getColumn() + PacMan.getWidth();
+    	int check2row = PacMan.getRow() + PacMan.getHeight();
+    	
+        if(myMap.canMoveRight(check1row, check1col)  &&  myMap.canMoveRight(check2row, check2col)){
+          PacMan.moveRight();
+          onMove();
+        }
     }
+    
+    
+    private void onMove() {
+    	myGUI.displaceCharacter(PacMan.getColumn(), PacMan.getRow(), PacMan.getWidth(), PacMan.getHeight());
+    	myGUI.paintCharacter(PacMan.getGraphicEntity());
+    }
+    
     
     /**
     * Moves the ghosts.
@@ -121,6 +168,10 @@ public class Game {
     	
     	GraphicEntity auxGraph;
     	
+    	
+    	myGUI.clearGameScreen();
+    	
+    	
     	for(int i = 0; i < myMap.getHeight(); i++) {
     		
     		for(int k = 0; k < myMap.getWidth(); k++) {
@@ -142,7 +193,19 @@ public class Game {
     	}
     	
     	
+    	PacMan = new PacMan(myGUI.getCellWidth() * 11 + 2, myGUI.getCellHeight() * 11 + 2, myGUI.getCellWidth()-4, myGUI.getCellHeight()-4);
+    	
+    	myGUI.createMainCharacterGraphic(PacMan);
+    	
+    	
     }
     
+    /**
+    * Return the level of te game.
+    * @return level of the game.
+    */
+    public Level getLevel() {
+    	return myLevel;
+    }
     
 }
