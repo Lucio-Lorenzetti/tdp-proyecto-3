@@ -33,7 +33,7 @@ public class Map {
     * @param col to check.
     * @return true if it's possible, false otherwise.
     */
-    public boolean canMoveRight(int posX, int posY){
+    public boolean canMoveRight(int posY, int posX){
         boolean can = true;
        
         can = checkMovablePosition(posX + 1, posY);
@@ -55,7 +55,7 @@ public class Map {
     * @param col to check
     * @return true if it's possible, false otherwise.
     */
-    public boolean canMoveLeft(int posX, int posY){
+    public boolean canMoveLeft(int posY, int posX){
         boolean can = true;
         
         can = checkMovablePosition(posX-1, posY);
@@ -69,10 +69,10 @@ public class Map {
     * @param col to check
     * @return true if it's possible, false otherwise.
     */
-    public boolean canMoveUp(int posX, int posY){
+    public boolean canMoveUp(int posY, int posX){
         boolean can = true;
         
-        can = checkMovablePosition(posX, posY+1);
+        can = checkMovablePosition(posX, posY-1);
         
         return can;
     }
@@ -82,10 +82,10 @@ public class Map {
     * @param col to check.
     * @return true if it's possible, false otherwise.
     */
-    public boolean canMoveDown(int posX, int posY){
+    public boolean canMoveDown(int posY, int posX){
     	boolean can = true;
         
-    	can = checkMovablePosition(posX, posY-1);
+    	can = checkMovablePosition(posX, posY+1);
     	
         return can;
     }
@@ -100,8 +100,8 @@ public class Map {
     	
     	boolean canMove = true;
     	
-    	int cellWidth = cells[10][10].getWidth();
-        int cellHeight = cells[10][10].getHeight();
+    	int cellWidth = cells[0][0].getWidth();
+        int cellHeight = cells[0][0].getHeight();
         
         System.out.println("cellWidth: " + cellWidth);
         System.out.println("cellHeight: " + cellHeight);
@@ -112,7 +112,7 @@ public class Map {
         int colCell = posCellX / cellWidth;
         int rowCell = posCellY / cellHeight;
         
-        canMove = cells[colCell][rowCell].getWalkable();
+        canMove = cells[rowCell][colCell].getWalkable();
     	
     	return canMove;
     }

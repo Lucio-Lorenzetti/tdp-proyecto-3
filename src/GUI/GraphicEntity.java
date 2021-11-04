@@ -28,7 +28,7 @@ public class GraphicEntity {
 		imageRoute[5] = "/Images/speedPotion.png";
 		imageRoute[6] = "/Images/bombPotion.png";
 		imageRoute[7] = "/Images/ghostHome.png";
-		imageRoute[8] = "/Images/sprites1.png";
+		imageRoute[8] = "/Images/characters/pacmanDown.gif";
 		
 		grafico = new ImageIcon( this.getClass().getResource(imageRoute[this.index]) );
 		

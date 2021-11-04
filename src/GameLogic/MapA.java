@@ -438,7 +438,7 @@ public class MapA extends Map{
 		cells[1][18] = Wall.cloneInPosition(1, 18);
 		cells[2][18] = Wall.cloneInPosition(2, 18);
 		cells[3][18] = Wall.cloneInPosition(3, 18);
-		cells[4][18] = Wall.cloneInPosition(4, 18);
+		cells[4][18] = RoadPacdot.cloneInPosition(4, 18);
 		cells[5][18] = Wall.cloneInPosition(5, 18);
 		cells[6][18] = Wall.cloneInPosition(6, 18);
 		cells[7][18] = Wall.cloneInPosition(7, 18);

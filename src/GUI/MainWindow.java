@@ -91,7 +91,7 @@ public class MainWindow extends JFrame{
 		
 		
 		this.setResizable(false);
-		this.setBounds(100, 100, 724, 538);
+		this.setBounds(0, 0, 1000, 600);
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -108,7 +108,7 @@ public class MainWindow extends JFrame{
 		
 		panel = new JPanel();
 		panel.setOpaque(false);
-		panel.setBounds(480, 25, 218, 440);
+		panel.setBounds(526, 73, 448, 440);
 		this.getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -234,7 +234,7 @@ public class MainWindow extends JFrame{
 	private JPanel createGamePanel() {
 		
 		JPanel GamePanel = new JPanel();
-		GamePanel.setBounds(22, 25, 440, 440);
+		GamePanel.setBounds(44, 73, 440, 440);
 		this.getContentPane().add(GamePanel);
 		GamePanel.setLayout(new GridLayout(gridHeight, gridWidth, 0, 0));
 		GamePanel.setOpaque(false);
@@ -273,8 +273,9 @@ public class MainWindow extends JFrame{
 		Image imagen = grafico.getImage();
 		
 		if(imagen != null) {
-			Image nuevaImagen = imagen.getScaledInstance(cellWidth, cellHeight, Image.SCALE_SMOOTH);
+			Image nuevaImagen = imagen.getScaledInstance(cellWidth, cellHeight, Image.SCALE_DEFAULT);
 			grafico.setImage(nuevaImagen);
+			//grafico.setImageObserver(label);
 			label.setIcon(grafico);
 			label.repaint();	
 		}
@@ -318,7 +319,11 @@ public class MainWindow extends JFrame{
 		System.out.println("MC lbl width: " + mainCharacter.getWidth());
 		System.out.println("MC lbl height: " + mainCharacter.getHeight());
 		
-		mainCharacter.setIcon(ch.getGraphicEntity().getGrafico());
+		ImageIcon mainCharImg = ch.getGraphicEntity().getGrafico(); 
+		
+		mainCharImg.setImageObserver(mainCharacter);
+		
+		mainCharacter.setIcon(mainCharImg);
 		
 		paintCharacter(ch.getGraphicEntity());
 		
@@ -333,36 +338,38 @@ public class MainWindow extends JFrame{
 		
 		mainCharacter.setBounds(posX, posY, width, height);
 		
-		System.out.println("Posicion Label X: " + mainCharacter.getAlignmentX());
-		System.out.println("Posicion Label Y: " + mainCharacter.getAlignmentY());
-		
 	}
 	
 	
 	private void setBackground(){
 
-		ImageIcon fondo = new ImageIcon(this.getClass().getResource("/Images/background.png"));
+		ImageIcon fondo = new ImageIcon(this.getClass().getResource("/Images/backgrounds/background5.gif"));
+		
 
-		JLabel lblbackground = new JLabel("" ,fondo , JLabel.CENTER);
-
+	
 		Image imagen = fondo.getImage();
 		
+		
+
+		
 		if(imagen != null) {
-			Image nuevaImagen = imagen.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
+			Image nuevaImagen = imagen.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_DEFAULT);
 			fondo.setImage(nuevaImagen);
-			lblbackground.setIcon(fondo);
-			lblbackground.repaint();
 		}
 		
 		
 		JLabel background = new JLabel("" ,fondo , JLabel.CENTER);
-
+	
+		
+		fondo.setImageObserver(background);
+		
+		
 		background.setBounds(0, 0, this.getWidth(), this.getHeight());
 
 		getContentPane().add(background);
 	
 		background.repaint();
-
+		
 
 
 	}

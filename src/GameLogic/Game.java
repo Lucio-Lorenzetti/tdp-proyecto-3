@@ -60,7 +60,7 @@ public class Game {
     	
     	int check1col = PacMan.getColumn();
     	int check1row = PacMan.getRow();
-    	int check2col = PacMan.getColumn() + PacMan.getWidth();
+    	int check2col = PacMan.getColumn() + PacMan.getWidth() - 1;
     	int check2row = PacMan.getRow();
         
        	if( myMap.canMoveUp(check1row, check1col)  &&  myMap.canMoveUp(check2row, check2col) ){
@@ -76,9 +76,9 @@ public class Game {
     public void doMoveDown(){
     	
     	int check1col = PacMan.getColumn();
-    	int check1row = PacMan.getRow() + PacMan.getWidth();
-    	int check2col = PacMan.getColumn() + PacMan.getWidth();
-    	int check2row = PacMan.getRow() + PacMan.getWidth();
+    	int check1row = PacMan.getRow() + PacMan.getWidth()  - 1;
+    	int check2col = PacMan.getColumn() + PacMan.getWidth() - 1;
+    	int check2row = PacMan.getRow() + PacMan.getHeight()  - 1;
     	
         if(myMap.canMoveDown(check1row, check1col)  &&  myMap.canMoveDown(check2row, check2col)){
           PacMan.moveDown();
@@ -94,7 +94,7 @@ public class Game {
         int check1col = PacMan.getColumn();
         int check1row = PacMan.getRow();
         int check2col = PacMan.getColumn();
-        int check2row = PacMan.getRow() + PacMan.getHeight();
+        int check2row = PacMan.getRow() + PacMan.getHeight() - 1;
         if(myMap.canMoveLeft(check1row, check1col)  &&  myMap.canMoveLeft(check2row, check2col)){
           PacMan.moveLeft();
           onMove();
@@ -108,10 +108,10 @@ public class Game {
     public void doMoveRight(){
     	
     	
-    	int check1col = PacMan.getColumn() + PacMan.getWidth();
+    	int check1col = PacMan.getColumn() + PacMan.getWidth() - 1;
     	int check1row = PacMan.getRow();
-    	int check2col = PacMan.getColumn() + PacMan.getWidth();
-    	int check2row = PacMan.getRow() + PacMan.getHeight();
+    	int check2col = PacMan.getColumn() + PacMan.getWidth() - 1;
+    	int check2row = PacMan.getRow() + PacMan.getHeight() - 1;
     	
         if(myMap.canMoveRight(check1row, check1col)  &&  myMap.canMoveRight(check2row, check2col)){
           PacMan.moveRight();
@@ -122,7 +122,7 @@ public class Game {
     
     private void onMove() {
     	myGUI.displaceCharacter(PacMan.getColumn(), PacMan.getRow(), PacMan.getWidth(), PacMan.getHeight());
-    	myGUI.paintCharacter(PacMan.getGraphicEntity());
+    	//myGUI.paintCharacter(PacMan.getGraphicEntity());
     }
     
     
@@ -193,7 +193,7 @@ public class Game {
     	}
     	
     	
-    	PacMan = new PacMan(myGUI.getCellWidth() * 11 + 2, myGUI.getCellHeight() * 11 + 2, myGUI.getCellWidth()-4, myGUI.getCellHeight()-4);
+    	PacMan = new PacMan(myGUI.getCellWidth() * 11, myGUI.getCellHeight() * 11, myGUI.getCellWidth(), myGUI.getCellHeight());
     	
     	myGUI.createMainCharacterGraphic(PacMan);
     	

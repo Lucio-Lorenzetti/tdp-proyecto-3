@@ -23,9 +23,11 @@ public abstract class Character extends Element {
     
     /**
     * Creates and initialize a Character;
-    * @param row where the Character is created.
-    * @param col where the Character is created.
-    * @param v the character´s visitor.
+    * @param posYPX where the Character is created.
+    * @param posXPX where the Character is created.
+    * @param width of the Character.
+    * @param height of the Character.
+    *
     */
     public Character(int posYPX, int posXPX, int width, int height){
         this.posXPX = posXPX;
