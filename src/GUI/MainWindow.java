@@ -1,27 +1,19 @@
 package GUI;
 
-import java.awt.EventQueue;
 import java.awt.Image;
-import java.awt.GraphicsEnvironment;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
+
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import GameLogic.Game;
+import Images.ResourceManager;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Component;
 import java.awt.Font;
-import java.awt.FontFormatException;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.event.KeyAdapter;
@@ -43,6 +35,7 @@ public class MainWindow extends JFrame{
 	private JLabel Ghost3;
 	private JLabel Ghost4;
 	private JLabel temp;
+	private JLabel background;
 	
 	private Font gameFont;
 	
@@ -139,9 +132,11 @@ public class MainWindow extends JFrame{
 			
 				ImageIcon iconoLabel = new ImageIcon(this.getClass().getResource("/Images/road.png"));
 				
-				temp.setIcon(iconoLabel);
+				iconoLabel.setImageObserver(temp); //Allows playing gifs.
 				
-				resize(iconoLabel, temp);
+				//temp.setIcon(iconoLabel);
+				
+				resize(iconoLabel, temp);		//Resize the 
 				
 				BottomLayerPanel.add(temp);
 				
@@ -275,10 +270,23 @@ public class MainWindow extends JFrame{
 		if(imagen != null) {
 			Image nuevaImagen = imagen.getScaledInstance(cellWidth, cellHeight, Image.SCALE_DEFAULT);
 			grafico.setImage(nuevaImagen);
-			//grafico.setImageObserver(label);
 			label.setIcon(grafico);
 			label.repaint();	
 		}
+		
+	}
+	
+	private void resize(ImageIcon grafico, JLabel label, int width, int heigth) {
+		
+		Image imagen = grafico.getImage();
+		
+		if(imagen != null) {
+			Image nuevaImagen = imagen.getScaledInstance(width, heigth, Image.SCALE_DEFAULT);
+			grafico.setImage(nuevaImagen);
+			label.setIcon(grafico);
+			label.repaint();	
+		}
+		
 	}
 	
 	
@@ -288,11 +296,11 @@ public class MainWindow extends JFrame{
 		resize(nuevaImagen, BottomLayer[posFila][posColumna]);
 	}
 	
-	public void paintPickup(GraphicEntity nuevoGrafico, int posFila, int posColumna) {
+	public void paintPickup(GraphicEntity nuevoGrafico, int posFila, int posColumna, int width, int height) {
 		
 		ImageIcon nuevaImagen = nuevoGrafico.getGrafico();
 		
-		resize(nuevaImagen, PickupLayer[posFila][posColumna]);
+		resize(nuevaImagen, PickupLayer[posFila][posColumna], width, height);
 		
 	}
 	
@@ -306,20 +314,12 @@ public class MainWindow extends JFrame{
 	
 	public void createMainCharacterGraphic(CharacterElements.Character ch) {
 		
-		System.out.println("MC col: " + ch.getColumn());
-		System.out.println("MC row: " + ch.getRow());
-		System.out.println("MC width: " + ch.getWidth());
-		System.out.println("MC height: " + ch.getHeight());
-		
 		mainCharacter = new JLabel();
 		mainCharacter.setBounds(ch.getColumn(), ch.getRow(), ch.getWidth(), ch.getHeight());
 		
-		System.out.println("MC lbl col: " + mainCharacter.getAlignmentX());
-		System.out.println("MC lbl row: " + mainCharacter.getAlignmentY());
-		System.out.println("MC lbl width: " + mainCharacter.getWidth());
-		System.out.println("MC lbl height: " + mainCharacter.getHeight());
 		
 		ImageIcon mainCharImg = ch.getGraphicEntity().getGrafico(); 
+		
 		
 		mainCharImg.setImageObserver(mainCharacter);
 		
@@ -333,8 +333,6 @@ public class MainWindow extends JFrame{
 	
 	
 	public void displaceCharacter(int posX, int posY, int width, int height) {
-		//mainCharacter.setAlignmentX(posX);
-		//miamainCharacter.setAlignmentY(posY);
 		
 		mainCharacter.setBounds(posX, posY, width, height);
 		
@@ -343,25 +341,31 @@ public class MainWindow extends JFrame{
 	
 	private void setBackground(){
 
-		ImageIcon fondo = new ImageIcon(this.getClass().getResource("/Images/backgrounds/background5.gif"));
+		//Selects a background image from the resource manager randomly
+		ImageIcon[] backgroundImages = ResourceManager.getProvider().getBackgroundImages();
 		
-
-	
+		int imageSelection = (int) (java.lang.System.currentTimeMillis() % backgroundImages.length);
+		
+		//ImageIcon fondo = new ImageIcon(this.getClass().getResource("/Images/backgrounds/background5.gif"));
+		
+		ImageIcon fondo = backgroundImages[4];
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		//Scales the obtained image and upscales it to the current window size
+		
 		Image imagen = fondo.getImage();
-		
-		
-
-		
+			
 		if(imagen != null) {
 			Image nuevaImagen = imagen.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_DEFAULT);
 			fondo.setImage(nuevaImagen);
 		}
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		background = new JLabel("" , fondo , JLabel.CENTER);
 		
 		
-		JLabel background = new JLabel("" ,fondo , JLabel.CENTER);
-	
-		
-		fondo.setImageObserver(background);
+		fondo.setImageObserver(background); //Sets image observer as the background label to allow to play gif animations.
 		
 		
 		background.setBounds(0, 0, this.getWidth(), this.getHeight());

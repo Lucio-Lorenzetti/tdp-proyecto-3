@@ -25,10 +25,10 @@ public class GraphicEntity {
 		imageRoute[2] = "/Images/pacDot.png";
 		imageRoute[3] = "/Images/powerPellet.png";
 		imageRoute[4] = "/Images/fruit.png";
-		imageRoute[5] = "/Images/speedPotion.png";
+		imageRoute[5] = "/Images/AmongUs/pickeable/speedPotion.gif";
 		imageRoute[6] = "/Images/bombPotion.png";
 		imageRoute[7] = "/Images/ghostHome.png";
-		imageRoute[8] = "/Images/characters/pacmanDown.gif";
+		imageRoute[8] = "/Images/AmongUs/characters/pacmanDown.gif";
 		
 		grafico = new ImageIcon( this.getClass().getResource(imageRoute[this.index]) );
 		

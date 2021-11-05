@@ -180,7 +180,7 @@ public class Game {
 
     			if(aux.getPickup() != null) {
     				
-    				myGUI.paintPickup(aux.getPickup().getGraphicEntity(), i, k);
+    				myGUI.paintPickup(aux.getPickup().getGraphicEntity(), i, k, 17, 17);
     			
     			}
     			
