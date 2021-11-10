@@ -1,6 +1,10 @@
 package CharacterElements;
+
 import GUI.GraphicEntity;
+import GameLogic.Directions;
 import Visitor.*;
+import Images.ResourceManager;
+//import Images.ResourceProvider;
 
 /**
 *
@@ -27,8 +31,7 @@ public class PacMan extends Character{
         
         myVisitor = new VisitorPacMan(this);
         
-        
-        myGraphicEntity = new GraphicEntity(8);
+        myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPacManImages()[0] );
         
     }
 
@@ -37,6 +40,27 @@ public class PacMan extends Character{
     @Override
     public void doOnMovement() {
 
+    }
+    
+    @Override
+    protected void doOnDirectionChange() {
+    	
+    	if(nextDirection == Directions.getNeutral()) {
+    		myGraphicEntity.setIcon( ResourceManager.getProvider().getPacManImages()[0] );
+    	}
+    	if(nextDirection == Directions.getLeft()) {
+    		myGraphicEntity.setIcon( ResourceManager.getProvider().getPacManImages()[1] );
+    	}
+    	if(nextDirection == Directions.getUp()) {
+    		myGraphicEntity.setIcon( ResourceManager.getProvider().getPacManImages()[2] );
+    	}
+    	if(nextDirection == Directions.getRight()) {
+    		myGraphicEntity.setIcon( ResourceManager.getProvider().getPacManImages()[3] );
+    	}
+    	if(nextDirection == Directions.getDown()) {
+    		myGraphicEntity.setIcon( ResourceManager.getProvider().getPacManImages()[4] );
+    	}
+    	
     }
     
     /**

@@ -9,11 +9,11 @@ package GameLogic;
  */
 public abstract class Timer implements Runnable{
 	
-	private long delay;
-	private long speedIncrement;
-	private int timeCounter;
-	private boolean paused;
-	private Game myGame;
+	protected long delay;
+	protected long speedIncrement;
+	protected int timeCounter;
+	protected boolean paused;
+	protected Game myGame;
 	
 	/**
 	 * Creates and initializes a generic Timer.

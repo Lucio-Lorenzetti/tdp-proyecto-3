@@ -2,8 +2,8 @@ package GameLogic;
 
 public class TimerGhost extends Timer{
 
-	public TimerGhost(long del, Game juego) {
-		super(del, juego);
+	public TimerGhost(long del, Game game) {
+		super(del, game);
 	}
 
 	@Override

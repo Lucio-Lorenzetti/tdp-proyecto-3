@@ -1,5 +1,10 @@
-package GameLogic;
+package Maps;
 
+import javax.swing.ImageIcon;
+
+import GameLogic.Cell;
+import GameLogic.Game;
+import Images.ResourceManager;
 import PickeableElements.*;
 
 /**
@@ -20,19 +25,22 @@ public class MapB extends Map {
 
 		super(g);
 
-		Cell RoadPacdot = new Cell(0, 0, new PacDot(), true, 0, cellHeightPX, cellWidthPX);
-    	Cell RoadPowerPellet = new Cell(0, 0, new PowerPellet(), true, 0, cellHeightPX, cellWidthPX);
-    	Cell RoadFruit = new Cell(0, 0, new Fruit(), true, 0, cellHeightPX, cellWidthPX);
-    	Cell RoadBombPotion = new Cell(0, 0, new BombPotion(), true, 0, cellHeightPX, cellWidthPX);
-    	Cell RoadSpeedPotion = new Cell(0, 0, new SpeedPotion(), true, 0, cellHeightPX, cellWidthPX);
+ImageIcon[] cellImages = ResourceManager.getProvider().getTileImages();
     	
-    	Cell RoadTeleport = new Cell(0, 0, null, true, 0, cellHeightPX, cellWidthPX);
-    	
-    	Cell RoadEmpty = new Cell(0, 0, null, true, 0, cellHeightPX, cellWidthPX);
-    	
-    	Cell GhostHome = new Cell(0, 0, null, false, 7, cellHeightPX, cellWidthPX);
-    	
-    	Cell Wall = new Cell(0, 0, null, false, 1, cellHeightPX, cellWidthPX);
+	    	
+		Cell RoadEmpty = new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, cellImages[1]);
+		
+		Cell RoadPacdot = new Cell(0, 0, new PacDot(0,0,cellWidthPX, cellWidthPX)  , true, cellHeightPX, cellWidthPX, cellImages[1]);
+		Cell RoadPowerPellet = new Cell(0, 0, new PowerPellet(0,0,cellWidthPX, cellWidthPX), true, cellHeightPX, cellWidthPX, cellImages[1]);
+		Cell RoadFruit = new Cell(0, 0, new Fruit(0,0,cellWidthPX, cellWidthPX), true, cellHeightPX, cellWidthPX, cellImages[1]);
+		Cell RoadBombPotion = new Cell(0, 0, new BombPotion(0,0,cellWidthPX, cellWidthPX), true, cellHeightPX, cellWidthPX, cellImages[1]);
+		Cell RoadSpeedPotion = new Cell(0, 0, new SpeedPotion(0,0,cellWidthPX, cellWidthPX), true, cellHeightPX, cellWidthPX, cellImages[1]);
+		
+		Cell RoadTeleport = new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, cellImages[4]);
+		
+		Cell GhostHome = new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, cellImages[2]);
+		
+		Cell Wall = new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, cellImages[0]);
 
     	int counterRow = 0;
     	int counterCol = 0;

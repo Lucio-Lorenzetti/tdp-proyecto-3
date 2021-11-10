@@ -1,6 +1,7 @@
 package PickeableElements;
 
 import GUI.GraphicEntity;
+import Images.ResourceManager;
 
 /**
 *
@@ -14,20 +15,23 @@ import GUI.GraphicEntity;
 public class BombPotion extends Potion {
 
 	
-	public BombPotion() {
-		super();
+	public BombPotion(int posYPX, int posXPX, int width, int height) {
 		
-		myGraphicEntity = new GraphicEntity(6);
+		super(posYPX, posXPX, width, height);
+		
+		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[4] );
+		
+		
 	}
 	
 	@Override
-	public void consume() {
-		
+	public int consume() {
+		return 0;
 	}
 
 	@Override
 	public Pickeable clone(){
-		return new BombPotion();
+		return new BombPotion(posYPX, posXPX, widthPX, heightPX);
 	}
 
 }

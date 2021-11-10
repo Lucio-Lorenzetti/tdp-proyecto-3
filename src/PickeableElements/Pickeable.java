@@ -14,7 +14,15 @@ import Elements.Element;
 public abstract class Pickeable extends Element{
 
 	
-	public abstract void consume();
+	public Pickeable(int posYPX, int posXPX, int width, int height) {
+		this.posXPX = posXPX;
+        this.posYPX = posYPX;
+        this.widthPX = width;
+        this.heightPX = height;
+	}
+	
+	
+	public abstract int consume();
 
 	public abstract Pickeable clone();
 

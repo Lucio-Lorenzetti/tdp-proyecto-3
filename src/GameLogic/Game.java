@@ -2,6 +2,8 @@ package GameLogic;
 
 import Elements.*;
 import GUI.*;
+import Maps.Map;
+import PickeableElements.Pickeable;
 import CharacterElements.*;
 
 /**
@@ -15,34 +17,59 @@ import CharacterElements.*;
  */
 public class Game {
 
-    private Element[] livingGhost;
-    private ScoreBoard myScoreboard;
-    private Timer myTimer;
-    private Map myMap;
-    private MainWindow myGUI;
-    private Level myLevel;
-    private CharacterElements.Character PacMan;
+	protected Element[] livingGhost;
+    protected ScoreBoard<Player> myScoreboard;
+    protected Timer myTimerPacMan;
+    protected Thread myTimerPacManThread;
+    protected Map myMap;
+    protected MainWindow myGUI;
+    protected Level myLevel;
+    protected CharacterElements.Character PacMan;
+    private String playerName;
+    protected int actualScore;
+    
+    
     
     /**
      * Creates and initializes Game.
      * @param g
      */
     public Game(MainWindow g){
-        
+
+    	playerName = "";
+
+    	actualScore = 0;
+    	
+    	
+    	
+    	myScoreboard = new ScoreBoard<Player>(20, new scoreComparator<Player>());
+    	
     	myGUI = g;
     	
     	myLevel = new Level(this);
     	
-    	System.out.println("Cell height: " + myGUI.getCellHeight() + " Cell width: " + myGUI.getCellWidth());
+    	////////////////////////////////////////////////////////////////////////
     	
     	myLevel.passLevel(myGUI.getCellHeight(), myGUI.getCellWidth());
     	
+    	myTimerPacManThread.start();
+    	
     }
     
-    public Game() {
+    //MÉTODO DE PRUEBA DE SCOREBOARD
+    public void printScores() {
+    	Player p;
     	
-    	
+    	for(int i = 1; i<=10; i++) {
+    		
+    		if(!myScoreboard.isEmpty()) {
+	    		p = myScoreboard.remove();
+	    		
+	    		System.out.println("Posicion " + i + ", Nombre:" + p.getName() + " Puntos: " + p.getPoints() );
+    		}
+    	}
     }
+    
     
     /**
      * Ends the game.
@@ -50,22 +77,124 @@ public class Game {
      * @return
      */
     public boolean gameOver(){
-		return false;
+    	    	
+    	myScoreboard.add(new Player(playerName, actualScore));
+      
+    	actualScore = 0;
+    	playerName = "";
+
+
+		return true;
+    
+    }
+    
+    public void setPlayerName(String p){
+    	playerName = p;
+    }
+
+    public void changeDirection(Object dir, CharacterElements.Character C) {
+    	C.setNextDirection(dir);
+    }
+    
+    
+    public void doMove(CharacterElements.Character C) {
+    
+    	Object characterDirection = null;
+    	Object characterNextDirection = C.getNextDirection();
+
+    	int check1col = 0;
+    	int check1row = 0;
+    	int check2col = 0;
+    	int check2row = 0;
+    
+    	if(characterNextDirection != C.getActualDirection()) {
+    	
+	    	if(characterNextDirection == Directions.getLeft()) {
+				check1col = C.getColumn();
+				check1row = C.getRow();
+				check2col = C.getColumn();
+				check2row = C.getRow() + C.getHeight();
+	    	}
+	    	if(characterNextDirection == Directions.getDown()) {
+				check1col = C.getColumn();
+		    	check1row = C.getRow() + C.getWidth();
+		    	check2col = C.getColumn() + C.getWidth();
+		    	check2row = C.getRow() + C.getHeight();
+	    	} 
+	    	if(characterNextDirection == Directions.getUp()) {
+	    		check1col = C.getColumn();
+	        	check1row = C.getRow();
+	        	check2col = C.getColumn() + C.getWidth();
+	        	check2row = C.getRow();
+	    	} 
+	    	if(characterNextDirection == Directions.getRight()) {
+	    		check1col = C.getColumn() + C.getWidth();
+	        	check1row = C.getRow();
+	        	check2col = C.getColumn() + C.getWidth();
+	        	check2row = C.getRow() + C.getHeight();
+	    	}
+	    	
+	    	if(myMap.checkIfInPath(C.getColumn(), C.getRow()) && myMap.canMove(check1row, check1col, characterNextDirection)  && myMap.canMove(check2row, check2col, characterNextDirection)) {
+	    		C.updateDirection();  
+	    		myGUI.paintCharacter(C.getGraphicEntity());
+	    	}
+	    	
+    	}
+    	
+    	
+    	
+
+    	characterDirection = C.getActualDirection();
+    	
+    	if(characterDirection == Directions.getLeft()) {	
+    		doMoveLeft(C);
+    	}
+    	if(characterDirection == Directions.getDown()) {
+    		doMoveDown(C);
+    	} 
+    	if(characterDirection == Directions.getUp()) {
+    		doMoveUp(C);
+    	} 
+    	if(characterDirection == Directions.getRight()) {
+    		doMoveRight(C);
+    	}
+    
+
+    	if(C == PacMan) {
+    		
+    		Pickeable detectedPickeable = myMap.checkPickeableCollision(C);
+    		
+    		if(detectedPickeable != null) {
+    			
+    			this.addPoints(detectedPickeable.consume());
+    			
+    			//myGUI.paintPickup(null, , );
+    			
+    			System.out.println("CONSUMIDO PICKEABLE");
+    			
+    		}
+    		
+    		//myMap.checkCharacterCollisions(C);
+    	
+    	} else {
+    		//myMap.checkCharacterCollisions(C);
+    	}
+    	
     }
     
     /**
      * Moves the PacMan up.
      */
-    public void doMoveUp(){
+    public void doMoveUp(CharacterElements.Character C){
     	
-    	int check1col = PacMan.getColumn();
-    	int check1row = PacMan.getRow();
-    	int check2col = PacMan.getColumn() + PacMan.getWidth() - 1;
-    	int check2row = PacMan.getRow();
+    	int check1col = C.getColumn();
+    	int check1row = C.getRow();
+    	int check2col = C.getColumn() + C.getWidth();
+    	int check2row = C.getRow();
         
        	if( myMap.canMoveUp(check1row, check1col)  &&  myMap.canMoveUp(check2row, check2col) ){
-          PacMan.moveUp();
-          onMove();
+          C.move();
+          onMove(C);
         }
        	
     }
@@ -73,16 +202,16 @@ public class Game {
     /**
      * Moves the PacMan down.
      */
-    public void doMoveDown(){
+    public void doMoveDown(CharacterElements.Character C){
     	
-    	int check1col = PacMan.getColumn();
-    	int check1row = PacMan.getRow() + PacMan.getWidth()  - 1;
-    	int check2col = PacMan.getColumn() + PacMan.getWidth() - 1;
-    	int check2row = PacMan.getRow() + PacMan.getHeight()  - 1;
+    	int check1col = C.getColumn();
+    	int check1row = C.getRow() + C.getWidth();
+    	int check2col = C.getColumn() + C.getWidth();
+    	int check2row = C.getRow() + C.getHeight();
     	
         if(myMap.canMoveDown(check1row, check1col)  &&  myMap.canMoveDown(check2row, check2col)){
-          PacMan.moveDown();
-          onMove();
+          C.move();
+          onMove(C);
         }
     }
     
@@ -90,14 +219,16 @@ public class Game {
     * Moves the PacMan to the left.
     *
     */
-    public void doMoveLeft(){
-        int check1col = PacMan.getColumn();
-        int check1row = PacMan.getRow();
-        int check2col = PacMan.getColumn();
-        int check2row = PacMan.getRow() + PacMan.getHeight() - 1;
+    public void doMoveLeft(CharacterElements.Character C){
+    	
+        int check1col = C.getColumn();
+        int check1row = C.getRow();
+        int check2col = C.getColumn();
+        int check2row = C.getRow() + C.getHeight();
+        
         if(myMap.canMoveLeft(check1row, check1col)  &&  myMap.canMoveLeft(check2row, check2col)){
-          PacMan.moveLeft();
-          onMove();
+          C.move();
+          onMove(C);
         }
     }
     
@@ -105,24 +236,23 @@ public class Game {
     * Moves the PacMan to the right.
     *
     */
-    public void doMoveRight(){
+    public void doMoveRight(CharacterElements.Character C){
     	
-    	
-    	int check1col = PacMan.getColumn() + PacMan.getWidth() - 1;
-    	int check1row = PacMan.getRow();
-    	int check2col = PacMan.getColumn() + PacMan.getWidth() - 1;
-    	int check2row = PacMan.getRow() + PacMan.getHeight() - 1;
+    	int check1col = C.getColumn() + C.getWidth();
+    	int check1row = C.getRow();
+    	int check2col = C.getColumn() + C.getWidth();
+    	int check2row = C.getRow() + C.getHeight();
     	
         if(myMap.canMoveRight(check1row, check1col)  &&  myMap.canMoveRight(check2row, check2col)){
-          PacMan.moveRight();
-          onMove();
+          C.move();
+          onMove(C);
         }
+        
     }
     
     
-    private void onMove() {
-    	myGUI.displaceCharacter(PacMan.getColumn(), PacMan.getRow(), PacMan.getWidth(), PacMan.getHeight());
-    	//myGUI.paintCharacter(PacMan.getGraphicEntity());
+    private void onMove(CharacterElements.Character C) {
+    	myGUI.displaceCharacter(C.getColumn(), C.getRow(), C.getWidth(), C.getHeight());
     }
     
     
@@ -133,12 +263,13 @@ public class Game {
     public void moveGhost(){
         
     }    
+
     /**
     * Add points to the actual player of the.
     * @param p points to be added.
     */
-    public int addPoints(int p){
-		return p;
+    public void addPoints(int p){
+    	actualScore = actualScore + p;
     }
     
     /**
@@ -169,6 +300,8 @@ public class Game {
     	GraphicEntity auxGraph;
     	
     	
+    	
+    	
     	myGUI.clearGameScreen();
     	
     	
@@ -176,11 +309,13 @@ public class Game {
     		
     		for(int k = 0; k < myMap.getWidth(); k++) {
     			
+    			//System.out.println("Fila " + i +  " Columna " + k);
+    			
     			aux = myMap.getCell(i, k);
 
     			if(aux.getPickup() != null) {
     				
-    				myGUI.paintPickup(aux.getPickup().getGraphicEntity(), i, k, 17, 17);
+    				myGUI.paintPickup(aux.getPickup().getGraphicEntity(), i, k);
     			
     			}
     			
@@ -193,19 +328,33 @@ public class Game {
     	}
     	
     	
-    	PacMan = new PacMan(myGUI.getCellWidth() * 11, myGUI.getCellHeight() * 11, myGUI.getCellWidth(), myGUI.getCellHeight());
+    	PacMan = new PacMan(myGUI.getCellWidth() * 11, myGUI.getCellHeight() * 11, myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1);
     	
     	myGUI.createMainCharacterGraphic(PacMan);
+    	
+    	
+    	myTimerPacMan = new TimerPacMan(15, this);
+    	
+    	myTimerPacManThread = new Thread(myTimerPacMan);
     	
     	
     }
     
     /**
-    * Return the level of te game.
+    * Return the level of the game.
     * @return level of the game.
     */
     public Level getLevel() {
     	return myLevel;
+    }
+    
+    
+    /**
+     * Return the PacMan.
+     * @return PacMan.
+     */
+    public CharacterElements.Character getPacMan() {
+    	return PacMan;
     }
     
 }

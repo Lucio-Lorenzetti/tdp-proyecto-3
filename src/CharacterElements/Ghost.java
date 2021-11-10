@@ -18,7 +18,8 @@ public abstract class Ghost extends Character {
     * @param col where the Ghost is created.
     */
     public Ghost(int col, int row, boolean d, boolean m){
-        super(col, row, 10, 10);
+        
+    	super(col, row, 10, 10);
         this.dead = d;
         this.moving = m;
 

@@ -9,8 +9,7 @@ package GameLogic;
 * @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
 *
 */
-
-public class Player {
+public class Player implements Comparable<Player> {
 
     private int points;
     private String name;
@@ -18,8 +17,9 @@ public class Player {
     /**
      * Create and initialize a player.
      */
-    public Player(String name){
+    public Player(String name, int points){
         this.name = name;
+        this.points = points;
     }
 
     /**
@@ -53,4 +53,20 @@ public class Player {
     public void setPoints(int p){
         points = p;
     }
+
+	@Override
+	public int compareTo(Player o) {
+		
+		int result = 0;
+		
+		if(points < o.getPoints()) {
+			result = -1;
+		} else if(points > o.getPoints()) {
+			result = +1;
+		}
+
+		return result;
+	}
+
+	
 }

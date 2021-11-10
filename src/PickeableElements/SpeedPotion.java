@@ -1,6 +1,7 @@
 package PickeableElements;
 
 import GUI.GraphicEntity;
+import Images.ResourceManager;
 
 /**
 *
@@ -13,20 +14,20 @@ import GUI.GraphicEntity;
 */
 public class SpeedPotion extends Potion {
 
-	public SpeedPotion() {
-		super();
+	public SpeedPotion(int posYPX, int posXPX, int width, int height) {
+		super(posYPX, posXPX, width, height);
 		
-		myGraphicEntity = new GraphicEntity(5);
+		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[3] );
 	}
 	
 	@Override
-	public void consume() {
-		
+	public int consume() {
+		return 0;
 	}
 
 	@Override
 	public Pickeable clone(){
-		return new SpeedPotion();
+		return new SpeedPotion(posYPX, posXPX, widthPX, heightPX);
 	}
 
 }

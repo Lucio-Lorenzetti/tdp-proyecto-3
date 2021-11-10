@@ -1,6 +1,7 @@
 package PickeableElements;
 
 import GUI.GraphicEntity;
+import Images.ResourceManager;
 
 /**
 *
@@ -13,20 +14,22 @@ import GUI.GraphicEntity;
 */
 public class PacDot extends Pickeable {
 	
-	public PacDot() {
-		super();
+	public PacDot(int posYPX, int posXPX, int width, int height) {
 		
-		myGraphicEntity = new GraphicEntity(2);
+		super(posYPX, posXPX, width, height);
+		
+		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[0] );
+		
 	}
 
 	@Override
-	public void consume() {
-		
+	public int consume() {
+		return 0;
 	}
 	
 	@Override
 	public Pickeable clone() {
-		return new PacDot();
+		return new PacDot(posYPX, posXPX, widthPX, heightPX);
 	}
 
 }

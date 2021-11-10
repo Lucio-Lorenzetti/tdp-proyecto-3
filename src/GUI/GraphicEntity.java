@@ -12,98 +12,30 @@ import javax.swing.ImageIcon;
 */
 public class GraphicEntity {
 
-	protected String[] imageRoute;
-	protected ImageIcon grafico;
+	protected ImageIcon icon;
 	int index;
 	
-	public GraphicEntity(int index) {
-		
-		imageRoute = new String[9];
-		
-		imageRoute[0] = "/Images/road.png";
-		imageRoute[1] = "/Images/wall.png";
-		imageRoute[2] = "/Images/pacDot.png";
-		imageRoute[3] = "/Images/powerPellet.png";
-		imageRoute[4] = "/Images/fruit.png";
-		imageRoute[5] = "/Images/AmongUs/pickeable/speedPotion.gif";
-		imageRoute[6] = "/Images/bombPotion.png";
-		imageRoute[7] = "/Images/ghostHome.png";
-		imageRoute[8] = "/Images/AmongUs/characters/pacmanDown.gif";
-		
-		grafico = new ImageIcon( this.getClass().getResource(imageRoute[this.index]) );
-		
-		this.index = index;
-		
-		this.update(index);
-		
-	}
+	public GraphicEntity(ImageIcon icon) {
 	
-	/**
-	 * 
-	 * Updates the graphic entity.
-	 * 
-	 * @param indice indica el indice de la nueva imagen a utilizar
-	 * @return
-	 */
-	public void update(int indice){
+		this.icon = icon;
 		
-		if(indice < imageRoute.length) {
-			
-			ImageIcon imagen = new ImageIcon(this.getClass().getResource(imageRoute[indice]));
-			
-			this.grafico.setImage(imagen.getImage());
-			
-		}
-
 	}
 	
 	/**
 	 * Retorna el atributo gr�fico.
 	 * @return ImageIcon de la entidad gr�fica.
 	 */
-	public String[] getRutasImagenes(){
-		return imageRoute;
-	}
-	
-	/**
-	 * Retorna el atributo gr�fico.
-	 * @return ImageIcon de la entidad gr�fica.
-	 */
-	public ImageIcon getGrafico(){
-		return grafico;
-	}
-	
-	/**
-	 * Retorna el atributo color.
-	 * @return int que representa el color de la entidad gr�fica.
-	 */
-	public int getIndex() {
-		return index;
-	}
-	
-	
-	/**
-	 * Setea las rutas de im�genes posibles.
-	 * @param nuevasRutas Arreglo de strings que contenga las nuevas rutas.
-	 */
-	public void setRutasImagenes(String[] nuevasRutas){
-		imageRoute = nuevasRutas;
+	public ImageIcon getIcon(){
+		return icon;
 	}
 	
 	/**
 	 * Setea el atributo grafico de la entidad grafica.
 	 * @param nuevoGrafico nuevo grafico a establecer
 	 */
-	public void setGrafico(ImageIcon nuevoGrafico){
-		grafico = nuevoGrafico;
+	public void setIcon(ImageIcon nuevoGrafico){
+		icon = nuevoGrafico;
 	}
 	
-	/**
-	 * Setea el atributo color de la entidad grafica.
-	 * @param nuevoColor
-	 */
-	public void setIndex(int newIndex) {
-		index = newIndex;
-	}
 	
 }

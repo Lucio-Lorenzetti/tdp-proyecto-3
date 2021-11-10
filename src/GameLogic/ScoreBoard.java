@@ -1,5 +1,8 @@
 package GameLogic;
 
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
 /**
 *
 * Class ScoreBoard.
@@ -9,30 +12,15 @@ package GameLogic;
 * @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
 *
 */
+public class ScoreBoard<Player> extends PriorityQueue<Player> {
 
-public class ScoreBoard {
+	private static final long serialVersionUID = 1L;
 
-    private Player actualPlayer;
-    private Player[] players;
-    
     /**
     * Creates and initialize a scoreBoard
     */
-    public ScoreBoard(){
-        
-    }
-    /**
-    * Add the actual player to the ScoreBoard.
-    */
-    public void addPlayer(){
-
-    }
-    /**
-    * Create a player.
-    * @param name of the player.
-    */
-    public void createPlayer(String name){
-
+    public ScoreBoard(int cantPlayers, Comparator<Player> c){
+    	super(cantPlayers, c);
     }
 
 }

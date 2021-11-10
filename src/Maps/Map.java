@@ -1,4 +1,16 @@
-package GameLogic;
+package Maps;
+
+import javax.lang.model.util.Elements;
+import java.util.LinkedList;
+
+
+import CharacterElements.*;
+
+import CharacterElements.Character;
+import GameLogic.Cell;
+import GameLogic.Directions;
+import GameLogic.Game;
+import PickeableElements.Pickeable;
 
 /**
  *
@@ -26,6 +38,37 @@ public class Map {
         cells = new Cell[height][width];
     
     }
+    
+    /**
+    * Returns if the movement, depending on the direction, its possible.
+    * @param posY to check.
+    * @param posX to check.
+    * @param direction to check.
+    * @return true if its possible, false otherwise.
+    */
+    public boolean canMove( int posY, int posX, Object direction ){
+    	
+    	boolean result = true;
+
+        if(direction == Directions.getLeft()) {
+        	result = checkMovablePosition(posX - 1, posY);
+        }
+        if(direction == Directions.getRight()) {
+        	result = checkMovablePosition(posX + 1, posY);
+        }
+        if(direction == Directions.getUp()) {
+        	result = checkMovablePosition(posX, posY - 1);
+        }
+        if(direction == Directions.getDown()) {
+        	result = checkMovablePosition(posX, posY + 1);
+        }
+        
+        return result;
+    
+    }
+    
+    
+    
 
     /**
     * Checks if right movement is possible.
@@ -40,12 +83,6 @@ public class Map {
         
         return can;
     }
-    
-    //			44		45		
-    //   celdaPosicion  posX
-    //					posX mod 22 -> 1
-    // 44 = posX - (posX mod 22)
-    // 		celdaPosicion / 22
     
     
     
@@ -100,11 +137,19 @@ public class Map {
     	
     	boolean canMove = true;
     	
+        
+        canMove = getCellByPosition(posX, posY).getWalkable();
+    	
+        
+    	return canMove;
+    
+    }
+
+
+    private Cell getCellByPosition(int posX, int posY) {
+    
     	int cellWidth = cells[0][0].getWidth();
         int cellHeight = cells[0][0].getHeight();
-        
-        System.out.println("cellWidth: " + cellWidth);
-        System.out.println("cellHeight: " + cellHeight);
         
         int posCellX = posX - (posX % cellWidth);
         int posCellY = posY - (posY % cellHeight);
@@ -112,12 +157,18 @@ public class Map {
         int colCell = posCellX / cellWidth;
         int rowCell = posCellY / cellHeight;
         
-        canMove = cells[rowCell][colCell].getWalkable();
+        return cells[rowCell][colCell];    	
     	
-    	return canMove;
     }
     
-    
+
+    public boolean checkIfInPath(int posX, int posY) {
+    	
+    	Cell obtainedCell = getCellByPosition(posX, posY);
+    	
+    	return obtainedCell.getPosX() == posX && obtainedCell.getPosY() == posY;
+    	
+    }
     
     
     
@@ -129,16 +180,6 @@ public class Map {
     */
     public Cell getCell(int row, int col){
         return cells[row][col];        
-    }
-    
-    /**
-     * Sets the cell located to the column and row passed by parameter.
-     * @param row
-     * @param col
-     * @return the cell that it's called searched by it's position.
-     */
-    public void setCell(Cell cell) {
-    	
     }
     
     
@@ -156,5 +197,41 @@ public class Map {
     public int getWidth() {
     	return width;
     }
+
+    public boolean checkAllCollision(Character c) {
+    	
+    	
+		
+		
+		return false;
+	}
     
+	public Pickeable checkPickeableCollision(Character c) {
+		
+		Pickeable result = null;
+		
+		LinkedList<Cell> cellList = new LinkedList<Cell>();
+		
+		Cell aux1 = getCellByPosition(c.getColumn(), c.getRow());     	
+		
+        cellList.add(aux1);
+		
+		Cell aux2 = getCellByPosition(c.getColumn() + c.getWidth(), c.getRow() + c.getHeight());
+		
+        if(aux1 != aux2) {
+        	cellList.add(aux2);
+        }
+
+        for(Cell cellAux : cellList){
+        	
+        	if(c.collidesWith( cellAux.getPickup() ) || cellAux.getPickup().collidesWith( c )) {
+        		result = cellAux.getPickup();
+        	}
+        	 	
+        }
+        
+		return result;
+	}
+	
+	
 }

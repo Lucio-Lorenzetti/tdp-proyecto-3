@@ -1,4 +1,6 @@
-package GameLogic;
+package Maps;
+
+import GameLogic.Game;
 
 /**
  *

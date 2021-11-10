@@ -1,5 +1,7 @@
 package GUI;
 
+
+
 import java.awt.Image;
 
 
@@ -7,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import GameLogic.Game;
+import GameLogic.*;
 import Images.ResourceManager;
 
 import javax.swing.ImageIcon;
@@ -20,6 +22,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MainWindow extends JFrame{
 
@@ -52,7 +56,6 @@ public class MainWindow extends JFrame{
 	private int cellWidth;
 	private int cellHeight;
 	
-
 	
 	/**
 	 * Launch the application.
@@ -62,6 +65,7 @@ public class MainWindow extends JFrame{
 	 * Initialize the contents of the frame.
 	 */
 	public MainWindow() {
+		setUndecorated(true);
 		
 		
 		this.setFocusable(true);
@@ -79,9 +83,7 @@ public class MainWindow extends JFrame{
 		
 		BottomLayer = new JLabel[gridHeight][gridWidth];
 		PickupLayer = new JLabel[gridHeight][gridWidth];
-		
-		
-		
+	
 		
 		this.setResizable(false);
 		this.setBounds(0, 0, 1000, 600);
@@ -105,7 +107,15 @@ public class MainWindow extends JFrame{
 		this.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		
+		JButton EXIT_BUTTON = new JButton("EXIT");
+		EXIT_BUTTON.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.exit(EXIT_ON_CLOSE);
+			}
+		});
+		EXIT_BUTTON.setBounds(10, 394, 168, 35);
+		panel.add(EXIT_BUTTON);
 		
 		cellWidth = BottomLayerPanel.getHeight() / gridHeight;
 		cellHeight = BottomLayerPanel.getWidth() / gridWidth;
@@ -175,23 +185,7 @@ public class MainWindow extends JFrame{
 		this.setVisible(true);
 		
 		
-		this.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_UP) {
-					game.doMoveUp();
-				}
-				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-					game.doMoveDown();
-				}
-				if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-					game.doMoveLeft();
-				}
-				if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-					game.doMoveRight();
-				}
-			}
-		});
+		
 		
 		
 	}
@@ -233,8 +227,6 @@ public class MainWindow extends JFrame{
 		this.getContentPane().add(GamePanel);
 		GamePanel.setLayout(new GridLayout(gridHeight, gridWidth, 0, 0));
 		GamePanel.setOpaque(false);
-		
-		
 		
 		return GamePanel;
 	}
@@ -291,23 +283,31 @@ public class MainWindow extends JFrame{
 	
 	
 	public void paintCell(GraphicEntity nuevoGrafico, int posFila, int posColumna) {
-		ImageIcon nuevaImagen = nuevoGrafico.getGrafico();
+		ImageIcon nuevaImagen = nuevoGrafico.getIcon();
 		
 		resize(nuevaImagen, BottomLayer[posFila][posColumna]);
 	}
 	
+	public void paintPickup(GraphicEntity nuevoGrafico, int posFila, int posColumna) {
+		
+		ImageIcon nuevaImagen = nuevoGrafico.getIcon();
+
+		resize(nuevaImagen, PickupLayer[posFila][posColumna], 17, 17);
+		
+	}
+	
 	public void paintPickup(GraphicEntity nuevoGrafico, int posFila, int posColumna, int width, int height) {
 		
-		ImageIcon nuevaImagen = nuevoGrafico.getGrafico();
-		
+		ImageIcon nuevaImagen = nuevoGrafico.getIcon();
+
 		resize(nuevaImagen, PickupLayer[posFila][posColumna], width, height);
 		
 	}
 	
 	public void paintCharacter(GraphicEntity nuevoGrafico) {
-		ImageIcon nuevaImagen = nuevoGrafico.getGrafico();
+		ImageIcon nuevaImagen = nuevoGrafico.getIcon();
 		
-		System.out.println("Painting Character");
+		//System.out.println("Painting Character");
 		
 		resize(nuevaImagen, mainCharacter);
 	}
@@ -318,7 +318,7 @@ public class MainWindow extends JFrame{
 		mainCharacter.setBounds(ch.getColumn(), ch.getRow(), ch.getWidth(), ch.getHeight());
 		
 		
-		ImageIcon mainCharImg = ch.getGraphicEntity().getGrafico(); 
+		ImageIcon mainCharImg = ch.getGraphicEntity().getIcon(); 
 		
 		
 		mainCharImg.setImageObserver(mainCharacter);
@@ -348,7 +348,7 @@ public class MainWindow extends JFrame{
 		
 		//ImageIcon fondo = new ImageIcon(this.getClass().getResource("/Images/backgrounds/background5.gif"));
 		
-		ImageIcon fondo = backgroundImages[4];
+		ImageIcon fondo = backgroundImages[imageSelection];
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		//Scales the obtained image and upscales it to the current window size
@@ -356,7 +356,7 @@ public class MainWindow extends JFrame{
 		Image imagen = fondo.getImage();
 			
 		if(imagen != null) {
-			Image nuevaImagen = imagen.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_DEFAULT);
+			Image nuevaImagen = imagen.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_FAST);
 			fondo.setImage(nuevaImagen);
 		}
 
@@ -380,7 +380,11 @@ public class MainWindow extends JFrame{
 	
 	
 	public void setGame(Game g) {
+		
 		game = g;
+		
+		
+		////////////////////////////////////////////////////////////////////////////////////
 		
 		JButton nextlvlButton = new JButton("Siguiente Nivel");
 		nextlvlButton.setBounds(0, 109, 218, 95);
@@ -393,6 +397,36 @@ public class MainWindow extends JFrame{
 			}
 		});
 		
+		JButton TEST_1 = new JButton("TEST_1");
+		TEST_1.setBounds(200, 109, 218, 95);
+		panel.add(TEST_1);
+		TEST_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				game.printScores();
+				obtainFocus();
+			}
+		});
+		
+		////////////////////////////////////////////////////////////////////////////////////
+		
+		this.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_UP) {
+					game.changeDirection(Directions.getUp(), game.getPacMan());
+				}
+				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+					game.changeDirection(Directions.getDown(), game.getPacMan());
+				}
+				if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+					game.changeDirection(Directions.getLeft(), game.getPacMan());
+				}
+				if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+					game.changeDirection(Directions.getRight(), game.getPacMan());
+				}
+			}
+		});
 		
 		
 	}
@@ -409,8 +443,6 @@ public class MainWindow extends JFrame{
 	public void obtainFocus() {
 		this.requestFocus();
 	}
-	
-	
 }
 
 

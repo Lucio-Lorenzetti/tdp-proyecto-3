@@ -5,6 +5,9 @@ package GameLogic;
 import GUI.GraphicEntity;
 import PickeableElements.Pickeable;
 import java.util.LinkedList;
+
+import javax.swing.ImageIcon;
+
 import CharacterElements.*;
 
 /**
@@ -43,7 +46,7 @@ public class Cell {
     * @param height height of the cell.
     * @param width width of the cell.
     */
-    public Cell(int row, int col, Pickeable p, boolean walkable, int image, int height, int width) {
+    public Cell(int row, int col, Pickeable p, boolean walkable, int height, int width, ImageIcon icon) {
     	
     	
         this.walkable = walkable;
@@ -57,7 +60,7 @@ public class Cell {
         posXPX = widthPX * col;
         posYPX = heightPX * row;
         
-        myGraphicEntity = new GraphicEntity(image);
+        myGraphicEntity = new GraphicEntity(icon);
         
         if(walkable) {
             pickeable = p;
@@ -85,9 +88,6 @@ public class Cell {
         pickeable = null;
         return pickeable;
     }   
-    
-    
-    
 
     /**
     * Returns the graphic entity of the cell.
@@ -156,7 +156,7 @@ public class Cell {
      	if(pickeable != null)
      		pickeableClone = pickeable.clone();
      	
-     	newCell = new Cell(row, column, pickeableClone, walkable, myGraphicEntity.getIndex(), heightPX, widthPX);
+     	newCell = new Cell(row, column, pickeableClone, walkable, heightPX, widthPX, myGraphicEntity.getIcon());
      	
      	return newCell;
      }

@@ -1,5 +1,11 @@
 package GameLogic;
 
+import Maps.Map;
+import Maps.MapFactory;
+import Maps.MapFactoryA;
+import Maps.MapFactoryB;
+import Maps.MapFactoryC;
+
 /**
  *
  * Class Level.
@@ -30,7 +36,7 @@ public class Level {
 		
 		Factories[0] = new MapFactoryA();
 		Factories[1] = new MapFactoryB();
-		Factories[2] = new MapFactoryC();
+		Factories[2] = new MapFactoryC(); 
 	
 		levelNumber = 0;
 		System.out.println("Constructor level");

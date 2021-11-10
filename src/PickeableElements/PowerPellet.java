@@ -1,6 +1,7 @@
 package PickeableElements;
 
 import GUI.GraphicEntity;
+import Images.ResourceManager;
 
 /**
 *
@@ -13,21 +14,21 @@ import GUI.GraphicEntity;
 */
 public class PowerPellet extends Pickeable {
 
-	public PowerPellet() {
-		super();
+	public PowerPellet(int posYPX, int posXPX, int width, int height) {
+		super(posYPX, posXPX, width, height);
 		
-		myGraphicEntity = new GraphicEntity(3);
+		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[1] );
 	}
 	
 	
 	@Override
-	public void consume() {
-		
+	public int consume() {
+		return 0;
 	}
 
 	@Override
 	public Pickeable clone(){
-		return new PowerPellet();
+		return new PowerPellet(posYPX, posXPX, widthPX, heightPX);
 	}
 
 }

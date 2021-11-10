@@ -2,6 +2,7 @@ package CharacterElements;
 
 import Elements.*;
 import Visitor.*;
+import GameLogic.*;
 
 /**
 *
@@ -13,13 +14,11 @@ import Visitor.*;
 *
 */
 public abstract class Character extends Element {
-
-    protected int posXPX;
-    protected int posYPX;
-    protected int widthPX;
-    protected int heightPX;
+    
     protected Visitor myVisitor;
 
+    protected Object actualDirection;
+    protected Object nextDirection;
     
     /**
     * Creates and initialize a Character;
@@ -27,83 +26,118 @@ public abstract class Character extends Element {
     * @param posXPX where the Character is created.
     * @param width of the Character.
     * @param height of the Character.
-    *
     */
     public Character(int posYPX, int posXPX, int width, int height){
-        this.posXPX = posXPX;
+        
+    	this.posXPX = posXPX;
         this.posYPX = posYPX;
         this.widthPX = width;
         this.heightPX = height;
+    
+        actualDirection = Directions.getNeutral();
+        nextDirection = Directions.getNeutral();
+    }
+    
+    /**
+    * Moves the character depending on its actual direction.
+    */
+    public void move() {
+        if(actualDirection == Directions.getRight()) {
+        	moveRight();
+        } 
+        if(actualDirection == Directions.getLeft()) {
+        	moveLeft();
+        } 
+        if(actualDirection == Directions.getUp()) {
+        	moveUp();
+        } 
+        if(actualDirection == Directions.getDown()) {
+        	moveDown();
+        }
+        
+        doOnMovement();
+        
+    }
+    
+    /**
+    * Updates the direction of the character.
+    */
+    public void updateDirection() {
+    	
+    	doOnDirectionChange();
+    	
+    	actualDirection = nextDirection;
+    	
+    }
+    
+    /**
+    * Sets the next direction of the character.
+    * @param dir nextDirection of the character.
+    */
+    public void setNextDirection(Object dir){
+        
+       nextDirection = dir; 
+    
     }
 
     /**
     * Moves the character up.
     */
-    public  void moveUp() {
+    protected void moveUp() {
     	posYPX--;
-        System.out.println("Posicion en y: "+posYPX);
-    	doOnMovement();
     }
     
     /**
     * Moves the character down.
     */
-     public void moveDown() {
+     protected void moveDown() {
     	posYPX++;
-        System.out.println("Posicion en y: "+posYPX);
-        doOnMovement();
      }
     
     /**
     * Moves the character left.
     */
-     public  void moveLeft() {
+     protected  void moveLeft() {
     	 posXPX--;
-        System.out.println("Posicion en x: "+posXPX);
-    	 doOnMovement();
      }
     
     /**
     * Moves the character right.
     */
-    public  void moveRight() {
+     protected  void moveRight() {
     	posXPX++;
-        System.out.println("Posicion en x: "+posXPX);
-    	doOnMovement();
     }
     
    
-    public abstract void doOnMovement();
-    
-    
-    
     /**
-     * The row where the Chacarter is.
-     * @return row.
+     * Does the required actions on a movement.
      */
-     public  int getRow(){
-         return posYPX;
-     }
-
-    /**
-     * The column where the Chacarter is.
-     * @return column.
-     */
-     public int getColumn(){
-         return posXPX;
-     }
-     
-     public int getWidth() {
-    	 return widthPX;
-     }
-     
-     public int getHeight() {
-    	 return heightPX;
-     }
-     
+    protected abstract void doOnMovement();
     
     /**
-    * Accept the visitor of another Character passed by parameter.
-    */
-    public abstract void accept(Visitor v);
+     * Does the required actions on a movement.
+     */
+    protected abstract void doOnDirectionChange();
+	 
+	 /**
+	  * Return the actual direction of the character.
+	  * @return Direction of the character.
+	  */
+	 public Object getActualDirection() {
+		 return actualDirection;
+	 }
+	 
+	 /**
+	  * Return the next direction of the character.
+	  * @return Next direction of the character.
+	  */
+	 public Object getNextDirection() {
+		 return nextDirection;
+	 }
+	 
+	/**
+	* Accept the visitor of another Character passed by parameter.
+	* @param v visitor.
+	*/
+	public abstract void accept(Visitor v);
 }

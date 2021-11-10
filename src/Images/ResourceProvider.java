@@ -39,34 +39,35 @@ public abstract class ResourceProvider {
 		int index;
 	
 		//PACMAN IMAGES
-		pacmanRoutes.add(themeRoute + "/characters/pacmanNeutral.gif");
-		pacmanRoutes.add(themeRoute + "/characters/pacmanLeft.gif");
-		pacmanRoutes.add(themeRoute + "/characters/pacmanUp.gif");
-		pacmanRoutes.add(themeRoute + "/characters/pacmanRight.gif");
-		pacmanRoutes.add(themeRoute + "/characters/pacmanDown.gif");
-		pacmanRoutes.add(themeRoute + "/characters/pacmanDeath.gif");
+		pacmanRoutes.add(themeRoute + "/characters/pacman/pacmanNeutral.gif");
+		pacmanRoutes.add(themeRoute + "/characters/pacman/pacmanLeft.gif");
+		pacmanRoutes.add(themeRoute + "/characters/pacman/pacmanUp.gif");
+		pacmanRoutes.add(themeRoute + "/characters/pacman/pacmanRight.gif");
+		pacmanRoutes.add(themeRoute + "/characters/pacman/pacmanDown.gif");
+		pacmanRoutes.add(themeRoute + "/characters/pacman/pacmanDeath.gif");
 		
 		//TILE IMAGES
 		tileRoutes.add(themeRoute + "/tiles/wall.png");
 		tileRoutes.add(themeRoute + "/tiles/road.png");
 		tileRoutes.add(themeRoute + "/tiles/ghostHome.png");
 		tileRoutes.add(themeRoute + "/tiles/borderWall.png");
+		tileRoutes.add(themeRoute + "/tiles/roadTeleport.png");
 		
 		//BACKGROUND IMAGES
 		backgroundRoutes.add( themeRoute + "/backgrounds/background1.gif");
 		backgroundRoutes.add( themeRoute + "/backgrounds/background2.gif");
-		backgroundRoutes.add( themeRoute + "/backgrounds/background3.gif");
+		//backgroundRoutes.add( themeRoute + "/backgrounds/background3.gif");
 		backgroundRoutes.add( themeRoute + "/backgrounds/background4.gif");
 		backgroundRoutes.add( themeRoute + "/backgrounds/background5.gif");
 		backgroundRoutes.add( themeRoute + "/backgrounds/background6.gif");
 		backgroundRoutes.add( themeRoute + "/backgrounds/background7.gif");
 		
 		//PICKEABLE IMAGES
-		pickeableRoutes.add(themeRoute +  "/pickeable/pacDot.png");
-		pickeableRoutes.add(themeRoute +  "/pickeable/powerPellet.png");
-		pickeableRoutes.add(themeRoute +  "/pickeable/fruit.png");
-		pickeableRoutes.add(themeRoute +  "/pickeable/speedPotion.png");
-		pickeableRoutes.add(themeRoute +  "/pickeable/bombPotion.png");
+		pickeableRoutes.add(themeRoute +  "/pickeable/pacDot.gif");
+		pickeableRoutes.add(themeRoute +  "/pickeable/powerPellet.gif");
+		pickeableRoutes.add(themeRoute +  "/pickeable/fruit.gif");
+		pickeableRoutes.add(themeRoute +  "/pickeable/speedPotion.gif");
+		pickeableRoutes.add(themeRoute +  "/pickeable/bombPotion.gif");
 		
 	}
 	

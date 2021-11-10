@@ -1,6 +1,7 @@
 package PickeableElements;
 
 import GUI.GraphicEntity;
+import Images.ResourceManager;
 
 /**
 *
@@ -13,21 +14,21 @@ import GUI.GraphicEntity;
 */
 public class Fruit extends Pickeable{
 
-	public Fruit() {
-		super();
+	public Fruit(int posYPX, int posXPX, int width, int height) {
+		super(posYPX, posXPX, width, height);
 		
-		myGraphicEntity = new GraphicEntity(4);
+		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[2] );
 	}
 	
 	
 	@Override
-	public void consume() {
-
+	public int consume() {
+		return 0;
 	}
 	
 	@Override
 	public Pickeable clone() {
-		return new Fruit();
+		return new Fruit(posYPX, posXPX, widthPX, heightPX);
 	}
 
 }
