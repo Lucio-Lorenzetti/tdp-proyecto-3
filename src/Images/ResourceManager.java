@@ -1,15 +1,14 @@
 package Images;
 
+import java.util.LinkedList;
 
 public final class ResourceManager {
 
 	private static ResourceProvider provider = null;
 	
-	
-	
 	public static ResourceProvider getProvider(){
 		
-		if(provider == null) {
+		if( provider == null ) {
 			provider = new ResourceProviderAmongUs();
 		} 
 		
@@ -21,13 +20,13 @@ public final class ResourceManager {
 		
 		if(provider == null) {
 			
-			ResourceProvider[] providerList = new ResourceProvider[1];
-			providerList[0] = new ResourceProviderAmongUs();
+			LinkedList<ResourceProvider> providerList = new LinkedList<ResourceProvider>();
+			providerList.add(new ResourceProviderAmongUs());
 			
-			if(index < providerList.length && index >= 0) { 
-				provider = providerList[index];
+			if(index < providerList.size() && index >= 0) { 
+				provider = providerList.get(index);
 			} else {
-				provider = providerList[0];
+				provider = providerList.get(0);
 			}
 		} 
 		

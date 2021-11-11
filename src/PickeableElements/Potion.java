@@ -12,7 +12,7 @@ package PickeableElements;
 public abstract class Potion extends Pickeable{
 
 	public Potion(int posYPX, int posXPX, int width, int height) {
-		super(posYPX, posXPX, width, height);
+		super(posYPX, posXPX, width, height, 150);
 	}
 	
 }

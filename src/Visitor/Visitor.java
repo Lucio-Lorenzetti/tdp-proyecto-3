@@ -1,7 +1,7 @@
 package Visitor;
 
 import CharacterElements.*;
-import CharacterElements.Character;
+import CharacterElements.Role;
 
 /**
 *
@@ -50,9 +50,9 @@ public abstract class Visitor {
     * @param b character.
     * @return true if both are in the same position, false otherwise.
     */
-	public  boolean intersect(Character a, Character b){
+	public  boolean intersect(Role a, Role b){
         boolean retorno;
-        retorno = (a.getColumn() == b.getColumn() && a.getRow() == b.getRow()) ? true : false;
+        retorno = (a.getPosX() == b.getPosX() && a.getPosY() == b.getPosY()) ? true : false;
         return retorno;
     }
 }

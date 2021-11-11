@@ -13,7 +13,7 @@ import GameLogic.*;
 * @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
 *
 */
-public abstract class Character extends Element {
+public abstract class Role extends Element {
     
     protected Visitor myVisitor;
 
@@ -27,7 +27,7 @@ public abstract class Character extends Element {
     * @param width of the Character.
     * @param height of the Character.
     */
-    public Character(int posYPX, int posXPX, int width, int height){
+    public Role(int posYPX, int posXPX, int width, int height){
         
     	this.posXPX = posXPX;
         this.posYPX = posYPX;
@@ -42,6 +42,7 @@ public abstract class Character extends Element {
     * Moves the character depending on its actual direction.
     */
     public void move() {
+    	
         if(actualDirection == Directions.getRight()) {
         	moveRight();
         } 

@@ -1,16 +1,23 @@
 package Maps;
 
-import javax.lang.model.util.Elements;
+import javax.swing.ImageIcon;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.LinkedList;
 
-
-import CharacterElements.*;
-
-import CharacterElements.Character;
+import CharacterElements.Role;
 import GameLogic.Cell;
 import GameLogic.Directions;
 import GameLogic.Game;
+import Images.ResourceManager;
+import PickeableElements.BombPotion;
+import PickeableElements.Fruit;
+import PickeableElements.PacDot;
 import PickeableElements.Pickeable;
+import PickeableElements.PowerPellet;
+import PickeableElements.SpeedPotion;
 
 /**
  *
@@ -23,20 +30,109 @@ import PickeableElements.Pickeable;
  */
 public class Map {
     
-    protected Game game;
-    protected static final int height = 20;
-    protected static final int width = 20;
+    protected Game myGame;
+    protected static final int height = 22;
+    protected static final int width = 22;
     protected Cell[][] cells;
-
+    protected String route;
 
     /**
      * Creates and initializes Map.
      */
-    public Map(Game g){
+    public Map(Game g, int cellHeightPX, int cellWidthPX, String mapRoute){
    
-    	game = g;
+    	myGame = g;
         cells = new Cell[height][width];
     
+        int fruitScore = 50;
+        
+        ImageIcon[] cellImages = ResourceManager.getProvider().getTileImages();
+    	
+    	
+    	Cell Wall = new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, cellImages[0]);
+    	
+    	Cell RoadEmpty = new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, cellImages[1]);
+    	
+    	Cell RoadPacdot = new Cell(0, 0, new PacDot( 0, 0,cellWidthPX, cellWidthPX)  , true, cellHeightPX, cellWidthPX, cellImages[1]);
+    	Cell RoadPowerPellet = new Cell(0, 0, new PowerPellet( 0, 0,cellWidthPX, cellWidthPX), true, cellHeightPX, cellWidthPX, cellImages[1]);
+    	Cell RoadFruit = new Cell(0, 0, new Fruit( 0, 0,cellWidthPX, cellWidthPX, fruitScore), true, cellHeightPX, cellWidthPX, cellImages[1]);
+    	Cell RoadBombPotion = new Cell( 0, 0, new BombPotion( 0, 0,cellWidthPX, cellWidthPX), true, cellHeightPX, cellWidthPX, cellImages[1]);
+    	Cell RoadSpeedPotion = new Cell(0, 0, new SpeedPotion( 0, 0,cellWidthPX, cellWidthPX), true, cellHeightPX, cellWidthPX, cellImages[1]);
+    	
+    	
+    	Cell GhostHome = new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, cellImages[2]);
+    	
+    	Cell LimitHorizontal = new Cell(0,0,null,false, cellHeightPX, cellWidthPX, cellImages[3]);
+    	Cell LimitVertical = new Cell(0,0,null,false, cellHeightPX, cellWidthPX, cellImages[4]);
+    	
+    	
+    	Cell RoadTeleport = new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, cellImages[5]);
+    			
+    	try {
+    		
+    		File f = new File(mapRoute);    		
+    		FileReader fr = new FileReader(f);
+			BufferedReader br = new BufferedReader (fr);
+			
+			String actualLine;
+			
+			int actualRow = 0;
+			
+			
+			while ( (actualLine = br.readLine()) != null) {
+				
+				for(int col = 0; col < actualLine.length(); col++){
+					
+
+					if( actualLine.charAt(col) == 'L') {
+						cells[actualRow][col] = LimitHorizontal.cloneInPosition(actualRow, col);
+					}
+					if( actualLine.charAt(col) == 'I') {
+						cells[actualRow][col] = LimitVertical.cloneInPosition(actualRow, col);
+					}
+					if( actualLine.charAt(col) == 'W') {
+						cells[actualRow][col] = Wall.cloneInPosition(actualRow, col);
+					}
+					if( actualLine.charAt(col) == 'F') {
+						cells[actualRow][col] = RoadFruit.cloneInPosition(actualRow, col);
+					}
+					if( actualLine.charAt(col) == 'S') {
+						cells[actualRow][col] = RoadSpeedPotion.cloneInPosition(actualRow, col);
+					}
+					if( actualLine.charAt(col) == 'B') {
+						cells[actualRow][col] = RoadBombPotion.cloneInPosition(actualRow, col);
+					}
+					if( actualLine.charAt(col) == 'D') {
+						cells[actualRow][col] = RoadPacdot.cloneInPosition(actualRow, col);
+					}
+					if( actualLine.charAt(col) == 'P') {
+						cells[actualRow][col] = RoadPowerPellet.cloneInPosition(actualRow, col);
+					}
+					if( actualLine.charAt(col) == 'G') {
+						cells[actualRow][col] = GhostHome.cloneInPosition(actualRow, col);
+					}
+					if( actualLine.charAt(col) == 'T') {
+						cells[actualRow][col] = RoadTeleport.cloneInPosition(actualRow, col);
+					}
+                    if( actualLine.charAt(col) == 'E') {
+						cells[actualRow][col] = RoadEmpty.cloneInPosition(actualRow, col);
+					}
+					
+				}
+				
+				actualRow++;
+				
+			}			
+			
+			br.close();
+			fr.close(); 
+			
+		} catch(Exception ex){
+			ex.printStackTrace();
+		}
+          
+               
+        
     }
     
     /**
@@ -151,11 +247,17 @@ public class Map {
     	int cellWidth = cells[0][0].getWidth();
         int cellHeight = cells[0][0].getHeight();
         
+        /*
         int posCellX = posX - (posX % cellWidth);
         int posCellY = posY - (posY % cellHeight);
         
         int colCell = posCellX / cellWidth;
         int rowCell = posCellY / cellHeight;
+        */
+        
+        int colCell = posX / cellWidth;
+        int rowCell = posY / cellHeight;
+        
         
         return cells[rowCell][colCell];    	
     	
@@ -169,7 +271,6 @@ public class Map {
     	return obtainedCell.getPosX() == posX && obtainedCell.getPosY() == posY;
     	
     }
-    
     
     
     /**
@@ -198,7 +299,7 @@ public class Map {
     	return width;
     }
 
-    public boolean checkAllCollision(Character c) {
+    public boolean checkAllCollision(Role c) {
     	
     	
 		
@@ -206,17 +307,17 @@ public class Map {
 		return false;
 	}
     
-	public Pickeable checkPickeableCollision(Character c) {
+	public Pickeable checkPickeableCollision(Role c) {
 		
 		Pickeable result = null;
 		
 		LinkedList<Cell> cellList = new LinkedList<Cell>();
 		
-		Cell aux1 = getCellByPosition(c.getColumn(), c.getRow());     	
+		Cell aux1 = getCellByPosition(c.getPosX(), c.getPosY());     	
 		
         cellList.add(aux1);
 		
-		Cell aux2 = getCellByPosition(c.getColumn() + c.getWidth(), c.getRow() + c.getHeight());
+		Cell aux2 = getCellByPosition(c.getPosX() + c.getWidth(), c.getPosY() + c.getHeight());
 		
         if(aux1 != aux2) {
         	cellList.add(aux2);
@@ -224,13 +325,28 @@ public class Map {
 
         for(Cell cellAux : cellList){
         	
-        	if(c.collidesWith( cellAux.getPickup() ) || cellAux.getPickup().collidesWith( c )) {
+        	if(cellAux.getPickup() != null && (c.collidesWith( cellAux.getPickup() ) || cellAux.getPickup().collidesWith( c ))) {
         		result = cellAux.getPickup();
         	}
         	 	
         }
         
 		return result;
+		
+	}
+	
+	
+	public void consumePickeable(Pickeable p) {
+		
+		Cell aux = getCellByPosition(p.getPosX(), p.getPosY());
+		
+		aux.setPickup(null);
+		
+		myGame.addPoints( p.consume() );
+		
+		myGame.updatePickupGraphic(aux);		//ACTUALIZAR SOLO PICKUP PARA EVITAR EFECTOS VISUALES RAROS EN LA CELDA
+		
+		
 	}
 	
 	

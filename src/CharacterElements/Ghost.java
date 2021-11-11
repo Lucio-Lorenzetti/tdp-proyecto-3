@@ -9,7 +9,7 @@ package CharacterElements;
 * @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
 *
 */
-public abstract class Ghost extends Character {
+public abstract class Ghost extends Role {
     protected boolean dead;
     protected boolean moving;
     /**
@@ -35,7 +35,7 @@ public abstract class Ghost extends Character {
     * The row where the Chacarter is.
     * @return row.
     */
-    public  int getRow(){
+    public  int getPosY(){
         return 0;
     }
 
@@ -43,7 +43,7 @@ public abstract class Ghost extends Character {
     * The column where the Chacarter is.
     * @return column.
     */
-    public int getColumn(){
+    public int getPosX(){
         return 0;
     }
 }

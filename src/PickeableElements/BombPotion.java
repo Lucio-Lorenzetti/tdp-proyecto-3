@@ -26,7 +26,7 @@ public class BombPotion extends Potion {
 	
 	@Override
 	public int consume() {
-		return 0;
+		return points;
 	}
 
 	@Override

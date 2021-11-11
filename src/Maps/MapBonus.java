@@ -12,16 +12,14 @@ import GameLogic.Game;
  * @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
  *
  */
-public class MapA extends Map {
+public class MapBonus extends Map {
     
 
     /**
      * Creates and initializes Map.
      */
-    public MapA(Game g, int cellHeightPX, int cellWidthPX){
+    public MapBonus(Game g, int cellHeightPX, int cellWidthPX){
     	
-    	super(g, cellHeightPX, cellWidthPX, "src/Maps/MapA.txt");
+    	super(g, cellHeightPX, cellWidthPX, "src/Maps/MapBonus.txt");
 	}
 }
-    
-

@@ -24,6 +24,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
 public class MainWindow extends JFrame{
 
@@ -40,6 +41,7 @@ public class MainWindow extends JFrame{
 	private JLabel Ghost4;
 	private JLabel temp;
 	private JLabel background;
+	private JLabel lblscore;
 	
 	private Font gameFont;
 	
@@ -49,6 +51,9 @@ public class MainWindow extends JFrame{
 	private JPanel CharacterLayerPanel;
 	private JPanel contentPane;
 	private JPanel panel;
+	
+	private JButton TEST_1;
+	private JButton nextlvlButton;
 	
 	private int gridWidth;
 	private int gridHeight;
@@ -78,8 +83,8 @@ public class MainWindow extends JFrame{
 		gameFont = loadFont("/Fonts/text-font.ttf", 16f);
 		*/
 		
-		gridHeight = 20;
-		gridWidth = 20;
+		gridHeight = 22;
+		gridWidth = 22;
 		
 		BottomLayer = new JLabel[gridHeight][gridWidth];
 		PickupLayer = new JLabel[gridHeight][gridWidth];
@@ -117,6 +122,31 @@ public class MainWindow extends JFrame{
 		EXIT_BUTTON.setBounds(10, 394, 168, 35);
 		panel.add(EXIT_BUTTON);
 		
+		TEST_1 = new JButton("TEST_1");
+		TEST_1.setBounds(276, 11, 162, 95);
+		panel.add(TEST_1);
+		
+		nextlvlButton = new JButton("Siguiente Nivel");
+		nextlvlButton.setBounds(10, 11, 162, 95);
+		panel.add(nextlvlButton);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(276, 279, 150, 150);
+		panel.add(panel_1);
+		panel_1.setLayout(null);
+		
+		JLabel Score = new JLabel("Score");
+		Score.setHorizontalAlignment(SwingConstants.CENTER);
+		Score.setBounds(53, 11, 46, 14);
+		panel_1.add(Score);
+		
+		lblscore = new JLabel("-Score-");
+		lblscore.setHorizontalAlignment(SwingConstants.CENTER);
+		lblscore.setBounds(53, 50, 46, 14);
+		panel_1.add(lblscore);
+		
+		
+		
 		cellWidth = BottomLayerPanel.getHeight() / gridHeight;
 		cellHeight = BottomLayerPanel.getWidth() / gridWidth;
 		
@@ -140,7 +170,7 @@ public class MainWindow extends JFrame{
 					
 				temp = new JLabel();				
 			
-				ImageIcon iconoLabel = new ImageIcon(this.getClass().getResource("/Images/road.png"));
+				ImageIcon iconoLabel = ResourceManager.getProvider().getTileImages()[0];
 				
 				iconoLabel.setImageObserver(temp); //Allows playing gifs.
 				
@@ -270,14 +300,27 @@ public class MainWindow extends JFrame{
 	
 	private void resize(ImageIcon grafico, JLabel label, int width, int heigth) {
 		
-		Image imagen = grafico.getImage();
+		Image imagen = null;
 		
-		if(imagen != null) {
-			Image nuevaImagen = imagen.getScaledInstance(width, heigth, Image.SCALE_DEFAULT);
-			grafico.setImage(nuevaImagen);
-			label.setIcon(grafico);
-			label.repaint();	
-		}
+		if(grafico != null) {
+			
+			imagen = grafico.getImage();
+			
+			if(imagen != null) {
+				
+				Image nuevaImagen = imagen.getScaledInstance(width, heigth, Image.SCALE_DEFAULT);
+				grafico.setImage(nuevaImagen);
+				label.setIcon(grafico);
+				
+			} 
+			
+		} else {
+		
+			label.setIcon(null);
+			
+		} 
+		
+		label.repaint();	
 		
 	}
 	
@@ -290,16 +333,18 @@ public class MainWindow extends JFrame{
 	
 	public void paintPickup(GraphicEntity nuevoGrafico, int posFila, int posColumna) {
 		
-		ImageIcon nuevaImagen = nuevoGrafico.getIcon();
-
-		resize(nuevaImagen, PickupLayer[posFila][posColumna], 17, 17);
+		paintPickup(nuevoGrafico, posFila, posColumna, 17, 17);
 		
 	}
 	
 	public void paintPickup(GraphicEntity nuevoGrafico, int posFila, int posColumna, int width, int height) {
 		
-		ImageIcon nuevaImagen = nuevoGrafico.getIcon();
-
+		ImageIcon nuevaImagen = null;
+		
+		if(nuevoGrafico != null) {
+			nuevaImagen = nuevoGrafico.getIcon();
+		}
+		
 		resize(nuevaImagen, PickupLayer[posFila][posColumna], width, height);
 		
 	}
@@ -312,10 +357,10 @@ public class MainWindow extends JFrame{
 		resize(nuevaImagen, mainCharacter);
 	}
 	
-	public void createMainCharacterGraphic(CharacterElements.Character ch) {
+	public void createMainCharacterGraphic(CharacterElements.Role ch) {
 		
 		mainCharacter = new JLabel();
-		mainCharacter.setBounds(ch.getColumn(), ch.getRow(), ch.getWidth(), ch.getHeight());
+		mainCharacter.setBounds(ch.getPosX(), ch.getPosY(), ch.getWidth(), ch.getHeight());
 		
 		
 		ImageIcon mainCharImg = ch.getGraphicEntity().getIcon(); 
@@ -386,9 +431,7 @@ public class MainWindow extends JFrame{
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		
-		JButton nextlvlButton = new JButton("Siguiente Nivel");
-		nextlvlButton.setBounds(0, 109, 218, 95);
-		panel.add(nextlvlButton);
+		
 		nextlvlButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -397,9 +440,7 @@ public class MainWindow extends JFrame{
 			}
 		});
 		
-		JButton TEST_1 = new JButton("TEST_1");
-		TEST_1.setBounds(200, 109, 218, 95);
-		panel.add(TEST_1);
+		
 		TEST_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -429,6 +470,12 @@ public class MainWindow extends JFrame{
 		});
 		
 		
+	}
+	
+	public void updateScore(int score) {
+		
+		lblscore.setText( String.valueOf(score) ); 
+	
 	}
 	
 	public int getCellWidth() {

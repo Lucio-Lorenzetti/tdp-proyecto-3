@@ -24,7 +24,7 @@ public class Game {
     protected Map myMap;
     protected MainWindow myGUI;
     protected Level myLevel;
-    protected CharacterElements.Character PacMan;
+    protected CharacterElements.Role PacMan;
     private String playerName;
     protected int actualScore;
     
@@ -92,12 +92,12 @@ public class Game {
     	playerName = p;
     }
 
-    public void changeDirection(Object dir, CharacterElements.Character C) {
+    public void changeDirection(Object dir, CharacterElements.Role C) {
     	C.setNextDirection(dir);
     }
     
     
-    public void doMove(CharacterElements.Character C) {
+    public void doMove(CharacterElements.Role C) {
     
     	Object characterDirection = null;
     	Object characterNextDirection = C.getNextDirection();
@@ -110,31 +110,31 @@ public class Game {
     	if(characterNextDirection != C.getActualDirection()) {
     	
 	    	if(characterNextDirection == Directions.getLeft()) {
-				check1col = C.getColumn();
-				check1row = C.getRow();
-				check2col = C.getColumn();
-				check2row = C.getRow() + C.getHeight();
+				check1col = C.getPosX();
+				check1row = C.getPosY();
+				check2col = C.getPosX();
+				check2row = C.getPosY() + C.getHeight();
 	    	}
 	    	if(characterNextDirection == Directions.getDown()) {
-				check1col = C.getColumn();
-		    	check1row = C.getRow() + C.getWidth();
-		    	check2col = C.getColumn() + C.getWidth();
-		    	check2row = C.getRow() + C.getHeight();
+				check1col = C.getPosX();
+		    	check1row = C.getPosY() + C.getWidth();
+		    	check2col = C.getPosX() + C.getWidth();
+		    	check2row = C.getPosY() + C.getHeight();
 	    	} 
 	    	if(characterNextDirection == Directions.getUp()) {
-	    		check1col = C.getColumn();
-	        	check1row = C.getRow();
-	        	check2col = C.getColumn() + C.getWidth();
-	        	check2row = C.getRow();
+	    		check1col = C.getPosX();
+	        	check1row = C.getPosY();
+	        	check2col = C.getPosX() + C.getWidth();
+	        	check2row = C.getPosY();
 	    	} 
 	    	if(characterNextDirection == Directions.getRight()) {
-	    		check1col = C.getColumn() + C.getWidth();
-	        	check1row = C.getRow();
-	        	check2col = C.getColumn() + C.getWidth();
-	        	check2row = C.getRow() + C.getHeight();
+	    		check1col = C.getPosX() + C.getWidth();
+	        	check1row = C.getPosY();
+	        	check2col = C.getPosX() + C.getWidth();
+	        	check2row = C.getPosY() + C.getHeight();
 	    	}
 	    	
-	    	if(myMap.checkIfInPath(C.getColumn(), C.getRow()) && myMap.canMove(check1row, check1col, characterNextDirection)  && myMap.canMove(check2row, check2col, characterNextDirection)) {
+	    	if(myMap.checkIfInPath(C.getPosX(), C.getPosY()) && myMap.canMove(check1row, check1col, characterNextDirection)  && myMap.canMove(check2row, check2col, characterNextDirection)) {
 	    		C.updateDirection();  
 	    		myGUI.paintCharacter(C.getGraphicEntity());
 	    	}
@@ -166,7 +166,7 @@ public class Game {
     		
     		if(detectedPickeable != null) {
     			
-    			this.addPoints(detectedPickeable.consume());
+				myMap.consumePickeable(detectedPickeable);
     			
     			//myGUI.paintPickup(null, , );
     			
@@ -185,12 +185,12 @@ public class Game {
     /**
      * Moves the PacMan up.
      */
-    public void doMoveUp(CharacterElements.Character C){
+    public void doMoveUp(CharacterElements.Role C){
     	
-    	int check1col = C.getColumn();
-    	int check1row = C.getRow();
-    	int check2col = C.getColumn() + C.getWidth();
-    	int check2row = C.getRow();
+    	int check1col = C.getPosX();
+    	int check1row = C.getPosY();
+    	int check2col = C.getPosX() + C.getWidth();
+    	int check2row = C.getPosY();
         
        	if( myMap.canMoveUp(check1row, check1col)  &&  myMap.canMoveUp(check2row, check2col) ){
           C.move();
@@ -202,12 +202,12 @@ public class Game {
     /**
      * Moves the PacMan down.
      */
-    public void doMoveDown(CharacterElements.Character C){
+    public void doMoveDown(CharacterElements.Role C){
     	
-    	int check1col = C.getColumn();
-    	int check1row = C.getRow() + C.getWidth();
-    	int check2col = C.getColumn() + C.getWidth();
-    	int check2row = C.getRow() + C.getHeight();
+    	int check1col = C.getPosX();
+    	int check1row = C.getPosY() + C.getWidth();
+    	int check2col = C.getPosX() + C.getWidth();
+    	int check2row = C.getPosY() + C.getHeight();
     	
         if(myMap.canMoveDown(check1row, check1col)  &&  myMap.canMoveDown(check2row, check2col)){
           C.move();
@@ -219,12 +219,12 @@ public class Game {
     * Moves the PacMan to the left.
     *
     */
-    public void doMoveLeft(CharacterElements.Character C){
+    public void doMoveLeft(CharacterElements.Role C){
     	
-        int check1col = C.getColumn();
-        int check1row = C.getRow();
-        int check2col = C.getColumn();
-        int check2row = C.getRow() + C.getHeight();
+        int check1col = C.getPosX();
+        int check1row = C.getPosY();
+        int check2col = C.getPosX();
+        int check2row = C.getPosY() + C.getHeight();
         
         if(myMap.canMoveLeft(check1row, check1col)  &&  myMap.canMoveLeft(check2row, check2col)){
           C.move();
@@ -236,12 +236,12 @@ public class Game {
     * Moves the PacMan to the right.
     *
     */
-    public void doMoveRight(CharacterElements.Character C){
+    public void doMoveRight(CharacterElements.Role C){
     	
-    	int check1col = C.getColumn() + C.getWidth();
-    	int check1row = C.getRow();
-    	int check2col = C.getColumn() + C.getWidth();
-    	int check2row = C.getRow() + C.getHeight();
+    	int check1col = C.getPosX() + C.getWidth();
+    	int check1row = C.getPosY();
+    	int check2col = C.getPosX() + C.getWidth();
+    	int check2row = C.getPosY() + C.getHeight();
     	
         if(myMap.canMoveRight(check1row, check1col)  &&  myMap.canMoveRight(check2row, check2col)){
           C.move();
@@ -251,8 +251,8 @@ public class Game {
     }
     
     
-    private void onMove(CharacterElements.Character C) {
-    	myGUI.displaceCharacter(C.getColumn(), C.getRow(), C.getWidth(), C.getHeight());
+    private void onMove(CharacterElements.Role C) {
+    	myGUI.displaceCharacter(C.getPosX(), C.getPosY(), C.getWidth(), C.getHeight());
     }
     
     
@@ -270,6 +270,7 @@ public class Game {
     */
     public void addPoints(int p){
     	actualScore = actualScore + p;
+    	myGUI.updateScore(actualScore);
     }
     
     /**
@@ -299,9 +300,6 @@ public class Game {
     	
     	GraphicEntity auxGraph;
     	
-    	
-    	
-    	
     	myGUI.clearGameScreen();
     	
     	
@@ -313,24 +311,17 @@ public class Game {
     			
     			aux = myMap.getCell(i, k);
 
-    			if(aux.getPickup() != null) {
-    				
-    				myGUI.paintPickup(aux.getPickup().getGraphicEntity(), i, k);
-    			
-    			}
-    			
-    			auxGraph = aux.getGraphicEntity();
-    			
-    			myGUI.paintCell(auxGraph, i, k);
+    			updateCellGraphic(aux);
     			
         	}
     		
     	}
     	
     	
-    	PacMan = new PacMan(myGUI.getCellWidth() * 11, myGUI.getCellHeight() * 11, myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1);
+    	PacMan = new PacMan(myGUI.getCellHeight() * 12,  myGUI.getCellWidth() * 10 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1);
     	
     	myGUI.createMainCharacterGraphic(PacMan);
+    	
     	
     	
     	myTimerPacMan = new TimerPacMan(15, this);
@@ -353,8 +344,29 @@ public class Game {
      * Return the PacMan.
      * @return PacMan.
      */
-    public CharacterElements.Character getPacMan() {
+    public CharacterElements.Role getPacMan() {
     	return PacMan;
     }
     
+
+	public void updateCellGraphic(Cell c){ 
+		
+		GraphicEntity auxGraph;
+		
+		updatePickupGraphic(c);
+		
+		auxGraph = c.getGraphicEntity();
+
+		myGUI.paintCell(auxGraph, c.getRow(), c.getColumn());
+		
+	}
+	
+	public void updatePickupGraphic(Cell c) {
+		if(c.getPickup() != null) {
+			myGUI.paintPickup(c.getPickup().getGraphicEntity(), c.getRow(), c.getColumn());
+		} else {
+			myGUI.paintPickup(null, c.getRow(), c.getColumn());	
+		}
+	}
+	
 }

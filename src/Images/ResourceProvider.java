@@ -51,6 +51,7 @@ public abstract class ResourceProvider {
 		tileRoutes.add(themeRoute + "/tiles/road.png");
 		tileRoutes.add(themeRoute + "/tiles/ghostHome.png");
 		tileRoutes.add(themeRoute + "/tiles/borderWall.png");
+		tileRoutes.add(themeRoute + "/tiles/borderWall2.png");
 		tileRoutes.add(themeRoute + "/tiles/roadTeleport.png");
 		
 		//BACKGROUND IMAGES

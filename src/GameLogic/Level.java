@@ -5,6 +5,9 @@ import Maps.MapFactory;
 import Maps.MapFactoryA;
 import Maps.MapFactoryB;
 import Maps.MapFactoryC;
+import Maps.MapFactoryBonus;
+
+import java.util.LinkedList;
 
 /**
  *
@@ -17,7 +20,7 @@ import Maps.MapFactoryC;
  */
 public class Level {
 	
-	private MapFactory[] Factories;
+	private LinkedList<MapFactory> Factories;
 	private int cantFactories;
 	
 	private int levelNumber;
@@ -30,15 +33,17 @@ public class Level {
 	
 		myGame = g;
 		
-		cantFactories = 3;
+		Factories = new LinkedList<MapFactory>();
 		
-		Factories = new MapFactory[cantFactories];
+		Factories.add(new MapFactoryA());
+		Factories.add(new MapFactoryB());
+		Factories.add(new MapFactoryC());
+		Factories.add(new MapFactoryBonus());
+
+		cantFactories = Factories.size();
 		
-		Factories[0] = new MapFactoryA();
-		Factories[1] = new MapFactoryB();
-		Factories[2] = new MapFactoryC(); 
-	
 		levelNumber = 0;
+		
 		System.out.println("Constructor level");
 			
 	}
@@ -51,7 +56,7 @@ public class Level {
 	
 	private void changeMap(int cellHeightPX, int cellWidthPX) {
 	
-		Map newMap = Factories[levelNumber % cantFactories].CreateMap(myGame, cellHeightPX, cellWidthPX);
+		Map newMap = Factories.get( levelNumber % cantFactories ).CreateMap(myGame, cellHeightPX, cellWidthPX);
 		
 		myGame.setMap(newMap);
 	

@@ -8,8 +8,6 @@ import java.util.LinkedList;
 
 import javax.swing.ImageIcon;
 
-import CharacterElements.*;
-
 /**
 *
 * Class Cell.
@@ -30,7 +28,7 @@ public class Cell {
     private int widthPX;
     private int heightPX;
 	
-    private LinkedList<CharacterElements.Character> charactersOnTop;
+    private LinkedList<CharacterElements.Role> charactersOnTop;
 	
 	private Pickeable pickeable;
 	private GraphicEntity myGraphicEntity;
@@ -62,12 +60,42 @@ public class Cell {
         
         myGraphicEntity = new GraphicEntity(icon);
         
-        if(walkable) {
+        if(walkable && p != null) {
             pickeable = p;
+            this.adjustPickeable();
         } else {
         	pickeable = null;
         }
         
+    }
+    
+    /**
+     * Adjusts the pickeable in the desired position depending on the width, height and position of the cell.
+     */
+    public void adjustPickeable() {
+    	
+    	if(pickeable != null) {
+	    	int pickeableSizeX;
+	    	int pickeableSizeY;
+	    	
+	    	int pickeablePosX;
+	    	int pickeablePosY;
+	    	
+	    	
+	    	pickeableSizeX = widthPX * (2/3) ;
+	    	pickeableSizeY = heightPX * (2/3) ;
+	    	
+	    	
+	    	pickeablePosX = posXPX + ((widthPX - pickeableSizeX) / 2); 
+	    	pickeablePosY = posYPX + ((heightPX - pickeableSizeY) / 2); 
+	    	
+	    	
+	    	pickeable.setHeight(pickeableSizeY);
+	    	pickeable.setWidth(pickeableSizeX);
+	    	
+	    	pickeable.setPosY(pickeablePosY);
+	    	pickeable.setPosX(pickeablePosX);
+    	}
     }
     
     
@@ -126,6 +154,15 @@ public class Cell {
     	return walkable;
     }
     
+
+    public int getRow(){
+        return row;
+    }
+
+    public int getColumn(){
+        return column;
+    }
+
     /**
     * Sets the row of the cell.
     * @param r row to be seted.
@@ -162,7 +199,7 @@ public class Cell {
      }
     
     /**
-    * Clones the cell called by messega and change the position of the cloned one.
+    * Clones the cell called by message and change the position of the cloned one.
     * @param r new row of the cloned cell.
     * @param c new column of the cloned cell.
     * @return the cloned cell with the new position.
@@ -177,17 +214,25 @@ public class Cell {
     	newCell.setColumn(c);
     	
     	
+    	if(newCell.getPickup() != null) {
+    		newCell.adjustPickeable();
+    	}
+    	
     	
     	return newCell;
     }
 
     
-    public void addCharacterOnTop(CharacterElements.Character ch) {
+    public void addCharacterOnTop(CharacterElements.Role ch) {
     	charactersOnTop.add(ch);
     }
     
-    public void removeCharacterOnTop(CharacterElements.Character ch) {
+    public void removeCharacterOnTop(CharacterElements.Role ch) {
     	charactersOnTop.remove(ch);
+    }
+    
+    public void setPickup(Pickeable p) {
+    	pickeable = p;
     }
     
 }

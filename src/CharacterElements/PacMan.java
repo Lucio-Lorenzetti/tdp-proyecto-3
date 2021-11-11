@@ -15,7 +15,7 @@ import Images.ResourceManager;
 * @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
 *
 */
-public class PacMan extends Character{
+public class PacMan extends Role{
 
     /**
     * Creates and initialize a PacMan;
