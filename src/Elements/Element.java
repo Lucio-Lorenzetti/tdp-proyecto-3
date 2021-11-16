@@ -20,6 +20,41 @@ public abstract class Element {
 	
 	protected GraphicEntity myGraphicEntity;	
 
+	
+	
+	
+	/**
+   	* Check if the element called by message collides with the element on param.
+   	* @param E element to check the colision.
+    * @return true if both elements collides, false otherwise.
+    */
+	 public boolean collidesWith(Element E) {
+		boolean sameArea = false;
+		 
+		int limitThisHigher = posYPX;
+		int limitThisLower  = posYPX + this.heightPX;
+		int limitThisLeft = posXPX;
+		int limitThisRight = posXPX + this.widthPX;
+		
+	    int limitEHigher = E.getPosY();
+		int limitELower  = E.getPosY() + E.getHeight();
+		int limitELeft = E.getPosX();
+		int limitERight = E.getPosX() + E.getWidth();
+
+		boolean EHigherInThis = (limitThisHigher <= limitEHigher) && (limitThisLower >= limitEHigher);
+		boolean ELowerInThis = (limitThisHigher <= limitELower) && (limitThisLower >= limitELower);
+		boolean ELeftInThis = (limitThisLeft <= limitELeft) && (limitThisRight >= limitELeft);
+		boolean ERightInThis = (limitThisLeft <= limitERight) && (limitThisRight >= limitERight);
+
+		
+		
+		sameArea = (EHigherInThis && ELeftInThis) || (EHigherInThis && ERightInThis)
+                   || (ELowerInThis && ELeftInThis) || (ELowerInThis && ERightInThis);
+		
+		return sameArea;
+	 }
+	
+	
 	/**
      * Returns the GraphicEntity of the Element.
      * @return GraphicEntity of the Element.
@@ -32,10 +67,11 @@ public abstract class Element {
      * Set the GraphicEntity of the Element.
      * @param GraphicEntity to be setted.
      */
-	public void setGraphicEntity(GraphicEntity GraphicEnt) {
-		myGraphicEntity = GraphicEnt;
-	}
-
+	 public void setGraphicEntity(GraphicEntity GraphicEnt) {
+	  	myGraphicEntity = GraphicEnt;
+	 }
+		
+		
       /**
      * The row where the Character is.
      * @return row.
@@ -100,35 +136,6 @@ public abstract class Element {
 		 heightPX = h;
 	 }
 
-    /**
-    * Check if the element called by message collides with the element on param.
-    * @param E element to check the colision.
-    * @retunr true if both elements collides, false otherwise.
-    */
-	 public boolean collidesWith(Element E) {
-		boolean sameArea = false;
-		 
-		int limitThisHigher = posYPX;
-		int limitThisLower  = posYPX + this.heightPX;
-		int limitThisLeft = posXPX;
-		int limitThisRight = posXPX + this.widthPX;
-		
-	    int limitEHigher = E.getPosY();
-		int limitELower  = E.getPosY() + E.getHeight();
-		int limitELeft = E.getPosX();
-		int limitERight = E.getPosX() + E.getWidth();
-
-		boolean EHigherInThis = (limitThisHigher <= limitEHigher) && (limitThisLower >= limitEHigher);
-		boolean ELowerInThis = (limitThisHigher <= limitELower) && (limitThisLower >= limitELower);
-		boolean ELeftInThis = (limitThisLeft <= limitELeft) && (limitThisRight >= limitELeft);
-		boolean ERightInThis = (limitThisLeft <= limitERight) && (limitThisRight >= limitERight);
-
-		
-		
-		sameArea = (EHigherInThis && ELeftInThis) || (EHigherInThis && ERightInThis)
-                   || (ELowerInThis && ELeftInThis) || (ELowerInThis && ERightInThis);
-		
-		return sameArea;
-	 }
+    
 	
 }

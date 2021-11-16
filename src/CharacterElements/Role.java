@@ -34,8 +34,8 @@ public abstract class Role extends Element {
         this.widthPX = width;
         this.heightPX = height;
     
-        actualDirection = Directions.getNeutral();
-        nextDirection = Directions.getNeutral();
+        actualDirection = Directions.getLeft();
+        nextDirection = Directions.getLeft();
     }
     
     /**
@@ -71,15 +71,7 @@ public abstract class Role extends Element {
     	
     }
     
-    /**
-    * Sets the next direction of the character.
-    * @param dir nextDirection of the character.
-    */
-    public void setNextDirection(Object dir){
-        
-       nextDirection = dir; 
-    
-    }
+
 
     /**
     * Moves the character up.
@@ -109,6 +101,8 @@ public abstract class Role extends Element {
     	posXPX++;
     }
     
+     
+     
    
     /**
      * Does the required actions on a movement.
@@ -119,7 +113,17 @@ public abstract class Role extends Element {
      * Does the required actions on a movement.
      */
     protected abstract void doOnDirectionChange();
-	 
+	
+    /**
+     * Sets the next direction of the character.
+     * @param dir nextDirection of the character.
+     */
+     public void setNextDirection(Object dir){
+         
+        nextDirection = dir; 
+     
+     }
+    
 	 /**
 	  * Return the actual direction of the character.
 	  * @return Direction of the character.
@@ -135,10 +139,5 @@ public abstract class Role extends Element {
 	 public Object getNextDirection() {
 		 return nextDirection;
 	 }
-	 
-	/**
-	* Accept the visitor of another Character passed by parameter.
-	* @param v visitor.
-	*/
-	public abstract void accept(Visitor v);
+
 }

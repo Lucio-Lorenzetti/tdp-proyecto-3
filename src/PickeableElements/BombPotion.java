@@ -24,6 +24,14 @@ public class BombPotion extends Potion {
 		
 	}
 	
+	public BombPotion() {
+		
+		super(0,0,0,0);
+		
+		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[4] );
+		
+	}
+	
 	@Override
 	public int consume() {
 		return points;

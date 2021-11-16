@@ -20,6 +20,12 @@ public class Fruit extends Pickeable{
 		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[2] );
 	}
 	
+	public Fruit(int score) {
+		super(0,0,0,0, score);
+		
+		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[2] );
+	}
+	
 	
 	@Override
 	public int consume() {

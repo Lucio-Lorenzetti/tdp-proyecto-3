@@ -20,6 +20,11 @@ public class SpeedPotion extends Potion {
 		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[3] );
 	}
 	
+	public SpeedPotion() {
+		super(0,0,0,0);
+		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[3] );
+	}
+	
 	@Override
 	public int consume() {
 		return points;

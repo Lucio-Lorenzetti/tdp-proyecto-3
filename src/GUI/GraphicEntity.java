@@ -15,6 +15,10 @@ public class GraphicEntity {
 	protected ImageIcon icon;
 	int index;
 	
+	/**
+	 * Creates and initializes a GraphicEntity.
+	 * @param icon ImageIcon to be set as the GraphicEntity's icon.
+	 */
 	public GraphicEntity(ImageIcon icon) {
 	
 		this.icon = icon;
@@ -22,19 +26,19 @@ public class GraphicEntity {
 	}
 	
 	/**
-	 * Retorna el atributo gr�fico.
-	 * @return ImageIcon de la entidad gr�fica.
+	 * Returns the icon atribute.
+	 * @return ImageIcon of the GraphicEntity.
 	 */
 	public ImageIcon getIcon(){
 		return icon;
 	}
 	
 	/**
-	 * Setea el atributo grafico de la entidad grafica.
-	 * @param nuevoGrafico nuevo grafico a establecer
+	 * Sets the icon atribute of the GraphicEntity.
+	 * @param newIcon new icon to set.
 	 */
-	public void setIcon(ImageIcon nuevoGrafico){
-		icon = nuevoGrafico;
+	public void setIcon(ImageIcon newIcon){
+		icon = newIcon;
 	}
 	
 	

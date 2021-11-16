@@ -27,7 +27,7 @@ public class VisitorPinky extends Visitor{
 	@Override
 	public void visitPacMan(PacMan p) {
         if(intersect(p,pinky)){
-            p.die();
+
         }
 		
 	}

@@ -1,4 +1,8 @@
 package IA;
+
+import CharacterElements.Ghost;
+import GameLogic.Game;
+
 /**
 *
 * Class AliveGhostGPS.
@@ -8,6 +12,10 @@ package IA;
 * @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
 *
 */
-public class AliveGhostGPS {
+public abstract class AliveGhostGPS extends GhostGPS {
 
+	public AliveGhostGPS(Game g, Ghost ghost) {
+		super(g, ghost);
+	}
+	
 }

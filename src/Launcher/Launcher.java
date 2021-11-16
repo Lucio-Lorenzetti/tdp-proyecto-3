@@ -14,8 +14,6 @@ public class Launcher {
 			public void run() {
 				try {
 					
-					
-					
 					MainWindow window = new MainWindow();
 				
 					Game juego = new Game(window);

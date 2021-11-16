@@ -2,10 +2,23 @@ package Images;
 
 import java.util.LinkedList;
 
+
+/**
+ * Class ResourceManager.
+ * 
+ * Defines the applicable operations of a ResourceManager.
+ * 
+ * @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
+ *
+ */
 public final class ResourceManager {
 
 	private static ResourceProvider provider = null;
 	
+	/**
+	 * Returns the ResourceProvider.
+	 * @return Resource provider.
+	 */
 	public static ResourceProvider getProvider(){
 		
 		if( provider == null ) {
@@ -16,6 +29,11 @@ public final class ResourceManager {
 		
 	}
 	
+	
+	/**
+	 * Returns the ResourceProvider based on the provided index.
+	 * @return Resource provider.
+	 */
 	public static ResourceProvider getProvider(int index){
 		
 		if(provider == null) {

@@ -14,7 +14,7 @@ import Elements.Element;
 public abstract class Pickeable extends Element{
 
 	
-	int points;
+	protected int points;
 	
 	public Pickeable(int posYPX, int posXPX, int width, int height, int score) {
 		this.posXPX = posXPX;

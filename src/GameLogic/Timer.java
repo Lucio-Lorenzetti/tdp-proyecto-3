@@ -23,7 +23,7 @@ public abstract class Timer implements Runnable{
 	public Timer(long del, Game game) {
 		super();
 		delay = del;
-		paused = false;
+		paused = true;
 		myGame = game;
 	}
 	
@@ -46,7 +46,7 @@ public abstract class Timer implements Runnable{
 	 * Returns the state of pause.
 	 * @return paused.
 	 */
-	public boolean getPausado() {
+	public boolean getPaused() {
 		return paused;
 	}
 	
@@ -62,7 +62,7 @@ public abstract class Timer implements Runnable{
 	 * Sets the Game pause.
 	 * @param newPause Paused value to set.
 	 */
-	public void setPausado(boolean newPause) {
+	public void setPaused(boolean newPause) {
 		paused = newPause;
 	}
 

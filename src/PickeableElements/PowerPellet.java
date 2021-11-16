@@ -20,6 +20,11 @@ public class PowerPellet extends Pickeable {
 		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[1] );
 	}
 	
+	public PowerPellet() {
+		super(0,0,0,0,100);
+		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[1] );
+	}
+	
 	
 	@Override
 	public int consume() {

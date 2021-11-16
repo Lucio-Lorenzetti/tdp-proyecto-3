@@ -11,40 +11,52 @@ import javax.swing.JPanel;
 
 import GameLogic.*;
 import Images.ResourceManager;
+import PickeableElements.Pickeable;
+
+import java.util.HashMap;
+import java.util.LinkedList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import java.awt.GridLayout;
-import java.awt.Font;
+import javax.swing.SwingConstants;
+
 import javax.swing.border.EmptyBorder;
+
+import CharacterElements.Ghost;
+import CharacterElements.Role;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.SwingConstants;
+import java.awt.GridLayout;
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.Component;
+
 
 public class MainWindow extends JFrame{
 
-	private JFrame frame;
-
-	private Game game;
+	private Game myGame;
 	
 	private JLabel[][] BottomLayer;
 	private JLabel[][] PickupLayer;
+	
+	
+	private HashMap<Object,JLabel> characterLabels;
+	
 	private JLabel mainCharacter;
 	private JLabel Ghost1;
 	private JLabel Ghost2;
 	private JLabel Ghost3;
 	private JLabel Ghost4;
+	
+	
 	private JLabel temp;
 	private JLabel background;
 	private JLabel lblscore;
 	
 	private Font gameFont;
-	
 	
 	private JPanel BottomLayerPanel;
 	private JPanel PickupLayerPanel;
@@ -76,6 +88,8 @@ public class MainWindow extends JFrame{
 		this.setFocusable(true);
 		this.requestFocus();
 		
+		characterLabels = new HashMap<Object, JLabel>();
+		
 		
 		gameFont = null;
 
@@ -102,7 +116,10 @@ public class MainWindow extends JFrame{
 		
 		CharacterLayerPanel = createGamePanel();
 		CharacterLayerPanel.setLayout(null);
+		
 		PickupLayerPanel = createGamePanel();
+		//PickupLayerPanel.setLayout(null);
+		
 		BottomLayerPanel = createGamePanel();
 		
 		
@@ -116,6 +133,7 @@ public class MainWindow extends JFrame{
 		EXIT_BUTTON.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				obtainFocus();
 				System.exit(EXIT_ON_CLOSE);
 			}
 		});
@@ -144,6 +162,17 @@ public class MainWindow extends JFrame{
 		lblscore.setHorizontalAlignment(SwingConstants.CENTER);
 		lblscore.setBounds(53, 50, 46, 14);
 		panel_1.add(lblscore);
+		
+		JButton btnCambiarIa = new JButton("CAMBIAR IA");
+		btnCambiarIa.setBounds(10, 120, 162, 95);
+		panel.add(btnCambiarIa);
+		btnCambiarIa.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				obtainFocus();
+				myGame.changeIA();
+			}
+		});
 		
 		
 		
@@ -244,8 +273,9 @@ public class MainWindow extends JFrame{
 			}
 		}
 		
-		
-		mainCharacter.setIcon(null);
+		for(Component c: CharacterLayerPanel.getComponents()) {
+			CharacterLayerPanel.remove(c);
+		}
 		
 	}
 	
@@ -261,29 +291,6 @@ public class MainWindow extends JFrame{
 		return GamePanel;
 	}
 	
-	private JPanel createMenuPanel() {
-		
-		JPanel MenuPanel = new JPanel();
-		
-		return MenuPanel;
-		
-	}
-	
-	private JPanel createEndGamePanel() {
-		
-		JPanel MenuPanel = new JPanel();
-		
-		return MenuPanel;
-		
-	}
-	
-	private JPanel createScoreBoardPanel() {
-		
-		JPanel ScoreBoard = new JPanel();
-		
-		return ScoreBoard;
-		
-	}
 	
 	private void resize(ImageIcon grafico, JLabel label) {
 		
@@ -302,7 +309,7 @@ public class MainWindow extends JFrame{
 		
 		Image imagen = null;
 		
-		if(grafico != null) {
+		if(grafico != null) { 
 			
 			imagen = grafico.getImage();
 			
@@ -325,61 +332,74 @@ public class MainWindow extends JFrame{
 	}
 	
 	
-	public void paintCell(GraphicEntity nuevoGrafico, int posFila, int posColumna) {
-		ImageIcon nuevaImagen = nuevoGrafico.getIcon();
+	public void paintCell(Cell celda) {
 		
-		resize(nuevaImagen, BottomLayer[posFila][posColumna]);
-	}
-	
-	public void paintPickup(GraphicEntity nuevoGrafico, int posFila, int posColumna) {
+		ImageIcon nuevaImagen = celda.getGraphicEntity().getIcon();
 		
-		paintPickup(nuevoGrafico, posFila, posColumna, 17, 17);
+		resize(nuevaImagen, BottomLayer[celda.getRow()][celda.getColumn()]);
 		
 	}
 	
-	public void paintPickup(GraphicEntity nuevoGrafico, int posFila, int posColumna, int width, int height) {
+	
+	public void paintPickup(Pickeable p, int posFila, int posColumna) {
 		
 		ImageIcon nuevaImagen = null;
 		
-		if(nuevoGrafico != null) {
-			nuevaImagen = nuevoGrafico.getIcon();
+		int width = 0;
+		int height = 0;
+		
+		if(p != null) {
+			nuevaImagen = p.getGraphicEntity().getIcon();
+			width = p.getWidth();
+			height = p.getHeight();
 		}
+		
+		boolean pEsNulo =  p == null;
+		
+		//System.out.println( pEsNulo + " width: " + width + " height: " + height + " Fila: " + posFila + " Columna: " + posColumna);
 		
 		resize(nuevaImagen, PickupLayer[posFila][posColumna], width, height);
 		
 	}
 	
-	public void paintCharacter(GraphicEntity nuevoGrafico) {
-		ImageIcon nuevaImagen = nuevoGrafico.getIcon();
+	public void paintCharacter(Role c) {
+		ImageIcon nuevaImagen = c.getGraphicEntity().getIcon();
 		
 		//System.out.println("Painting Character");
 		
-		resize(nuevaImagen, mainCharacter);
+		resize(nuevaImagen, characterLabels.get(c));
 	}
 	
-	public void createMainCharacterGraphic(CharacterElements.Role ch) {
+	
+	
+	public void createCharacterGraphic(Role ch) {
 		
-		mainCharacter = new JLabel();
-		mainCharacter.setBounds(ch.getPosX(), ch.getPosY(), ch.getWidth(), ch.getHeight());
+		JLabel newCharacter = new JLabel();
+		newCharacter.setBounds(ch.getPosX(), ch.getPosY(), ch.getWidth(), ch.getHeight());
+		
+		
+		characterLabels.put(ch, newCharacter);
 		
 		
 		ImageIcon mainCharImg = ch.getGraphicEntity().getIcon(); 
 		
 		
-		mainCharImg.setImageObserver(mainCharacter);
+		mainCharImg.setImageObserver(newCharacter);
 		
-		mainCharacter.setIcon(mainCharImg);
+		newCharacter.setIcon(mainCharImg);
 		
-		paintCharacter(ch.getGraphicEntity());
+		paintCharacter(ch);
 		
-		CharacterLayerPanel.add(mainCharacter);
+		CharacterLayerPanel.add(newCharacter);
 		
 	}
 	
 	
-	public void displaceCharacter(int posX, int posY, int width, int height) {
+	public void displaceCharacter(Role displacedCharacter) {
 		
-		mainCharacter.setBounds(posX, posY, width, height);
+		//System.out.println(displacedCharacter.getPosX() + " " + displacedCharacter.getPosY() + " " + displacedCharacter.getWidth() + " " + displacedCharacter.getHeight());
+		
+		characterLabels.get(displacedCharacter).setBounds(displacedCharacter.getPosX(), displacedCharacter.getPosY(), displacedCharacter.getWidth(), displacedCharacter.getHeight());
 		
 	}
 	
@@ -426,7 +446,7 @@ public class MainWindow extends JFrame{
 	
 	public void setGame(Game g) {
 		
-		game = g;
+		myGame = g;
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////
@@ -435,7 +455,7 @@ public class MainWindow extends JFrame{
 		nextlvlButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				game.getLevel().passLevel(cellHeight, cellWidth);
+				myGame.getLevel().passLevel(cellHeight, cellWidth);
 				obtainFocus();
 			}
 		});
@@ -444,7 +464,7 @@ public class MainWindow extends JFrame{
 		TEST_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				game.printScores();
+				myGame.printScores();
 				obtainFocus();
 			}
 		});
@@ -455,16 +475,16 @@ public class MainWindow extends JFrame{
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_UP) {
-					game.changeDirection(Directions.getUp(), game.getPacMan());
+					myGame.changeDirection(Directions.getUp(), myGame.getPacMan());
 				}
 				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-					game.changeDirection(Directions.getDown(), game.getPacMan());
+					myGame.changeDirection(Directions.getDown(), myGame.getPacMan());
 				}
 				if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-					game.changeDirection(Directions.getLeft(), game.getPacMan());
+					myGame.changeDirection(Directions.getLeft(), myGame.getPacMan());
 				}
 				if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-					game.changeDirection(Directions.getRight(), game.getPacMan());
+					myGame.changeDirection(Directions.getRight(), myGame.getPacMan());
 				}
 			}
 		});

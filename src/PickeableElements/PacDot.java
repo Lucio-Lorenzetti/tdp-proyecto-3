@@ -21,6 +21,11 @@ public class PacDot extends Pickeable {
 		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[0] );
 		
 	}
+	
+	public PacDot() {
+		super(0,0,0,0,10);
+		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[0] );
+	}
 
 	@Override
 	public int consume() {

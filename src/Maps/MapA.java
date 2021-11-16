@@ -21,6 +21,7 @@ public class MapA extends Map {
     public MapA(Game g, int cellHeightPX, int cellWidthPX){
     	
     	super(g, cellHeightPX, cellWidthPX, "src/Maps/MapA.txt");
+    	
 	}
 }
     

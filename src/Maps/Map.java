@@ -5,7 +5,10 @@ import javax.swing.ImageIcon;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
+import java.util.HashMap;
 
 import CharacterElements.Role;
 import GameLogic.Cell;
@@ -25,7 +28,7 @@ import PickeableElements.SpeedPotion;
  * 
  * Defines the applicable operations of a Map.
  * 
- * @author Agust�n Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
+ * @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
  *
  */
 public class Map {
@@ -35,6 +38,8 @@ public class Map {
     protected static final int width = 22;
     protected Cell[][] cells;
     protected String route;
+
+
 
     /**
      * Creates and initializes Map.
@@ -48,72 +53,140 @@ public class Map {
         
         ImageIcon[] cellImages = ResourceManager.getProvider().getTileImages();
     	
+        
+        ImageIcon[] roadImages = ResourceManager.getProvider().getRoadImages();
+
+        ImageIcon[] wallImages = ResourceManager.getProvider().getWallImages();
+        
     	
-    	Cell Wall = new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, cellImages[0]);
+    	Cell Wall = new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, wallImages[0]);
     	
     	Cell RoadEmpty = new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, cellImages[1]);
     	
-    	Cell RoadPacdot = new Cell(0, 0, new PacDot( 0, 0,cellWidthPX, cellWidthPX)  , true, cellHeightPX, cellWidthPX, cellImages[1]);
-    	Cell RoadPowerPellet = new Cell(0, 0, new PowerPellet( 0, 0,cellWidthPX, cellWidthPX), true, cellHeightPX, cellWidthPX, cellImages[1]);
-    	Cell RoadFruit = new Cell(0, 0, new Fruit( 0, 0,cellWidthPX, cellWidthPX, fruitScore), true, cellHeightPX, cellWidthPX, cellImages[1]);
-    	Cell RoadBombPotion = new Cell( 0, 0, new BombPotion( 0, 0,cellWidthPX, cellWidthPX), true, cellHeightPX, cellWidthPX, cellImages[1]);
-    	Cell RoadSpeedPotion = new Cell(0, 0, new SpeedPotion( 0, 0,cellWidthPX, cellWidthPX), true, cellHeightPX, cellWidthPX, cellImages[1]);
+    	Cell RoadPacdot = new Cell(0, 0, new PacDot()  , true, cellHeightPX, cellWidthPX, roadImages[2]);
+    	Cell RoadPowerPellet = new Cell(0, 0, new PowerPellet(), true, cellHeightPX, cellWidthPX, roadImages[2]);
+    	Cell RoadFruit = new Cell(0, 0, new Fruit(fruitScore), true, cellHeightPX, cellWidthPX, roadImages[2]);
+    	Cell RoadBombPotion = new Cell( 0, 0, new BombPotion(), true, cellHeightPX, cellWidthPX, roadImages[2]);
+    	Cell RoadSpeedPotion = new Cell(0, 0, new SpeedPotion(), true, cellHeightPX, cellWidthPX, roadImages[2]);
     	
     	
     	Cell GhostHome = new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, cellImages[2]);
     	
-    	Cell LimitHorizontal = new Cell(0,0,null,false, cellHeightPX, cellWidthPX, cellImages[3]);
-    	Cell LimitVertical = new Cell(0,0,null,false, cellHeightPX, cellWidthPX, cellImages[4]);
+    	Cell LimitVertical = new Cell(0,0,null,false, cellHeightPX, cellWidthPX, wallImages[1]);
+    	Cell LimitHorizontal = new Cell(0,0,null,false, cellHeightPX, cellWidthPX, wallImages[2]);
     	
     	
-    	Cell RoadTeleport = new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, cellImages[5]);
+    	Cell verticalRoad = new Cell(0, 0, new PacDot(), true, cellHeightPX, cellWidthPX, roadImages[0]);
+    	Cell horizontalRoad = new Cell(0, 0, new PacDot(), true, cellHeightPX, cellWidthPX, roadImages[1]);
+    	
+    	
+        Cell intersection4Roads = new Cell(0,0, new PacDot(), true, true, cellHeightPX, cellWidthPX, roadImages[2]);
+        
+        Cell intersection3Roads1 = new Cell(0,0, new PacDot(), true, true, cellHeightPX, cellWidthPX, roadImages[3]);
+        Cell intersection3Roads2 = new Cell(0,0, new PacDot(), true, true, cellHeightPX, cellWidthPX, roadImages[4]);
+        Cell intersection3Roads3 = new Cell(0,0, new PacDot(), true, true, cellHeightPX, cellWidthPX, roadImages[5]);
+        Cell intersection3Roads4 = new Cell(0,0, new PacDot(), true, true, cellHeightPX, cellWidthPX, roadImages[6]);
+        
+        Cell intersection2Roads1 = new Cell(0,0, new PacDot(), true, true, cellHeightPX, cellWidthPX, roadImages[7]);
+        Cell intersection2Roads2 = new Cell(0,0, new PacDot(), true, true, cellHeightPX, cellWidthPX, roadImages[8]);
+        Cell intersection2Roads3 = new Cell(0,0, new PacDot(), true, true, cellHeightPX, cellWidthPX, roadImages[9]);
+        Cell intersection2Roads4 = new Cell(0,0, new PacDot(), true, true, cellHeightPX, cellWidthPX, roadImages[10]);
+    	
+    	
+        
+        Cell RoadTeleport = new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, cellImages[5]);
     			
     	try {
     		
     		File f = new File(mapRoute);    		
-    		FileReader fr = new FileReader(f);
+    		FileReader fr = new FileReader(f, StandardCharsets.UTF_8);
 			BufferedReader br = new BufferedReader (fr);
 			
 			String actualLine;
+			String actL;
 			
 			int actualRow = 0;
 			
 			
-			while ( (actualLine = br.readLine()) != null) {
+			while ( (actL = br.readLine()) != null) {
+			
+				ByteBuffer byteBuffer = StandardCharsets.UTF_8.encode(actL);
+
+				actualLine = new String(byteBuffer.array(), StandardCharsets.UTF_8);
+				//System.out.println(actualLine);
+				
 				
 				for(int col = 0; col < actualLine.length(); col++){
 					
 
-					if( actualLine.charAt(col) == 'L') {
+					if( actualLine.charAt(col) == '▌') {
 						cells[actualRow][col] = LimitHorizontal.cloneInPosition(actualRow, col);
-					}
-					if( actualLine.charAt(col) == 'I') {
+						//System.out.println("▌ " + actualRow + " " + col);
+					} else
+					if( actualLine.charAt(col) == '▬') {
 						cells[actualRow][col] = LimitVertical.cloneInPosition(actualRow, col);
-					}
-					if( actualLine.charAt(col) == 'W') {
+						//System.out.println("▌ " + actualRow + " " + col);
+					} else
+					if( actualLine.charAt(col) == '■') {
 						cells[actualRow][col] = Wall.cloneInPosition(actualRow, col);
-					}
+					} else
 					if( actualLine.charAt(col) == 'F') {
 						cells[actualRow][col] = RoadFruit.cloneInPosition(actualRow, col);
-					}
-					if( actualLine.charAt(col) == 'S') {
+					} else
+					if( actualLine.charAt(col) == '⚡') {
 						cells[actualRow][col] = RoadSpeedPotion.cloneInPosition(actualRow, col);
-					}
-					if( actualLine.charAt(col) == 'B') {
+					} else
+					if( actualLine.charAt(col) == '⚠') {
 						cells[actualRow][col] = RoadBombPotion.cloneInPosition(actualRow, col);
-					}
-					if( actualLine.charAt(col) == 'D') {
-						cells[actualRow][col] = RoadPacdot.cloneInPosition(actualRow, col);
-					}
-					if( actualLine.charAt(col) == 'P') {
+					} else
+					
+					if( actualLine.charAt(col) == '║') {
+						cells[actualRow][col] = verticalRoad.cloneInPosition(actualRow, col);
+					} else
+					if( actualLine.charAt(col) == '═') {
+						cells[actualRow][col] = horizontalRoad.cloneInPosition(actualRow, col);
+					} else	
+					if( actualLine.charAt(col) == '╬') {
+						cells[actualRow][col] = intersection4Roads.cloneInPosition(actualRow, col);
+					} else
+					if( actualLine.charAt(col) == '╦') {
+						cells[actualRow][col] = intersection3Roads1.cloneInPosition(actualRow, col);
+					} else
+					if( actualLine.charAt(col) == '╣') {
+						cells[actualRow][col] = intersection3Roads2.cloneInPosition(actualRow, col);
+					} else
+					if( actualLine.charAt(col) == '╩') {
+						cells[actualRow][col] = intersection3Roads3.cloneInPosition(actualRow, col);
+					} else
+					if( actualLine.charAt(col) == '╠') {
+						cells[actualRow][col] = intersection3Roads4.cloneInPosition(actualRow, col);
+					} else
+						
+					if( actualLine.charAt(col) == '╗') {
+						cells[actualRow][col] = intersection2Roads1.cloneInPosition(actualRow, col);
+					} else
+					if( actualLine.charAt(col) == '╔') {
+						cells[actualRow][col] = intersection2Roads2.cloneInPosition(actualRow, col);
+					} else
+					if( actualLine.charAt(col) == '╝') {
+						cells[actualRow][col] = intersection2Roads3.cloneInPosition(actualRow, col);
+					} else
+					if( actualLine.charAt(col) == '╚') {
+						cells[actualRow][col] = intersection2Roads4.cloneInPosition(actualRow, col);
+					} else
+						
+						
+						
+					if( actualLine.charAt(col) == '֎') {
 						cells[actualRow][col] = RoadPowerPellet.cloneInPosition(actualRow, col);
-					}
-					if( actualLine.charAt(col) == 'G') {
+					} else
+						
+					if( actualLine.charAt(col) == '⏏') {
 						cells[actualRow][col] = GhostHome.cloneInPosition(actualRow, col);
-					}
+					} else
 					if( actualLine.charAt(col) == 'T') {
 						cells[actualRow][col] = RoadTeleport.cloneInPosition(actualRow, col);
-					}
+					} else
                     if( actualLine.charAt(col) == 'E') {
 						cells[actualRow][col] = RoadEmpty.cloneInPosition(actualRow, col);
 					}
@@ -264,11 +337,31 @@ public class Map {
     }
     
 
+    /**
+     * Returns if the given position is the top left corner of a cell.
+     * @param posX X coordinate of the position.
+     * @param posY Y coordinate of the position.
+     * @return true if the position is the corner of a cell, false if not.
+     */
     public boolean checkIfInPath(int posX, int posY) {
     	
     	Cell obtainedCell = getCellByPosition(posX, posY);
     	
     	return obtainedCell.getPosX() == posX && obtainedCell.getPosY() == posY;
+    	
+    }
+    
+    /**
+     * Returns if the given position is part of an intersection.
+     * @param posX X coordinate of the position.
+     * @param posY Y coordinate of the position.
+     * @return true if the position is in an intersection, false if not.
+     */
+    public boolean checkIfInIntersection(int posX, int posY) {
+    	
+    	Cell obtainedCell = getCellByPosition(posX, posY);
+    	
+    	return obtainedCell.isIntersection();
     	
     }
     
@@ -343,10 +436,40 @@ public class Map {
 		aux.setPickup(null);
 		
 		myGame.addPoints( p.consume() );
-		
+
 		myGame.updatePickupGraphic(aux);		//ACTUALIZAR SOLO PICKUP PARA EVITAR EFECTOS VISUALES RAROS EN LA CELDA
 		
 		
+	}
+	
+	
+	public HashMap<Object,Cell> getAdjacentCellsByPX(int posX, int posY){
+		
+		HashMap<Object,Cell> result;
+		
+		result = getAdjacentCells( getCellByPosition(posX, posY) );
+		
+		return result;
+		
+	}
+	
+	/**
+	 * Returns a HashMap that contains the adjacent cells with a direction key;
+	 * @param c
+	 * @return
+	 */
+	public HashMap<Object,Cell> getAdjacentCells(Cell c){
+		
+		HashMap<Object,Cell> result = new HashMap<Object,Cell>();
+		
+		
+		if(c.getColumn() < width) 	result.put(Directions.getRight(), cells[c.getRow()][c.getColumn()+1]);
+		if(c.getColumn() > 0 ) 		result.put(Directions.getLeft(), cells[c.getRow()][c.getColumn()-1]);
+		if(c.getRow() < height) 	result.put(Directions.getUp(), cells[c.getRow()-1][c.getColumn()]);
+		if(c.getRow() > 0    ) 		result.put(Directions.getDown(), cells[c.getRow()+1][c.getColumn()]);
+		
+		
+		return result;
 	}
 	
 	

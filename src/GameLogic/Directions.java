@@ -1,5 +1,7 @@
 package GameLogic;
 
+import java.util.LinkedList;
+
 /**
  *
  * Class Directions.
@@ -19,7 +21,7 @@ public class Directions {
 	protected static Object neutral = null;
 	
 	/**
-	* returns a right object
+	* @returns the right object
 	*/
 	public static Object getRight() {
 		
@@ -32,7 +34,7 @@ public class Directions {
 	
 	}
 	/**
-	* returns a left object
+	* @returns the left object
 	*/
 	public static Object getLeft() {
 		
@@ -44,7 +46,7 @@ public class Directions {
 	
 	}
 	/**
-	* returns a up object
+	* @returns the up object
 	*/
 	public static Object getUp() {
 	
@@ -57,7 +59,7 @@ public class Directions {
 
 	}
 	/**
-	* returns a down object
+	* @returns the down object
 	*/
 	public static Object getDown() {
 		
@@ -70,7 +72,7 @@ public class Directions {
 
 	}
 	/**
-	* returns a neutral object
+	* @returns the neutral object
 	*/
 	public static Object getNeutral() {
 		
@@ -81,6 +83,23 @@ public class Directions {
 	
 		return neutral;
 
+	}
+	
+	public static Object getRandomDirection() {
+		
+		LinkedList<Object> directionList = new LinkedList<Object>();
+		
+		directionList.add(right);
+		directionList.add(left);
+		directionList.add(up);
+		directionList.add(down);
+		
+		
+		int directionSelection = (int) (java.lang.System.currentTimeMillis() % directionList.size());
+		
+
+		return directionList.get(directionSelection);
+		
 	}
 	
 }

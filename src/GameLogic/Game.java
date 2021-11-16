@@ -2,9 +2,12 @@ package GameLogic;
 
 import Elements.*;
 import GUI.*;
+import IA.AliveGhostGPS;
+import IA.VulnerableGhostGPS;
 import Maps.Map;
 import PickeableElements.Pickeable;
 import CharacterElements.*;
+import java.util.LinkedList;
 
 /**
  *
@@ -17,10 +20,19 @@ import CharacterElements.*;
  */
 public class Game {
 
-	protected Element[] livingGhost;
+	protected LinkedList<Ghost> livingGhost;
+	protected LinkedList<Ghost> vulnerableGhost;
+	protected LinkedList<Ghost> deadGhost;
+	
+	
     protected ScoreBoard<Player> myScoreboard;
+    
     protected Timer myTimerPacMan;
     protected Thread myTimerPacManThread;
+    protected Timer myTimerGhosts;
+    protected Thread myTimerGhostsThread;
+    
+    
     protected Map myMap;
     protected MainWindow myGUI;
     protected Level myLevel;
@@ -40,9 +52,25 @@ public class Game {
 
     	actualScore = 0;
     	
+    	myTimerPacMan = new TimerPacMan(15, this);
+    	
+    	myTimerPacManThread = new Thread(myTimerPacMan);
+    	
+    	myTimerGhosts = new TimerGhost(20, this);
+    	
+    	myTimerGhostsThread = new Thread(myTimerGhosts);
+    	
+    	myTimerPacManThread.start();
+    	myTimerGhostsThread.start();	
     	
     	
     	myScoreboard = new ScoreBoard<Player>(20, new scoreComparator<Player>());
+    	
+    	
+    	livingGhost = new LinkedList<Ghost>();
+    	vulnerableGhost = new LinkedList<Ghost>();
+    	deadGhost = new LinkedList<Ghost>();
+    	
     	
     	myGUI = g;
     	
@@ -52,7 +80,8 @@ public class Game {
     	
     	myLevel.passLevel(myGUI.getCellHeight(), myGUI.getCellWidth());
     	
-    	myTimerPacManThread.start();
+    	
+    	
     	
     }
     
@@ -72,9 +101,9 @@ public class Game {
     
     
     /**
-     * Ends the game.
-     * 
-     * @return
+     * Finish the game, add the player who was playing with his score to the scoreBoard.
+     * Set actualScore to 0.
+     * @return if the game is over or not.
      */
     public boolean gameOver(){
     	    	
@@ -87,16 +116,27 @@ public class Game {
 		return true;
     
     }
-    
+    /**
+     * Set the atributte playerName.
+     * @param p the name of the player.
+     */
     public void setPlayerName(String p){
     	playerName = p;
     }
-
+    
+	/**
+	* Change the direction of the character.
+	* @param dir the next direction.
+	* @param C the charactar whose direction is to be changed
+	*/
     public void changeDirection(Object dir, CharacterElements.Role C) {
     	C.setNextDirection(dir);
     }
     
-    
+    /**
+    * Move the character to his next direction.
+    * @param C the character who will be move
+    */
     public void doMove(CharacterElements.Role C) {
     
     	Object characterDirection = null;
@@ -114,19 +154,19 @@ public class Game {
 				check1row = C.getPosY();
 				check2col = C.getPosX();
 				check2row = C.getPosY() + C.getHeight();
-	    	}
+	    	} else
 	    	if(characterNextDirection == Directions.getDown()) {
 				check1col = C.getPosX();
 		    	check1row = C.getPosY() + C.getWidth();
 		    	check2col = C.getPosX() + C.getWidth();
 		    	check2row = C.getPosY() + C.getHeight();
-	    	} 
+	    	} else
 	    	if(characterNextDirection == Directions.getUp()) {
 	    		check1col = C.getPosX();
 	        	check1row = C.getPosY();
 	        	check2col = C.getPosX() + C.getWidth();
 	        	check2row = C.getPosY();
-	    	} 
+	    	} else
 	    	if(characterNextDirection == Directions.getRight()) {
 	    		check1col = C.getPosX() + C.getWidth();
 	        	check1row = C.getPosY();
@@ -134,27 +174,30 @@ public class Game {
 	        	check2row = C.getPosY() + C.getHeight();
 	    	}
 	    	
-	    	if(myMap.checkIfInPath(C.getPosX(), C.getPosY()) && myMap.canMove(check1row, check1col, characterNextDirection)  && myMap.canMove(check2row, check2col, characterNextDirection)) {
-	    		C.updateDirection();  
-	    		myGUI.paintCharacter(C.getGraphicEntity());
+	    	if( myMap.canMove(check1row, check1col, characterNextDirection)  && myMap.canMove(check2row, check2col, characterNextDirection)) {
+	    	
+	    		if(!myMap.checkIfInIntersection(C.getPosX(), C.getPosY()) || myMap.checkIfInPath(C.getPosX(), C.getPosY())) {
+	    			C.updateDirection();  
+		    		myGUI.paintCharacter(C);
+	    		}	
+	    		
 	    	}
+	    	 
 	    	
     	}
     	
     	
-    	
-
     	characterDirection = C.getActualDirection();
     	
     	if(characterDirection == Directions.getLeft()) {	
     		doMoveLeft(C);
-    	}
+    	} else
     	if(characterDirection == Directions.getDown()) {
     		doMoveDown(C);
-    	} 
+    	} else
     	if(characterDirection == Directions.getUp()) {
     		doMoveUp(C);
-    	} 
+    	} else
     	if(characterDirection == Directions.getRight()) {
     		doMoveRight(C);
     	}
@@ -168,16 +211,14 @@ public class Game {
     			
 				myMap.consumePickeable(detectedPickeable);
     			
-    			//myGUI.paintPickup(null, , );
-    			
-    			System.out.println("CONSUMIDO PICKEABLE");
-    			
     		}
     		
-    		//myMap.checkCharacterCollisions(C);
-    	
-    	} else {
-    		//myMap.checkCharacterCollisions(C);
+    	} else if(myMap.checkIfInIntersection(C.getPosX(), C.getPosY())) {
+
+    		Ghost ghostCharacter = (Ghost) C;
+    		
+    		ghostCharacter.getGhostGPS().buildRoute();
+    		
     	}
     	
     }
@@ -252,7 +293,7 @@ public class Game {
     
     
     private void onMove(CharacterElements.Role C) {
-    	myGUI.displaceCharacter(C.getPosX(), C.getPosY(), C.getWidth(), C.getHeight());
+    	myGUI.displaceCharacter(C);
     }
     
     
@@ -307,10 +348,11 @@ public class Game {
     		
     		for(int k = 0; k < myMap.getWidth(); k++) {
     			
-    			//System.out.println("Fila " + i +  " Columna " + k);
-    			
     			aux = myMap.getCell(i, k);
 
+    			//System.out.println("Fila " + i +  " Columna " + k + " is null: " + (aux == null));
+    			
+    			
     			updateCellGraphic(aux);
     			
         	}
@@ -319,15 +361,44 @@ public class Game {
     	
     	
     	PacMan = new PacMan(myGUI.getCellHeight() * 12,  myGUI.getCellWidth() * 10 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1);
+    	myGUI.createCharacterGraphic(PacMan);
     	
-    	myGUI.createMainCharacterGraphic(PacMan);
+    	livingGhost.clear();
+    	livingGhost.add(new Blinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, this ));
+    	myGUI.createCharacterGraphic(livingGhost.get(0));
     	
     	
     	
-    	myTimerPacMan = new TimerPacMan(15, this);
     	
-    	myTimerPacManThread = new Thread(myTimerPacMan);
+    		
+    		
+    }
+    
+    public void startGame() {
+    	myTimerPacMan.setPaused(false);
+    	myTimerGhosts.setPaused(false);
+    }
+    
+    public void endGame() {
+    	myTimerPacMan.setPaused(true);
+    	myTimerGhosts.setPaused(true);
+    }
+    
+    
+    public void changeIA() {
+    	for(Ghost g : livingGhost) {
+    		g.scare(this);
+    	}
+    	for(Ghost g : vulnerableGhost) {
+    		g.calm(this);
+    	}
     	
+    	LinkedList<Ghost> aux;
+    	
+    	aux = livingGhost;
+    	livingGhost = vulnerableGhost;
+    	vulnerableGhost = aux;
+
     	
     }
     
@@ -337,6 +408,14 @@ public class Game {
     */
     public Level getLevel() {
     	return myLevel;
+    }
+
+	public LinkedList<Ghost> getLivingGhost(){
+    	return (LinkedList<Ghost>) livingGhost.clone();
+    }
+	
+	public LinkedList<Ghost> getVulnerableGhost(){
+    	return (LinkedList<Ghost>) vulnerableGhost.clone();
     }
     
     
@@ -349,6 +428,10 @@ public class Game {
     }
     
 
+    /*
+     * Updates the graphic of the cell on the GUI.
+     * @param c cell to be updated.
+     */
 	public void updateCellGraphic(Cell c){ 
 		
 		GraphicEntity auxGraph;
@@ -357,16 +440,26 @@ public class Game {
 		
 		auxGraph = c.getGraphicEntity();
 
-		myGUI.paintCell(auxGraph, c.getRow(), c.getColumn());
+		myGUI.paintCell(c);
 		
 	}
 	
+	/*
+     * Updates the graphic of the pickup contained on the cell on the GUI.
+     * @param c cell which contains the pickup to be updated.
+     */
 	public void updatePickupGraphic(Cell c) {
 		if(c.getPickup() != null) {
-			myGUI.paintPickup(c.getPickup().getGraphicEntity(), c.getRow(), c.getColumn());
+			myGUI.paintPickup(c.getPickup(), c.getRow(), c.getColumn());
 		} else {
 			myGUI.paintPickup(null, c.getRow(), c.getColumn());	
 		}
 	}
+
+	public Map getMap() {
+		return myMap;
+	}
+	
+	
 	
 }

@@ -61,17 +61,8 @@ public class PacMan extends Role{
     		myGraphicEntity.setIcon( ResourceManager.getProvider().getPacManImages()[4] );
     	}
     	
-    }
+    } 
     
-    /**
-    * Makes the character die..
-    */
-    public  void die(){
-
-    }
-    
-    
-
     
     /**
     * Accept the visitor of another Character passed by parameter
