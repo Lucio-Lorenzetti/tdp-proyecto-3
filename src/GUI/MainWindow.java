@@ -169,8 +169,8 @@ public class MainWindow extends JFrame{
 		btnCambiarIa.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				obtainFocus();
 				myGame.changeIA();
+				obtainFocus();
 			}
 		});
 		
@@ -297,7 +297,7 @@ public class MainWindow extends JFrame{
 		Image imagen = grafico.getImage();
 		
 		if(imagen != null) {
-			Image nuevaImagen = imagen.getScaledInstance(cellWidth, cellHeight, Image.SCALE_DEFAULT);
+			Image nuevaImagen = imagen.getScaledInstance(cellWidth, cellHeight, Image.SCALE_FAST);
 			grafico.setImage(nuevaImagen);
 			label.setIcon(grafico);
 			label.repaint();	
@@ -315,7 +315,7 @@ public class MainWindow extends JFrame{
 			
 			if(imagen != null) {
 				
-				Image nuevaImagen = imagen.getScaledInstance(width, heigth, Image.SCALE_DEFAULT);
+				Image nuevaImagen = imagen.getScaledInstance(width, heigth, Image.SCALE_FAST);
 				grafico.setImage(nuevaImagen);
 				label.setIcon(grafico);
 				

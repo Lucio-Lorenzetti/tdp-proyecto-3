@@ -14,16 +14,16 @@ import Images.ResourceManager;
 */
 public class PacDot extends Pickeable {
 	
-	public PacDot(int posYPX, int posXPX, int width, int height) {
+	public PacDot(int posYPX, int posXPX, int width, int height, PickeableManager g) {
 		
-		super(posYPX, posXPX, width, height, 10);
+		super(posYPX, posXPX, width, height, 10, g);
 		
 		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[0] );
 		
 	}
 	
-	public PacDot() {
-		super(0,0,0,0,10);
+	public PacDot(PickeableManager g) {
+		super(0,0,0,0,10,g);
 		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[0] );
 	}
 
@@ -34,7 +34,7 @@ public class PacDot extends Pickeable {
 	
 	@Override
 	public Pickeable clone() {
-		return new PacDot(posYPX, posXPX, widthPX, heightPX);
+		return new PacDot(posYPX, posXPX, widthPX, heightPX,manager);
 	}
 
 }

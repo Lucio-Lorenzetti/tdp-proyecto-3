@@ -29,6 +29,7 @@ public abstract class ResourceProvider {
 	protected ImageIcon[] inkyImages;
 	protected ImageIcon[] pinkyImages;
 	protected ImageIcon[] clydeImages;
+	protected ImageIcon[] scaredImages;
 	
 	
 	protected ImageIcon[] tileImages;
@@ -125,6 +126,7 @@ public abstract class ResourceProvider {
 		blinkyRoutes.add(themeRoute + "/characters/blinky/Death.gif");
 		
 		//SCARED IMAGES
+		scaredRoutes.add(themeRoute + "/characters/scared/Neutral.gif");
 		scaredRoutes.add(themeRoute + "/characters/scared/Left.gif");
 		scaredRoutes.add(themeRoute + "/characters/scared/Up.gif");
 		scaredRoutes.add(themeRoute + "/characters/scared/Right.gif");
@@ -194,6 +196,9 @@ public abstract class ResourceProvider {
 
 		pinkyImages = new ImageIcon[pinkyRoutes.size()];
 		createImages(pinkyRoutes, pinkyImages);
+		
+		scaredImages = new ImageIcon[scaredRoutes.size()];
+		createImages(scaredRoutes, scaredImages);
 		
 		
 		tileImages = new ImageIcon[tileRoutes.size()];
@@ -317,6 +322,12 @@ public abstract class ResourceProvider {
 	public ImageIcon[] getPinkyImages() {
 		
 		return pinkyImages;
+		
+	}
+	
+	public ImageIcon[] getScaredImages() {
+		
+		return scaredImages;
 		
 	}
 	

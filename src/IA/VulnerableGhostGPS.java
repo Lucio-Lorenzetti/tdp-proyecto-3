@@ -32,13 +32,14 @@ public class VulnerableGhostGPS extends GhostGPS {
 	@Override
 	public void buildRoute() {
 		
-Role pacman = myGame.getPacMan();
-		
 		int myGhostX = myGhost.getPosX();
 		int myGhostY = myGhost.getPosY();
 
 		
+		myGhost.setNextDirection(Directions.getRandomDirection());
 		
+		
+		/*
 		HashMap<Object, Cell> adjacentCells = myGame.getMap().getAdjacentCellsByPX(myGhostX, myGhostY); 
 		
 		
@@ -66,7 +67,7 @@ Role pacman = myGame.getPacMan();
 		
 		System.out.println("a");
 		
-		myGhost.setNextDirection(chosenDirection);
+		myGhost.setNextDirection(chosenDirection);*/
 	}
 	
 }

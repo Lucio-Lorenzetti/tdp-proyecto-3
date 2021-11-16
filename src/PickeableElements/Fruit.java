@@ -13,15 +13,15 @@ import Images.ResourceManager;
 *
 */
 public class Fruit extends Pickeable{
-
-	public Fruit(int posYPX, int posXPX, int width, int height, int score) {
-		super(posYPX, posXPX, width, height, score);
+	
+	public Fruit(int posYPX, int posXPX, int width, int height, int score,  PickeableManager g) {
+		super(posYPX, posXPX, width, height, score, g);
 		
 		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[2] );
 	}
 	
-	public Fruit(int score) {
-		super(0,0,0,0, score);
+	public Fruit(int score, PickeableManager g) {
+		super(0,0,0,0, score,g);
 		
 		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[2] );
 	}
@@ -34,7 +34,7 @@ public class Fruit extends Pickeable{
 	
 	@Override
 	public Pickeable clone() {
-		return new Fruit(posYPX, posXPX, widthPX, heightPX, points);
+		return new Fruit(posYPX, posXPX, widthPX, heightPX, points,manager);
 	}
 
 }

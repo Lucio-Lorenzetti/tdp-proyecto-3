@@ -15,13 +15,14 @@ public abstract class Pickeable extends Element{
 
 	
 	protected int points;
+	protected PickeableManager manager;
 	
-	public Pickeable(int posYPX, int posXPX, int width, int height, int score) {
+	public Pickeable(int posYPX, int posXPX, int width, int height, int score, PickeableManager g) {
 		this.posXPX = posXPX;
         this.posYPX = posYPX;
         this.widthPX = width;
         this.heightPX = height;
-	
+		manager = g;
         points = score;
 	}
 	
@@ -45,6 +46,8 @@ public abstract class Pickeable extends Element{
 		return null;
 		
 	}
+
+
 	
 	
 }

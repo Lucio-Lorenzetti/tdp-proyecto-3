@@ -11,8 +11,8 @@ package PickeableElements;
 */
 public abstract class Potion extends Pickeable{
 
-	public Potion(int posYPX, int posXPX, int width, int height) {
-		super(posYPX, posXPX, width, height, 150);
+	public Potion(int posYPX, int posXPX, int width, int height,PickeableManager g) {
+		super(posYPX, posXPX, width, height, 150, g);
 	}
 	
 }

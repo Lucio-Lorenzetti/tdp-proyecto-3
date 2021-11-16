@@ -15,18 +15,18 @@ import Images.ResourceManager;
 public class BombPotion extends Potion {
 
 	
-	public BombPotion(int posYPX, int posXPX, int width, int height) {
+	public BombPotion(int posYPX, int posXPX, int width, int height,  PickeableManager g) {
 		
-		super(posYPX, posXPX, width, height);
+		super(posYPX, posXPX, width, height, g);
 		
 		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[4] );
 		
 		
 	}
 	
-	public BombPotion() {
+	public BombPotion(PickeableManager g) {
 		
-		super(0,0,0,0);
+		super(0,0,0,0,g);
 		
 		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[4] );
 		
@@ -34,12 +34,13 @@ public class BombPotion extends Potion {
 	
 	@Override
 	public int consume() {
+		manager.bombEffect();
 		return points;
 	}
 
 	@Override
 	public Pickeable clone(){
-		return new BombPotion(posYPX, posXPX, widthPX, heightPX);
+		return new BombPotion(posYPX, posXPX, widthPX, heightPX, manager);
 	}
 
 }

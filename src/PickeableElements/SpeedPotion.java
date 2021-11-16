@@ -14,25 +14,26 @@ import Images.ResourceManager;
 */
 public class SpeedPotion extends Potion {
 
-	public SpeedPotion(int posYPX, int posXPX, int width, int height) {
-		super(posYPX, posXPX, width, height);
+	public SpeedPotion(int posYPX, int posXPX, int width, int height, PickeableManager g) {
+		super(posYPX, posXPX, width, height, g);
 		
 		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[3] );
 	}
 	
-	public SpeedPotion() {
-		super(0,0,0,0);
+	public SpeedPotion(PickeableManager g) {
+		super(0,0,0,0,g);
 		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[3] );
 	}
 	
 	@Override
 	public int consume() {
+		manager.speedEffect();
 		return points;
 	}
 
 	@Override
 	public Pickeable clone(){
-		return new SpeedPotion(posYPX, posXPX, widthPX, heightPX);
+		return new SpeedPotion(posYPX, posXPX, widthPX, heightPX,manager);
 	}
 
 }

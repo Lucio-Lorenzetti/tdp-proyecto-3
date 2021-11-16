@@ -386,6 +386,7 @@ public class Game {
     
     
     public void changeIA() {
+    	
     	for(Ghost g : livingGhost) {
     		g.scare(this);
     	}
@@ -399,7 +400,21 @@ public class Game {
     	livingGhost = vulnerableGhost;
     	vulnerableGhost = aux;
 
+    	for(Ghost g : livingGhost) {
+    		updateCharacterGraphic(g);
+    	}
+    	for(Ghost g : vulnerableGhost) {
+    		updateCharacterGraphic(g);
+    	}
     	
+    }
+    
+    public void changeSpdPacMan(long delay) {
+    	this.myTimerPacMan.setDelay(delay);
+    }
+    
+    public void changeSpdGhost(long delay) {
+    	this.myTimerPacMan.setDelay(delay);
     }
     
     /**
@@ -454,6 +469,10 @@ public class Game {
 		} else {
 			myGUI.paintPickup(null, c.getRow(), c.getColumn());	
 		}
+	}
+	
+	public void updateCharacterGraphic(Role c) {
+		myGUI.paintCharacter(c);
 	}
 
 	public Map getMap() {

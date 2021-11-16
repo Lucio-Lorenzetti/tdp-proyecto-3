@@ -15,9 +15,13 @@ import Visitor.*;
 *
 */
 public abstract class Ghost extends Role {
-    protected boolean dead;
+    
+	protected boolean dead;
     protected boolean moving;
+    protected boolean scared;
     protected GhostGPS myIA;
+    
+    
     
     /**
     * Creates and initialize a Ghost;
@@ -29,6 +33,7 @@ public abstract class Ghost extends Role {
     	super(posY, posX, width, height);
         this.dead = d;
         this.moving = m;
+        this.scared = false;
 
         //myVisitor = new visitorGhost(this);
     }
@@ -44,9 +49,13 @@ public abstract class Ghost extends Role {
     
     public void scare(Game g) {
     	myIA = new VulnerableGhostGPS(g, this);
+    	this.scared = true;
+    	updateGraphics(actualDirection);
     }
     
     public abstract void calm(Game g);
+    
+    public abstract void updateGraphics(Object d);
     
     /**
     * Accept the visitorPacMan.
