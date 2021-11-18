@@ -41,7 +41,7 @@ public class Map {
     protected String route;
 	protected PickeableManager manager;
 
-
+	
 
     /**
      * Creates and initializes Map.
@@ -54,6 +54,11 @@ public class Map {
         int fruitScore = 50;
 
 		manager = new PickeableManager(myGame);
+		
+		
+		HashMap<Character, Cell> cellSelection = new HashMap<Character, Cell>();
+		
+		
         
         ImageIcon[] cellImages = ResourceManager.getProvider().getTileImages();
     	
@@ -62,7 +67,44 @@ public class Map {
 
         ImageIcon[] wallImages = ResourceManager.getProvider().getWallImages();
         
+        
+        cellSelection.put('▌', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, wallImages[0]));
     	
+    	cellSelection.put('▬', new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, cellImages[1]));
+    	
+    	Cell RoadPacdot = new Cell(0, 0, new PacDot(manager)  , true, cellHeightPX, cellWidthPX, roadImages[2]);
+    	Cell RoadPowerPellet = new Cell(0, 0, new PowerPellet(manager), true, cellHeightPX, cellWidthPX, roadImages[2]);
+    	Cell RoadFruit = new Cell(0, 0, new Fruit(fruitScore, manager), true, cellHeightPX, cellWidthPX, roadImages[2]);
+    	Cell RoadBombPotion = new Cell( 0, 0, new BombPotion(manager), true, cellHeightPX, cellWidthPX, roadImages[2]);
+    	Cell RoadSpeedPotion = new Cell(0, 0, new SpeedPotion(manager), true, cellHeightPX, cellWidthPX, roadImages[2]);
+    	
+    	
+    	Cell GhostHome = new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, cellImages[2]);
+    	
+    	Cell LimitVertical = new Cell(0,0,null,false, cellHeightPX, cellWidthPX, wallImages[1]);
+    	Cell LimitHorizontal = new Cell(0,0,null,false, cellHeightPX, cellWidthPX, wallImages[2]);
+    	
+    	
+    	Cell verticalRoad = new Cell(0, 0, new PacDot(manager), true, cellHeightPX, cellWidthPX, roadImages[0]);
+    	Cell horizontalRoad = new Cell(0, 0, new PacDot(manager), true, cellHeightPX, cellWidthPX, roadImages[1]);
+    	
+    	
+        Cell intersection4Roads = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[2]);
+        
+        Cell intersection3Roads1 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[3]);
+        Cell intersection3Roads2 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[4]);
+        Cell intersection3Roads3 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[5]);
+        Cell intersection3Roads4 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[6]);
+        
+        Cell intersection2Roads1 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[7]);
+        Cell intersection2Roads2 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[8]);
+        Cell intersection2Roads3 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[9]);
+        Cell intersection2Roads4 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[10]);
+        
+        //Celdas de los fantasmas ┌  ┐  └  ┘━ ┉(puerta)
+        ////////////
+        
+    	/*
     	Cell Wall = new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, wallImages[0]);
     	
     	Cell RoadEmpty = new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, cellImages[1]);
@@ -99,7 +141,7 @@ public class Map {
     	
         
         Cell RoadTeleport = new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, cellImages[5]);
-
+		*/
 		
     			
     	try {

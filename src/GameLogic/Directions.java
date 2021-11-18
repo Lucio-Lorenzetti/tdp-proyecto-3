@@ -27,7 +27,6 @@ public class Directions {
 		
 		if(right == null) {
 			right = new Object();
-			
 		}
 	
 		return right;
