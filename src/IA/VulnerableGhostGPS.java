@@ -6,10 +6,8 @@ import java.util.LinkedList;
 
 import CharacterElements.Ghost;
 import CharacterElements.Role;
-import GameLogic.Cell;
 import GameLogic.Directions;
-import GameLogic.Game;
-
+import Maps.Map;
 /**
 *
 * Class VulnerableGhostGPS.
@@ -21,9 +19,9 @@ import GameLogic.Game;
 */
 public class VulnerableGhostGPS extends GhostGPS {
 
-	public VulnerableGhostGPS(Game g, Ghost ghost) {
+	public VulnerableGhostGPS(Map m, Ghost ghost) {
 		
-		super(g, ghost);
+		super(m, ghost);
 		
 		
 		

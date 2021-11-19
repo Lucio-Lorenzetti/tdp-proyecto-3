@@ -1,12 +1,16 @@
 package IA;
 
 import CharacterElements.Ghost;
-import GameLogic.Game;
+import Maps.Map;
 
 public class DeadGhostGPS extends GhostGPS{
 
-	public DeadGhostGPS(Game g, Ghost ghost) {
-		super(g, ghost);
+	public DeadGhostGPS(Map m, Ghost ghost) {
+		super(m, ghost);
+	}
+	
+	public DeadGhostGPS(Ghost g) {
+		super(null,g);
 	}
 	
 	@Override

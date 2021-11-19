@@ -20,14 +20,14 @@ import java.util.Map.Entry;
 */
 public class IABlinky extends AliveGhostGPS{
 
-	public IABlinky(Game g, Ghost ghost) {
-		super(g, ghost);
+	public IABlinky(Map m, Ghost ghost) {
+		super(m, ghost);
 	}
 	
 	@Override
 	public void buildRoute() {
 		
-		Role pacman = myGame.getPacMan();
+		Role pacman = Game.getPacMan();
 		
 		int pacmanX = pacman.getPosX();
 		int pacmanY = pacman.getPosY();
@@ -37,7 +37,7 @@ public class IABlinky extends AliveGhostGPS{
 
 		
 		
-		HashMap<Object, Cell> adjacentCells = myGame.getMap().getAdjacentCellsByPX(myGhostX, myGhostY); 
+		HashMap<Object, Cell> adjacentCells = myMap.getAdjacentCellsByPX(myGhostX, myGhostY); 
 		
 		
 		

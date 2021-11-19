@@ -20,6 +20,6 @@ public class MapBonus extends Map {
      */
     public MapBonus(Game g, int cellHeightPX, int cellWidthPX){
     	
-    	super(g, cellHeightPX, cellWidthPX, "src/Maps/MapBonus.txt");
+    	super(g, cellHeightPX, cellWidthPX, "src/Maps/MapBonusRoad.txt","src/Maps/MapBonusPikeable.txt" , "src/Maps/MapBonusRole.txt");
 	}
 }

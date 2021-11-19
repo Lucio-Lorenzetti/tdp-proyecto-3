@@ -31,12 +31,14 @@ public class Game {
     protected Thread myTimerPacManThread;
     protected Timer myTimerGhosts;
     protected Thread myTimerGhostsThread;
+    protected Timer myTimerVulnerable;
+    protected Thread myTimerVulnerableThread;
     
     
     protected Map myMap;
     protected MainWindow myGUI;
     protected Level myLevel;
-    protected CharacterElements.Role PacMan;
+    protected static Role PacMan;
     private String playerName;
     protected int actualScore;
     
@@ -364,14 +366,15 @@ public class Game {
     	myGUI.createCharacterGraphic(PacMan);
     	
     	livingGhost.clear();
-    	livingGhost.add(new Blinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, this ));
+    	livingGhost.add(new Blinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, myMap ));
     	myGUI.createCharacterGraphic(livingGhost.get(0));
-    	
-    	
-    	
-    	
     		
-    		
+    	
+    	for(Ghost g : livingGhost) {
+    		g.onMapUpdate(myMap);
+    	}
+    	
+    	
     }
     
     public void startGame() {
@@ -383,8 +386,77 @@ public class Game {
     	myTimerPacMan.setPaused(true);
     	myTimerGhosts.setPaused(true);
     }
-    
-    
+
+	public void addLivingList(Ghost g){
+		if(deadGhost.contains(g))
+			deadGhost.remove(g);
+		if(vulnerableGhost.contains(g))
+			vulnerableGhost.remove(g);
+		
+		livingGhost.add(g);
+	}
+
+	public void addVulnerableList(Ghost g){
+		livingGhost.remove(g);
+		vulnerableGhost.add(g);
+	}
+
+	public void addDeadList(Ghost g){
+		vulnerableGhost.remove(g);
+		deadGhost.add(g);
+	}
+
+	
+	public void returnGhostToNormal(Ghost g) {
+		g.ChangeState(2);
+		addLivingList(g);
+		updateCharacterGraphic(g);
+	}
+
+    public void returnAllGhostToNormal(){
+		for(Ghost g : vulnerableGhost){
+			returnGhostToNormal(g);
+		}    	
+	}
+
+	public void killGhost(Ghost g){
+		g.ChangeState(0);
+		addDeadList(g);
+		updateCharacterGraphic(g);
+	}
+	
+	public void scareGhost(Ghost g){
+		g.ChangeState(1);
+		addVulnerableList(g);
+		updateCharacterGraphic(g);
+	}
+
+    public void scareAllGhosts(){
+		for(Ghost g : livingGhost) {
+    		scareGhost(g);
+    	}
+		
+		
+    	myTimerVulnerable = new TimerVulnerable(8000, this);
+    	
+    	myTimerVulnerableThread = new Thread(myTimerVulnerable);
+		
+    	myTimerVulnerableThread.start();
+    	
+    	
+		/*
+		*
+		*	coso del thread
+		
+		*   for(Ghost g : livingGhost) {
+	    		returnGhostToNormal(g);
+			}
+		*/
+
+		
+	}
+
+	/*
     public void changeIA() {
     	
     	for(Ghost g : livingGhost) {
@@ -407,15 +479,30 @@ public class Game {
     		updateCharacterGraphic(g);
     	}
     	
-    }
+    }*/
     
-    public void changeSpdPacMan(long delay) {
-    	this.myTimerPacMan.setDelay(delay);
+    public void changeSpdPacMan(long time, long speed) {
+    	this.myTimerPacMan.setDelay(speed);
+		
+    	
+    	/*
+		*hacer timer del hilo para volver a la normalidad
+		*/
+    	
     }
     
     public void changeSpdGhost(long delay) {
     	this.myTimerPacMan.setDelay(delay);
     }
+    
+    
+    public static Role getPacMan() {
+    	if(PacMan == null) {
+    		PacMan = new CharacterElements.PacMan(10, 10, 10, 10);
+    	}
+    	return PacMan;
+    }
+    
     
     /**
     * Return the level of the game.
@@ -431,15 +518,6 @@ public class Game {
 	
 	public LinkedList<Ghost> getVulnerableGhost(){
     	return (LinkedList<Ghost>) vulnerableGhost.clone();
-    }
-    
-    
-    /**
-     * Return the PacMan.
-     * @return PacMan.
-     */
-    public CharacterElements.Role getPacMan() {
-    	return PacMan;
     }
     
 

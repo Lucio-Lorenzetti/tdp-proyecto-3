@@ -1,7 +1,9 @@
 package CharacterElements;
 import GUI.GraphicEntity;
 import GameLogic.Directions;
+import GameLogic.Game;
 import Images.ResourceManager;
+import Maps.Map;
 import Visitor.*;
 /**
 *
@@ -23,8 +25,8 @@ public class Clyde extends Ghost{
     * @param dead true if Clyde is dead, false otherwise. 
     * @param moving true if Clyde is moving, false otherwise.
     */
-    public Clyde(int posY, int posX, int width, int height, boolean dead, boolean moving){
-        super(posY, posX, width, height, dead, moving);
+    public Clyde(int posY, int posX, int width, int height, boolean dead, boolean moving, Map m){
+        super(posY, posX, width, height, dead, moving, m);
         myVisitor = new VisitorBlinky(this);
         
         myGraphicEntity = new GraphicEntity(ResourceManager.getProvider().getClydeImages()[1]);
@@ -55,4 +57,11 @@ public class Clyde extends Ghost{
     public void accept(VisitorPacMan c){
 
     }
+
+
+	@Override
+	public void updateGraphics(Object d) {
+		// TODO Auto-generated method stub
+		
+	}
 }

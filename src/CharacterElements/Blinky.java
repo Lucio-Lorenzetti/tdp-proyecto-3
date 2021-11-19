@@ -1,8 +1,11 @@
 package CharacterElements;
+import javax.swing.ImageIcon;
+
 import GUI.GraphicEntity;
 import GameLogic.Directions;
 import GameLogic.Game;
 import Images.ResourceManager;
+import Maps.Map;
 import Visitor.*;
 import IA.IABlinky;
 
@@ -16,6 +19,7 @@ import IA.IABlinky;
 *
 */
 public class Blinky extends Ghost{
+
     /**
     * Creates and initialize a Blinky;
     * @param posY where the Blinky is created.
@@ -25,14 +29,15 @@ public class Blinky extends Ghost{
     * @param dead true if Blinky is dead, false otherwise. 
     * @param moving true if Blinky is moving, false otherwise.
     */
-    public Blinky(int posY, int posX, int width, int height, boolean dead, boolean moving, Game game){
-        super(posY, posX, width, height, dead, moving);
+    public Blinky(int posY, int posX, int width, int height, boolean dead, boolean moving, Map m){
+        super(posY, posX, width, height, dead, moving,m);
+
+		myVisitor = new VisitorBlinky(this);
         
-        myVisitor = new VisitorBlinky(this);
+        myIA = new IABlinky(m, this);
         
-        myIA = new IABlinky(game, this);
-        
-        
+        ghostState.add(myIA);
+
         myGraphicEntity = new GraphicEntity(ResourceManager.getProvider().getBlinkyImages()[1]);
     }
 
@@ -42,39 +47,33 @@ public class Blinky extends Ghost{
     }
 
 	public void updateGraphics(Object direction) {
-		if(!scared) {
-	    	if(direction == Directions.getNeutral()) {
-	    		myGraphicEntity.setIcon( ResourceManager.getProvider().getBlinkyImages()[0] );
-	    	}
-	    	if(direction == Directions.getLeft()) {
-	    		myGraphicEntity.setIcon( ResourceManager.getProvider().getBlinkyImages()[1] );
-	    	}
-	    	if(direction == Directions.getUp()) {
-	    		myGraphicEntity.setIcon( ResourceManager.getProvider().getBlinkyImages()[2] );
-	    	}
-	    	if(direction == Directions.getRight()) {
-	    		myGraphicEntity.setIcon( ResourceManager.getProvider().getBlinkyImages()[3] );
-	    	}
-	    	if(direction == Directions.getDown()) {
-	    		myGraphicEntity.setIcon( ResourceManager.getProvider().getBlinkyImages()[4] );
-	    	}
-    	} else {
-    		if(direction == Directions.getNeutral()) {
-	    		myGraphicEntity.setIcon( ResourceManager.getProvider().getScaredImages()[0] );
-	    	}
-	    	if(direction == Directions.getLeft()) {
-	    		myGraphicEntity.setIcon( ResourceManager.getProvider().getScaredImages()[1] );
-	    	}
-	    	if(direction == Directions.getUp()) {
-	    		myGraphicEntity.setIcon( ResourceManager.getProvider().getScaredImages()[2] );
-	    	}
-	    	if(direction == Directions.getRight()) {
-	    		myGraphicEntity.setIcon( ResourceManager.getProvider().getScaredImages()[3] );
-	    	}
-	    	if(direction == Directions.getDown()) {
-	    		myGraphicEntity.setIcon( ResourceManager.getProvider().getScaredImages()[4] );
-	    	}
+		
+		ImageIcon[] images = null;
+		
+		if(indexState == 2) {
+			images = ResourceManager.getProvider().getBlinkyImages();
+		} else if (indexState == 1) {
+			images = ResourceManager.getProvider().getScaredImages();
+		} else {
+			images = ResourceManager.getProvider().getScaredImages(); //CAMBIAR POR DEAD
+		} 
+		
+    	if(direction == Directions.getNeutral()) {
+    		myGraphicEntity.setIcon( images[0] );
     	}
+    	if(direction == Directions.getLeft()) {
+    		myGraphicEntity.setIcon( images[1] );
+    	}
+    	if(direction == Directions.getUp()) {
+    		myGraphicEntity.setIcon( images[2] );
+    	}
+    	if(direction == Directions.getRight()) {
+    		myGraphicEntity.setIcon( images[3] );
+    	}
+    	if(direction == Directions.getDown()) {
+    		myGraphicEntity.setIcon( images[4] );
+    	}
+    	
 		
 	}
 
@@ -82,12 +81,11 @@ public class Blinky extends Ghost{
 	public void accept(VisitorPacMan c) {
 		
 	}
-
+	/*
 	@Override
 	public void calm(Game g) {
-		myIA = new IABlinky(g, this);
+		myIA = new IABlinky(myMap, this);
 		this.scared = false;
-		
 		updateGraphics(actualDirection);
-	} 
+	}*/ 
 }

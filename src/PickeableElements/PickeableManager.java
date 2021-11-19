@@ -19,7 +19,7 @@ public class PickeableManager {
 	}
 	
 	public void powerPelletEffect() {
-		myGame.changeIA();
+		myGame.scareAllGhosts();
 	}
 	
 }

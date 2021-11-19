@@ -133,14 +133,6 @@ public abstract class ResourceProvider {
 		scaredRoutes.add(themeRoute + "/characters/scared/Down.gif");
 		
 		
-		//TILE IMAGES
-		tileRoutes.add(themeRoute + "/tiles/wall.png");
-		tileRoutes.add(themeRoute + "/tiles/road.png");
-		tileRoutes.add(themeRoute + "/tiles/ghostHome.png");
-		tileRoutes.add(themeRoute + "/tiles/borderWall.png");
-		tileRoutes.add(themeRoute + "/tiles/borderWall2.png");
-		tileRoutes.add(themeRoute + "/tiles/roadTeleport.png");
-		
 		
 		//ROAD TILE IMAGES
 		roadRoutes.add(themeRoute + "/tiles/road/horizontalRoad.png");
@@ -201,8 +193,6 @@ public abstract class ResourceProvider {
 		createImages(scaredRoutes, scaredImages);
 		
 		
-		tileImages = new ImageIcon[tileRoutes.size()];
-		createImages(tileRoutes, tileImages);
 		
 		backgroundImages = new ImageIcon[backgroundRoutes.size()];
 		createImages(backgroundRoutes, backgroundImages);
@@ -260,16 +250,6 @@ public abstract class ResourceProvider {
 		
 	}
 	
-	
-	/**
-	 * Returns an ImageIcon array containing Tile graphics.
-	 * @return ImageIcon array with Tile graphics.
-	 */
-	public ImageIcon[] getTileImages() {
-		
-		return tileImages;
-		
-	}
 	
 	/**
 	 * Returns an ImageIcon array containing Pickeable graphics.

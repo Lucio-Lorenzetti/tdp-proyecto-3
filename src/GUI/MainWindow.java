@@ -169,7 +169,7 @@ public class MainWindow extends JFrame{
 		btnCambiarIa.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				myGame.changeIA();
+				myGame.returnAllGhostToNormal();
 				obtainFocus();
 			}
 		});
@@ -199,7 +199,7 @@ public class MainWindow extends JFrame{
 					
 				temp = new JLabel();				
 			
-				ImageIcon iconoLabel = ResourceManager.getProvider().getTileImages()[0];
+				ImageIcon iconoLabel = ResourceManager.getProvider().getWallImages()[0];
 				
 				iconoLabel.setImageObserver(temp); //Allows playing gifs.
 				

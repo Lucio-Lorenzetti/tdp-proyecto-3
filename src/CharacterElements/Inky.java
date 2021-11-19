@@ -1,8 +1,10 @@
 package CharacterElements;
 import GUI.GraphicEntity;
 import GameLogic.Directions;
+import GameLogic.Game;
 import Images.ResourceManager;
 import Visitor.*;
+import Maps.Map;
 /**
 *
 * Class Inky.
@@ -23,8 +25,8 @@ public class Inky extends Ghost{
     * @param dead true if Inky is dead, false otherwise. 
     * @param moving true if Inky is moving, false otherwise.
     */
-    public Inky(int posY, int posX, int width, int height, boolean dead, boolean moving){
-        super(posY, posX, width, height, dead, moving);
+    public Inky(int posY, int posX, int width, int height, boolean dead, boolean moving, Map m){
+        super(posY, posX, width, height, dead, moving, m);
         myVisitor = new VisitorBlinky(this);
         
         myGraphicEntity = new GraphicEntity(ResourceManager.getProvider().getInkyImages()[1]);
@@ -53,5 +55,11 @@ public class Inky extends Ghost{
     public void accept(VisitorPacMan c){
 
     }
+
+	@Override
+	public void updateGraphics(Object d) {
+		// TODO Auto-generated method stub
+		
+	}
      
 }

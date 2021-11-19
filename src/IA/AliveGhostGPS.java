@@ -1,7 +1,7 @@
 package IA;
 
 import CharacterElements.Ghost;
-import GameLogic.Game;
+import Maps.Map;
 
 /**
 *
@@ -14,8 +14,8 @@ import GameLogic.Game;
 */
 public abstract class AliveGhostGPS extends GhostGPS {
 
-	public AliveGhostGPS(Game g, Ghost ghost) {
-		super(g, ghost);
+	public AliveGhostGPS(Map m, Ghost ghost) {
+		super(m, ghost);
 	}
 	
 }

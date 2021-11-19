@@ -1,7 +1,7 @@
 package IA;
 
 import CharacterElements.Ghost;
-import GameLogic.Game;
+import Maps.Map;
 
 /**
 *
@@ -14,15 +14,19 @@ import GameLogic.Game;
 */
 public abstract class GhostGPS {
 	
-	protected Game myGame;
+	protected Map myMap;
 	protected Ghost myGhost;
 	protected GhostGPS myIA;
 	
-	public GhostGPS(Game g, Ghost ghost) {
-		myGame = g;
+	public GhostGPS(Map m, Ghost ghost) {
+		myMap = m;
 		myGhost = ghost;
 	}
 	
 	public abstract void buildRoute();
+	
+	public void setMap(Map m) {
+		myMap = m;
+	}
 	
 }

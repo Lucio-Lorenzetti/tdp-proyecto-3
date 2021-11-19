@@ -46,7 +46,7 @@ public class Map {
     /**
      * Creates and initializes Map.
      */
-    public Map(Game g, int cellHeightPX, int cellWidthPX, String mapRoute){
+    public Map(Game g, int cellHeightPX, int cellWidthPX, String mapRoute, String pickeableRoute, String characterRoute){
    
     	myGame = g;
         cells = new Cell[height][width];
@@ -57,92 +57,76 @@ public class Map {
 		
 		
 		HashMap<Character, Cell> cellSelection = new HashMap<Character, Cell>();
+		HashMap<Character, Pickeable> pickeableSelection = new HashMap<Character, Pickeable>();
+		HashMap<Character, Role> roleSelection = new HashMap<Character, Role>();
 		
 		
         
-        ImageIcon[] cellImages = ResourceManager.getProvider().getTileImages();
+        ImageIcon[] cellImages = ResourceManager.getProvider().getRoadImages();
     	
         
         ImageIcon[] roadImages = ResourceManager.getProvider().getRoadImages();
 
         ImageIcon[] wallImages = ResourceManager.getProvider().getWallImages();
         
-        
-        cellSelection.put('▌', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, wallImages[0]));
+		//WALL AND LIMITS
+		cellSelection.put('■', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, wallImages[0]));
+        cellSelection.put('▌', new Cell(0,0,null,false, cellHeightPX, cellWidthPX, wallImages[1]));
+		cellSelection.put('▬',new Cell(0,0,null,false, cellHeightPX, cellWidthPX, wallImages[2]));	
     	
-    	cellSelection.put('▬', new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, cellImages[1]));
-    	
-    	Cell RoadPacdot = new Cell(0, 0, new PacDot(manager)  , true, cellHeightPX, cellWidthPX, roadImages[2]);
-    	Cell RoadPowerPellet = new Cell(0, 0, new PowerPellet(manager), true, cellHeightPX, cellWidthPX, roadImages[2]);
-    	Cell RoadFruit = new Cell(0, 0, new Fruit(fruitScore, manager), true, cellHeightPX, cellWidthPX, roadImages[2]);
-    	Cell RoadBombPotion = new Cell( 0, 0, new BombPotion(manager), true, cellHeightPX, cellWidthPX, roadImages[2]);
-    	Cell RoadSpeedPotion = new Cell(0, 0, new SpeedPotion(manager), true, cellHeightPX, cellWidthPX, roadImages[2]);
-    	
-    	
-    	Cell GhostHome = new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, cellImages[2]);
-    	
-    	Cell LimitVertical = new Cell(0,0,null,false, cellHeightPX, cellWidthPX, wallImages[1]);
-    	Cell LimitHorizontal = new Cell(0,0,null,false, cellHeightPX, cellWidthPX, wallImages[2]);
-    	
-    	
-    	Cell verticalRoad = new Cell(0, 0, new PacDot(manager), true, cellHeightPX, cellWidthPX, roadImages[0]);
-    	Cell horizontalRoad = new Cell(0, 0, new PacDot(manager), true, cellHeightPX, cellWidthPX, roadImages[1]);
-    	
-    	
-        Cell intersection4Roads = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[2]);
-        
-        Cell intersection3Roads1 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[3]);
-        Cell intersection3Roads2 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[4]);
-        Cell intersection3Roads3 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[5]);
-        Cell intersection3Roads4 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[6]);
-        
-        Cell intersection2Roads1 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[7]);
-        Cell intersection2Roads2 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[8]);
-        Cell intersection2Roads3 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[9]);
-        Cell intersection2Roads4 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[10]);
-        
-        //Celdas de los fantasmas ┌  ┐  └  ┘━ ┉(puerta)
-        ////////////
-        
-    	/*
-    	Cell Wall = new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, wallImages[0]);
-    	
-    	Cell RoadEmpty = new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, cellImages[1]);
-    	
-    	Cell RoadPacdot = new Cell(0, 0, new PacDot(manager)  , true, cellHeightPX, cellWidthPX, roadImages[2]);
-    	Cell RoadPowerPellet = new Cell(0, 0, new PowerPellet(manager), true, cellHeightPX, cellWidthPX, roadImages[2]);
-    	Cell RoadFruit = new Cell(0, 0, new Fruit(fruitScore, manager), true, cellHeightPX, cellWidthPX, roadImages[2]);
-    	Cell RoadBombPotion = new Cell( 0, 0, new BombPotion(manager), true, cellHeightPX, cellWidthPX, roadImages[2]);
-    	Cell RoadSpeedPotion = new Cell(0, 0, new SpeedPotion(manager), true, cellHeightPX, cellWidthPX, roadImages[2]);
-    	
-    	
-    	Cell GhostHome = new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, cellImages[2]);
-    	
-    	Cell LimitVertical = new Cell(0,0,null,false, cellHeightPX, cellWidthPX, wallImages[1]);
-    	Cell LimitHorizontal = new Cell(0,0,null,false, cellHeightPX, cellWidthPX, wallImages[2]);
-    	
-    	
-    	Cell verticalRoad = new Cell(0, 0, new PacDot(manager), true, cellHeightPX, cellWidthPX, roadImages[0]);
-    	Cell horizontalRoad = new Cell(0, 0, new PacDot(manager), true, cellHeightPX, cellWidthPX, roadImages[1]);
-    	
-    	
-        Cell intersection4Roads = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[2]);
-        
-        Cell intersection3Roads1 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[3]);
-        Cell intersection3Roads2 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[4]);
-        Cell intersection3Roads3 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[5]);
-        Cell intersection3Roads4 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[6]);
-        
-        Cell intersection2Roads1 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[7]);
-        Cell intersection2Roads2 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[8]);
-        Cell intersection2Roads3 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[9]);
-        Cell intersection2Roads4 = new Cell(0,0, new PacDot(manager), true, true, cellHeightPX, cellWidthPX, roadImages[10]);
-    	
-    	
-        
-        Cell RoadTeleport = new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, cellImages[5]);
-		*/
+    	//GHOST HOME
+		cellSelection.put('┉', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, cellImages[2]));
+		cellSelection.put('┌', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, cellImages[2]));
+		cellSelection.put('└', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, cellImages[2]));
+		cellSelection.put('┐', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, cellImages[2]));
+		cellSelection.put('┘', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, cellImages[2]));
+		cellSelection.put('━', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, cellImages[2]));
+
+		//ROAD
+		cellSelection.put('T', new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, cellImages[5]));
 		
+		cellSelection.put('║', new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, roadImages[0]));
+		cellSelection.put('═', new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, roadImages[1]));
+		
+		cellSelection.put('╬', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[2]));
+        
+       	cellSelection.put('╦', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[3]));
+        cellSelection.put('╩', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[4]));
+        cellSelection.put('╠', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[5]));
+        cellSelection.put('╣', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[6]));
+        
+        cellSelection.put('╗', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[7]));
+        cellSelection.put('╚', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[8]));
+        cellSelection.put('╔', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[9]));
+        cellSelection.put('╝', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[10]));
+
+		//PIKEABLES
+        
+        pickeableSelection.put('P', new PacDot(manager));
+        pickeableSelection.put('B', new BombPotion(manager));
+        pickeableSelection.put('E', null);
+        pickeableSelection.put('S', new SpeedPotion(manager));
+        pickeableSelection.put('F', new Fruit(100, manager));
+        pickeableSelection.put('O', new PowerPellet(manager));
+        
+        
+
+    	/*
+    	PIKEABLES
+	    	P --> PACDOTS
+	    	B --> BOMBA
+	    	E --> EMPTY
+	    	S --> SPEED
+	    	F --> FRUIT
+	    	֎ --> POWERPELLET    	
+    	ROLES
+    		E --> EMPTY
+    		P --> PINKY
+    		I --> INKY
+    		C --> CLYDE
+    		B --> BLINKY
+    		M --> PACMAN
+    	*/
     			
     	try {
     		
@@ -161,84 +145,56 @@ public class Map {
 				ByteBuffer byteBuffer = StandardCharsets.UTF_8.encode(actL);
 
 				actualLine = new String(byteBuffer.array(), StandardCharsets.UTF_8);
-				//System.out.println(actualLine);
+				System.out.println(actualLine);
 				
 				
 				for(int col = 0; col < actualLine.length(); col++){
 					
-
-					if( actualLine.charAt(col) == '▌') {
-						cells[actualRow][col] = LimitHorizontal.cloneInPosition(actualRow, col);
-						//System.out.println("▌ " + actualRow + " " + col);
-					} else
-					if( actualLine.charAt(col) == '▬') {
-						cells[actualRow][col] = LimitVertical.cloneInPosition(actualRow, col);
-						//System.out.println("▌ " + actualRow + " " + col);
-					} else
-					if( actualLine.charAt(col) == '■') {
-						cells[actualRow][col] = Wall.cloneInPosition(actualRow, col);
-					} else
-					if( actualLine.charAt(col) == 'F') {
-						cells[actualRow][col] = RoadFruit.cloneInPosition(actualRow, col);
-					} else
-					if( actualLine.charAt(col) == '⚡') {
-						cells[actualRow][col] = RoadSpeedPotion.cloneInPosition(actualRow, col);
-					} else
-					if( actualLine.charAt(col) == '⚠') {
-						cells[actualRow][col] = RoadBombPotion.cloneInPosition(actualRow, col);
-					} else
-					
-					if( actualLine.charAt(col) == '║') {
-						cells[actualRow][col] = verticalRoad.cloneInPosition(actualRow, col);
-					} else
-					if( actualLine.charAt(col) == '═') {
-						cells[actualRow][col] = horizontalRoad.cloneInPosition(actualRow, col);
-					} else	
-					if( actualLine.charAt(col) == '╬') {
-						cells[actualRow][col] = intersection4Roads.cloneInPosition(actualRow, col);
-					} else
-					if( actualLine.charAt(col) == '╦') {
-						cells[actualRow][col] = intersection3Roads1.cloneInPosition(actualRow, col);
-					} else
-					if( actualLine.charAt(col) == '╣') {
-						cells[actualRow][col] = intersection3Roads2.cloneInPosition(actualRow, col);
-					} else
-					if( actualLine.charAt(col) == '╩') {
-						cells[actualRow][col] = intersection3Roads3.cloneInPosition(actualRow, col);
-					} else
-					if( actualLine.charAt(col) == '╠') {
-						cells[actualRow][col] = intersection3Roads4.cloneInPosition(actualRow, col);
-					} else
-						
-					if( actualLine.charAt(col) == '╗') {
-						cells[actualRow][col] = intersection2Roads1.cloneInPosition(actualRow, col);
-					} else
-					if( actualLine.charAt(col) == '╔') {
-						cells[actualRow][col] = intersection2Roads2.cloneInPosition(actualRow, col);
-					} else
-					if( actualLine.charAt(col) == '╝') {
-						cells[actualRow][col] = intersection2Roads3.cloneInPosition(actualRow, col);
-					} else
-					if( actualLine.charAt(col) == '╚') {
-						cells[actualRow][col] = intersection2Roads4.cloneInPosition(actualRow, col);
-					} else
-						
-						
-						
-					if( actualLine.charAt(col) == '֎') {
-						cells[actualRow][col] = RoadPowerPellet.cloneInPosition(actualRow, col);
-					} else
-						
-					if( actualLine.charAt(col) == '⏏') {
-						cells[actualRow][col] = GhostHome.cloneInPosition(actualRow, col);
-					} else
-					if( actualLine.charAt(col) == 'T') {
-						cells[actualRow][col] = RoadTeleport.cloneInPosition(actualRow, col);
-					} else
-                    if( actualLine.charAt(col) == 'E') {
-						cells[actualRow][col] = RoadEmpty.cloneInPosition(actualRow, col);
+					//System.out.println(actualLine.charAt(col));
+			
+					if(cellSelection.get( actualLine.charAt(col) ) != null) {
+						cells[actualRow][col] = cellSelection.get( actualLine.charAt(col) ).cloneInPosition(actualRow, col);
 					}
+				}
+				
+				actualRow++;
+				
+			}			
+			
+			br.close();
+			fr.close(); 
+			
+			
+			f = new File(pickeableRoute);
+			fr = new FileReader(f);
+			br = new BufferedReader (fr);
+			
+			actualLine = "";
+			actL = "";
+			
+			actualRow = 0;
+			
+			
+			while ( (actL = br.readLine()) != null) {
+			
+				ByteBuffer byteBuffer = StandardCharsets.UTF_8.encode(actL);
+
+				actualLine = new String(byteBuffer.array(), StandardCharsets.UTF_8);
+				System.out.println(actualLine);
+				
+				
+				for(int col = 0; col < actualLine.length(); col++){
 					
+					System.out.println(actualLine.charAt(col));
+					
+					System.out.println(pickeableSelection.get( actualLine.charAt(col) ) == null);
+					
+					if(pickeableSelection.get( actualLine.charAt(col) ) != null) {
+						
+						cells[actualRow][col].setPickeable( pickeableSelection.get( actualLine.charAt(col) ).clone() );
+						
+						
+					}
 				}
 				
 				actualRow++;
@@ -486,6 +442,8 @@ public class Map {
 		myGame.addPoints( p.consume() );
 
 		myGame.updatePickupGraphic(aux);		//ACTUALIZAR SOLO PICKUP PARA EVITAR EFECTOS VISUALES RAROS EN LA CELDA
+
+		System.out.println("CONSUMIDO");
 		
 	}
 	
@@ -510,9 +468,9 @@ public class Map {
 		HashMap<Object,Cell> result = new HashMap<Object,Cell>();
 		
 		
-		if(c.getColumn() < width) 	result.put(Directions.getRight(), cells[c.getRow()][c.getColumn()+1]);
+		if(c.getColumn() < width-1) 	result.put(Directions.getRight(), cells[c.getRow()][c.getColumn()+1]);
 		if(c.getColumn() > 0 ) 		result.put(Directions.getLeft(), cells[c.getRow()][c.getColumn()-1]);
-		if(c.getRow() < height) 	result.put(Directions.getUp(), cells[c.getRow()-1][c.getColumn()]);
+		if(c.getRow() < height-1) 	result.put(Directions.getUp(), cells[c.getRow()-1][c.getColumn()]);
 		if(c.getRow() > 0    ) 		result.put(Directions.getDown(), cells[c.getRow()+1][c.getColumn()]);
 		
 		

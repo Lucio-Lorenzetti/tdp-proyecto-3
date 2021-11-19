@@ -1,8 +1,10 @@
 package CharacterElements;
 import GUI.GraphicEntity;
 import GameLogic.Directions;
+import GameLogic.Game;
 import Images.ResourceManager;
 import Visitor.*;
+import Maps.Map;
 
 /**
 *
@@ -24,8 +26,8 @@ public class Pinky extends Ghost{
     * @param dead true if Pinky is dead, false otherwise. 
     * @param moving true if Pinky is moving, false otherwise.
     */
-    public Pinky(int posY, int posX, int width, int height, boolean dead, boolean moving){
-        super(posY, posX, width, height, dead, moving);
+    public Pinky(int posY, int posX, int width, int height, boolean dead, boolean moving, Map m){
+        super(posY, posX, width, height, dead, moving, m);
         myVisitor = new VisitorBlinky(this);
         
         myGraphicEntity = new GraphicEntity(ResourceManager.getProvider().getPinkyImages()[1]);
@@ -55,4 +57,11 @@ public class Pinky extends Ghost{
     public void accept(VisitorPacMan c){
 
     }
+
+
+	@Override
+	public void updateGraphics(Object d) {
+		// TODO Auto-generated method stub
+		
+	}
 }

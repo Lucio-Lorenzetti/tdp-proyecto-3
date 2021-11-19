@@ -129,6 +129,7 @@ public class Cell {
     */
     public void setPickeable(Pickeable p){
         pickeable = p;
+        adjustPickeable();
     }
 
     /**
