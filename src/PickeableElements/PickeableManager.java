@@ -11,7 +11,7 @@ public class PickeableManager {
 	}
 	
 	public void speedEffect() {
-		myGame.changeSpdPacMan(5);
+		myGame.changeSpdPacMan(5, 5);
 	}
 	
 	public void bombEffect() {

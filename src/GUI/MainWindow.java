@@ -354,7 +354,7 @@ public class MainWindow extends JFrame{
 			height = p.getHeight();
 		}
 		
-		boolean pEsNulo =  p == null;
+		//boolean pEsNulo =  p == null;
 		
 		//System.out.println( pEsNulo + " width: " + width + " height: " + height + " Fila: " + posFila + " Columna: " + posColumna);
 		

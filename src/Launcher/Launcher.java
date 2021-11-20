@@ -15,11 +15,10 @@ public class Launcher {
 				try {
 					
 					MainWindow window = new MainWindow();
-				
+					
 					Game juego = new Game(window);
 					
 					window.setGame(juego);
-				
 				
 				} catch (Exception e) {
 					e.printStackTrace();

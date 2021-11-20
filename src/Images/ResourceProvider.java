@@ -21,7 +21,7 @@ public abstract class ResourceProvider {
 	protected LinkedList<String> backgroundRoutes;
 	protected LinkedList<String> wallRoutes;
 	protected LinkedList<String> roadRoutes;
-	
+	protected LinkedList<String> ghostHomeRoutes;
 	
 	
 	protected ImageIcon[] pacmanImages;
@@ -37,6 +37,7 @@ public abstract class ResourceProvider {
 	protected ImageIcon[] backgroundImages;
 	protected ImageIcon[] wallImages;
 	protected ImageIcon[] roadImages;
+	protected ImageIcon[] ghostHomeImages;
 	
 	protected String themeRoute;
 	
@@ -60,6 +61,7 @@ public abstract class ResourceProvider {
 		backgroundRoutes = new LinkedList<String>();
 		pickeableRoutes = new LinkedList<String>();
 		roadRoutes = new LinkedList<String>();
+		ghostHomeRoutes = new LinkedList<String>();
 		wallRoutes = new LinkedList<String>();
 		
 		int index;
@@ -137,21 +139,29 @@ public abstract class ResourceProvider {
 		//ROAD TILE IMAGES
 		roadRoutes.add(themeRoute + "/tiles/road/horizontalRoad.png");
 		roadRoutes.add(themeRoute + "/tiles/road/verticalRoad.png");
-		roadRoutes.add(themeRoute + "/tiles/road/4RoadIntersection.png");
-		roadRoutes.add(themeRoute + "/tiles/road/3RoadIntersection1.png");
-		roadRoutes.add(themeRoute + "/tiles/road/3RoadIntersection2.png");
-		roadRoutes.add(themeRoute + "/tiles/road/3RoadIntersection3.png");
-		roadRoutes.add(themeRoute + "/tiles/road/3RoadIntersection4.png");
-		roadRoutes.add(themeRoute + "/tiles/road/2RoadIntersection1.png");
-		roadRoutes.add(themeRoute + "/tiles/road/2RoadIntersection2.png");
-		roadRoutes.add(themeRoute + "/tiles/road/2RoadIntersection3.png");
-		roadRoutes.add(themeRoute + "/tiles/road/2RoadIntersection4.png");
+		roadRoutes.add(themeRoute + "/tiles/road/cornerSIRoad.png");
+		roadRoutes.add(themeRoute + "/tiles/road/cornerIIRoad.png");
+		roadRoutes.add(themeRoute + "/tiles/road/cornerSDRoad.png");
+		roadRoutes.add(themeRoute + "/tiles/road/cornerIDRoad.png");
+		roadRoutes.add(themeRoute + "/tiles/road/T1Road.png");
+		roadRoutes.add(themeRoute + "/tiles/road/T2Road.png");
+		roadRoutes.add(themeRoute + "/tiles/road/T3Road.png");
+		roadRoutes.add(themeRoute + "/tiles/road/T4Road.png");
+		roadRoutes.add(themeRoute + "/tiles/road/intersectionRoad.png");
+		roadRoutes.add(themeRoute + "/tiles/road/roadTeleport.png");
 		
 		//WALL TILE IMAGES
 		wallRoutes.add(themeRoute + "/tiles/wall/wall.png");
-		wallRoutes.add(themeRoute + "/tiles/wall/horizontalBorderWall.png");
 		wallRoutes.add(themeRoute + "/tiles/wall/verticalBorderWall.png");
+		wallRoutes.add(themeRoute + "/tiles/wall/horizontalBorderWall.png");
 		
+		
+		//GHOST HOME IMAGES
+		ghostHomeRoutes.add(themeRoute + "/tiles/GhostHome/ghostHomeDoor.png");
+		ghostHomeRoutes.add(themeRoute + "/tiles/GhostHome/ghostHomeSI.png");
+		ghostHomeRoutes.add(themeRoute + "/tiles/GhostHome/ghostHomeII.png");
+		ghostHomeRoutes.add(themeRoute + "/tiles/GhostHome/ghostHomeSD.png");
+		ghostHomeRoutes.add(themeRoute + "/tiles/GhostHome/ghostHomeID.png");
 		
 		
 		
@@ -205,10 +215,17 @@ public abstract class ResourceProvider {
 		
 		wallImages = new ImageIcon[wallRoutes.size()];
 		createImages(wallRoutes, wallImages);
-			
+		
+		ghostHomeImages = new ImageIcon[ghostHomeRoutes.size()];
+		createImages(ghostHomeRoutes, ghostHomeImages);
+		
 	}
 	
-	
+	/**
+	 * Creates an image array based on the routeList parameter which is stored in the storageLocation parameter.
+	 * @param routeList List containing the routes of the images.
+	 * @param storageLocation ImageIcon array where the images will be stored.
+	 */
 	private void createImages(LinkedList<String> routeList, ImageIcon[] storageLocation) {
 		
 		for(int i = 0; i<storageLocation.length; i++) {
@@ -310,5 +327,25 @@ public abstract class ResourceProvider {
 		return scaredImages;
 		
 	}
+	
+	public ImageIcon[] getGhostHomeImages() {
+		return ghostHomeImages;
+	}
+	
+	
+	public void resizeTiles(int height, int width) {
+		
+	}
+	
+	public void resizeCharacters(int height, int width) {
+		
+	}
+	
+	public void resizePickeables(int height, int width) {
+		
+	}
+
+
+	
 	
 }

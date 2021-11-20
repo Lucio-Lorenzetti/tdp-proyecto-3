@@ -30,21 +30,42 @@ public class MainWindowV2 extends JFrame {
 	
 	//DECLARACIÓN DE VARIABLES
 	
+	private JPanel BottomLayerPanel;
+	private JPanel PickupLayerPanel;
+	private JPanel CharacterLayerPanel;
 	private JPanel contentPane;
+	private JPanel panel;
 	
 	private JLabel backgroundLabel;
 	
 	public MainWindowV2() {
 		
+		this.setResizable(false);
+		this.setBounds(0, 0, 1000, 600);
+		
 		contentPane = new JPanel();
 		
 		contentPane.setBounds(0, 0, 0, 0);
+		
+		System.out.println("Wow");
+		
+		
+		panel = new JPanel();
+		panel.setOpaque(false);
+		panel.setBounds(526, 73, 448, 440);
+		this.getContentPane().add(panel);
+		panel.setLayout(null);
+		
+		
+		//setBackground(contentPane, ResourceManager.getProvider().getBackgroundImages()[0]);
+		
+		/*
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		
 		this.setContentPane(contentPane);
-		
+		*/
 	}
 	
 	private void setBackground(JPanel j, ImageIcon backgroundImage){
@@ -76,6 +97,10 @@ public class MainWindowV2 extends JFrame {
 		backgroundLabel.repaint();
 		
 	}
+	
+	
+	
+	
 	
 	private void resize(ImageIcon image, int width, int height) {
 		

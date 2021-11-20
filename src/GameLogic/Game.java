@@ -33,7 +33,8 @@ public class Game {
     protected Thread myTimerGhostsThread;
     protected Timer myTimerVulnerable;
     protected Thread myTimerVulnerableThread;
-    
+    protected Timer myTimerSpeed;
+    protected Thread myTimerSpeedThread;
     
     protected Map myMap;
     protected MainWindow myGUI;
@@ -443,17 +444,6 @@ public class Game {
 		
     	myTimerVulnerableThread.start();
     	
-    	
-		/*
-		*
-		*	coso del thread
-		
-		*   for(Ghost g : livingGhost) {
-	    		returnGhostToNormal(g);
-			}
-		*/
-
-		
 	}
 
 	/*
@@ -484,11 +474,17 @@ public class Game {
     public void changeSpdPacMan(long time, long speed) {
     	this.myTimerPacMan.setDelay(speed);
 		
+    	myTimerSpeed = new TimerSpeedPotion(8000, this);
     	
-    	/*
-		*hacer timer del hilo para volver a la normalidad
-		*/
+    	myTimerSpeedThread = new Thread(myTimerSpeed);
+		
+    	myTimerSpeedThread.start();
     	
+    }
+    
+    public void changeSpdPacMan(long speed) {
+    	this.myTimerPacMan.setDelay(speed);
+
     }
     
     public void changeSpdGhost(long delay) {

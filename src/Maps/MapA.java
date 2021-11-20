@@ -20,7 +20,7 @@ public class MapA extends Map {
      */
     public MapA(Game g, int cellHeightPX, int cellWidthPX){
     	
-    	super(g, cellHeightPX, cellWidthPX, "src/Maps/MapA.txt", "src/Maps/MapAPickeable.txt", "src/Maps/MapRole.txt");
+    	super(g, cellHeightPX, cellWidthPX, "src/Maps/MapARoad.txt", "src/Maps/MapAPickeable.txt", "src/Maps/MapRole.txt");
     	
 	}
 }
