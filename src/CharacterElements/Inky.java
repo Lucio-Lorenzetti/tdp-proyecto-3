@@ -1,4 +1,6 @@
 package CharacterElements;
+import javax.swing.ImageIcon;
+
 import GUI.GraphicEntity;
 import GameLogic.Directions;
 import GameLogic.Game;
@@ -26,29 +28,45 @@ public class Inky extends Ghost{
     * @param moving true if Inky is moving, false otherwise.
     */
     public Inky(int posY, int posX, int width, int height, boolean dead, boolean moving, Map m){
-        super(posY, posX, width, height, dead, moving, m);
+        super(posY, posX, width, height, dead, moving, m, new GraphicEntity(ResourceManager.getProvider().getInkyImages()[1]));
         myVisitor = new VisitorBlinky(this);
-        
-        myGraphicEntity = new GraphicEntity(ResourceManager.getProvider().getInkyImages()[1]);
     }
 
 	@Override
 	protected void doOnDirectionChange() {
-		if(nextDirection == Directions.getNeutral()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getInkyImages()[0] );
+    	updateGraphics(nextDirection);
+	}
+
+	@Override	
+	public void updateGraphics(Object direction) {
+		
+		ImageIcon[] images = null;
+		
+		if(indexState == 2) {
+			images = ResourceManager.getProvider().getBlinkyImages();
+		} else if (indexState == 1) {
+			images = ResourceManager.getProvider().getScaredImages();
+		} else {
+			images = ResourceManager.getProvider().getScaredImages(); //CAMBIAR POR DEAD
+		} 
+		
+    	if(direction == Directions.getNeutral()) {
+    		myGraphicEntity.setIcon( images[0] );
+    	} else
+    	if(direction == Directions.getLeft()) {
+    		myGraphicEntity.setIcon( images[1] );
+    	} else
+    	if(direction == Directions.getUp()) {
+    		myGraphicEntity.setIcon( images[2] );
+    	} else
+    	if(direction == Directions.getRight()) {
+    		myGraphicEntity.setIcon( images[3] );
+    	} else
+    	if(direction == Directions.getDown()) {
+    		myGraphicEntity.setIcon( images[4] );
     	}
-    	if(nextDirection == Directions.getLeft()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getInkyImages()[1] );
-    	}
-    	if(nextDirection == Directions.getUp()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getInkyImages()[2] );
-    	}
-    	if(nextDirection == Directions.getRight()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getInkyImages()[3] );
-    	}
-    	if(nextDirection == Directions.getDown()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getInkyImages()[4] );
-    	}
+    	
+		
 	}
 
     @Override
@@ -56,10 +74,6 @@ public class Inky extends Ghost{
 
     }
 
-	@Override
-	public void updateGraphics(Object d) {
-		// TODO Auto-generated method stub
-		
-	}
-     
+	
+	
 }

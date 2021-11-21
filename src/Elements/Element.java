@@ -21,7 +21,16 @@ public abstract class Element {
 	protected GraphicEntity myGraphicEntity;	
 
 	
-	
+	public Element(int posYPX, int posXPX, int width, int height, GraphicEntity graphicEntity) {
+		
+		this.posYPX = posYPX;
+		this.posXPX = posXPX;
+		widthPX = width;
+		heightPX= height;
+		
+		myGraphicEntity = graphicEntity;
+		
+	}
 	
 	/**
    	* Check if the element called by message collides with the element on param.

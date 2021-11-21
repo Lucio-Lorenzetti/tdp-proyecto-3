@@ -30,7 +30,7 @@ public class Blinky extends Ghost{
     * @param moving true if Blinky is moving, false otherwise.
     */
     public Blinky(int posY, int posX, int width, int height, boolean dead, boolean moving, Map m){
-        super(posY, posX, width, height, dead, moving,m);
+        super(posY, posX, width, height, dead, moving, m, new GraphicEntity(ResourceManager.getProvider().getBlinkyImages()[1]));
 
 		myVisitor = new VisitorBlinky(this);
         
@@ -38,7 +38,6 @@ public class Blinky extends Ghost{
         
         ghostState.add(myIA);
 
-        myGraphicEntity = new GraphicEntity(ResourceManager.getProvider().getBlinkyImages()[1]);
     }
 
 	@Override
@@ -60,16 +59,16 @@ public class Blinky extends Ghost{
 		
     	if(direction == Directions.getNeutral()) {
     		myGraphicEntity.setIcon( images[0] );
-    	}
+    	} else
     	if(direction == Directions.getLeft()) {
     		myGraphicEntity.setIcon( images[1] );
-    	}
+    	} else
     	if(direction == Directions.getUp()) {
     		myGraphicEntity.setIcon( images[2] );
-    	}
+    	} else
     	if(direction == Directions.getRight()) {
     		myGraphicEntity.setIcon( images[3] );
-    	}
+    	} else
     	if(direction == Directions.getDown()) {
     		myGraphicEntity.setIcon( images[4] );
     	}

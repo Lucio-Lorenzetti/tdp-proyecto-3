@@ -2,6 +2,7 @@ package CharacterElements;
 
 import java.util.LinkedList;
 
+import GUI.GraphicEntity;
 import GameLogic.Game;
 import IA.AliveGhostGPS;
 import IA.DeadGhostGPS;
@@ -35,9 +36,9 @@ public abstract class Ghost extends Role {
     * @param row where the Ghost is created.
     * @param col where the Ghost is created.
     */
-    public Ghost(int posY, int posX, int width, int height, boolean d, boolean m, Map map){
+    public Ghost(int posY, int posX, int width, int height, boolean d, boolean m, Map map, GraphicEntity graphicEntity){
         
-    	super(posY, posX, width, height);
+    	super(posY, posX, width, height, graphicEntity);
         this.dead = d;
         this.moving = m;
         this.scared = false;
@@ -93,6 +94,7 @@ public abstract class Ghost extends Role {
     		
     	}
     	
+    	myIA.resetObjective();
     	
     }
     

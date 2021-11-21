@@ -1,6 +1,7 @@
 package PickeableElements;
 
 import Elements.Element;
+import GUI.GraphicEntity;
 
 /**
 *
@@ -11,17 +12,16 @@ import Elements.Element;
 * @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
 *
 */
-public abstract class Pickeable extends Element{
+public abstract class Pickeable extends Element {
 
 	
 	protected int points;
 	protected PickeableManager manager;
 	
-	public Pickeable(int posYPX, int posXPX, int width, int height, int score, PickeableManager g) {
-		this.posXPX = posXPX;
-        this.posYPX = posYPX;
-        this.widthPX = width;
-        this.heightPX = height;
+	public Pickeable(int posYPX, int posXPX, int width, int height, int score, PickeableManager g, GraphicEntity graphicEntity) {
+		
+		super(posYPX, posXPX, width, height, graphicEntity);
+		
 		manager = g;
         points = score;
 	}

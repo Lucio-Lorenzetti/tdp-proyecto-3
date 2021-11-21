@@ -15,14 +15,12 @@ import Images.ResourceManager;
 public class PowerPellet extends Pickeable {
 
 	public PowerPellet(int posYPX, int posXPX, int width, int height, PickeableManager g) {
-		super(posYPX, posXPX, width, height, 100, g);
+		super(posYPX, posXPX, width, height, 100, g, new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[1] ));
 		
-		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[1] );
 	}
 	
 	public PowerPellet(PickeableManager g) {
-		super(0,0,0,0,100,g);
-		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[1] );
+		super(0,0,0,0,100,g, new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[1] ));
 	}
 
 	

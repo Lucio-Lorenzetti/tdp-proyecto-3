@@ -15,14 +15,12 @@ import Images.ResourceManager;
 public class SpeedPotion extends Potion {
 
 	public SpeedPotion(int posYPX, int posXPX, int width, int height, PickeableManager g) {
-		super(posYPX, posXPX, width, height, g);
+		super(posYPX, posXPX, width, height, g, new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[3] ));
 		
-		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[3] );
 	}
 	
 	public SpeedPotion(PickeableManager g) {
-		super(0,0,0,0,g);
-		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[3] );
+		super(0,0,0,0,g, new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[3] ));
 	}
 	
 	@Override

@@ -1,6 +1,7 @@
 package CharacterElements;
 
 import Elements.*;
+import GUI.GraphicEntity;
 import Visitor.*;
 import GameLogic.*;
 
@@ -27,12 +28,8 @@ public abstract class Role extends Element {
     * @param width of the Character.
     * @param height of the Character.
     */
-    public Role(int posYPX, int posXPX, int width, int height){
-        
-    	this.posXPX = posXPX;
-        this.posYPX = posYPX;
-        this.widthPX = width;
-        this.heightPX = height;
+    public Role(int posYPX, int posXPX, int width, int height, GraphicEntity graphicEntity){
+        super(posYPX, posXPX, width, height, graphicEntity);
     
         actualDirection = Directions.getLeft();
         nextDirection = Directions.getLeft();

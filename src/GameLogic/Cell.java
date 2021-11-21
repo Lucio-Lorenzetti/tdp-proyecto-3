@@ -3,8 +3,11 @@ package GameLogic;
 
 
 import GUI.GraphicEntity;
+import Images.ResourceManager;
+import Images.ResourceProvider;
 import PickeableElements.Pickeable;
 import java.util.LinkedList;
+import Elements.*;
 
 import javax.swing.ImageIcon;
 
@@ -17,22 +20,17 @@ import javax.swing.ImageIcon;
 * @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
 *
 */
-public class Cell {
+public class Cell extends Element{
 
 	private boolean walkable;
 	private boolean isIntersection;
 
 	private int column;
 	private int row;
-    private int posXPX;
-    private int posYPX;
-    private int widthPX;
-    private int heightPX;
 	
     private LinkedList<CharacterElements.Role> charactersOnTop;
 	
 	private Pickeable pickeable;
-	private GraphicEntity myGraphicEntity;
 	
 	
 	
@@ -47,6 +45,7 @@ public class Cell {
     */
     public Cell(int row, int col, Pickeable p, boolean walkable, int height, int width, ImageIcon icon) {
     	
+    	super( (height * row), (width * col), width, height, new GraphicEntity(icon));
     	
         this.walkable = walkable;
         
@@ -55,13 +54,6 @@ public class Cell {
         this.row = row;
         column = col;
         
-        widthPX = width;
-        heightPX = height;
-        
-        posXPX = widthPX * col;
-        posYPX = heightPX * row;
-        
-        myGraphicEntity = new GraphicEntity(icon);
         
         if(walkable && p != null) {
             pickeable = p;
@@ -143,6 +135,14 @@ public class Cell {
     }   
 
 
+    public void breakCell() {
+    	
+    	walkable = true;
+    	isIntersection = true;
+    	myGraphicEntity.setIcon(ResourceManager.getProvider().getRoadImages()[11]);
+    	
+    }
+    
     
     /**
      * Clones the values of the cell which is called.
@@ -202,14 +202,6 @@ public class Cell {
     
     
     /**
-    * Returns the graphic entity of the cell.
-    * @return graphic entity.
-    */
-    public GraphicEntity getGraphicEntity() {
-    	return myGraphicEntity;
-    }
-    
-    /**
      * Returns if the cell is an intersection.
      * @return true if the cell is an intersection, false if not.
      */
@@ -223,36 +215,6 @@ public class Cell {
      */
     public Pickeable getPickup() {
     	return pickeable;
-    }
-    /**
-     * Returns the atributte heightPX
-     * @return the height of the cell.
-     */
-    public int getHeight() {
-    	return heightPX;
-    }
-    /**
-     * Returns the atributte widthPX
-     * @return the width of the cell.
-     */
-    public int getWidth() {
-    	return widthPX;
-    }
-    
-    /**
-     * Returns the atributte posXPX
-     * @return the position of the cell's pixel on the x-axis.
-     */
-    public int getPosX() {
-    	return posXPX;
-    }
-    
-    /**
-     * Returns the atributte posYPX
-     * @return the position of the cell's pixel on the y-axis.
-     */
-    public int getPosY() {
-    	return posYPX;
     }
     
     /**
@@ -304,5 +266,13 @@ public class Cell {
     public void setPickup(Pickeable p) {
     	pickeable = p;
     }
+    
+    /**
+     * Sets the isIntersection attribute.
+     * @param new value of isIntersection.
+     */
+     public void setIsIntersection(boolean i) {
+    	 isIntersection = i;
+     }
     
 }

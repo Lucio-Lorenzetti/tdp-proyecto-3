@@ -169,7 +169,7 @@ public class MainWindow extends JFrame{
 		btnCambiarIa.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				myGame.returnAllGhostToNormal();
+				myGame.changeIA();
 				obtainFocus();
 			}
 		});

@@ -77,11 +77,15 @@ public class Map {
         
 		//WALL AND LIMITS
 		cellSelection.put('■', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, wallImages[0]));
-        cellSelection.put('▌', new Cell(0,0,null,false, cellHeightPX, cellWidthPX, wallImages[1]));
-		cellSelection.put('▬', new Cell(0,0,null,false, cellHeightPX, cellWidthPX, wallImages[2]));	
+        cellSelection.put('▌', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[1]));
+		cellSelection.put('▬', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[2]));
+		cellSelection.put('╓', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[2]));
+		cellSelection.put('╙', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[2]));
+		cellSelection.put('╖', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[2]));
+		cellSelection.put('╜', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[2]));	
     	
     	//GHOST HOME
-		cellSelection.put('┉', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, ghostHomeImages[0]));
+		cellSelection.put('┉', new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, ghostHomeImages[0]));
 		cellSelection.put('┌', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, ghostHomeImages[1]));
 		cellSelection.put('└', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, ghostHomeImages[2]));
 		cellSelection.put('┐', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, ghostHomeImages[3]));
@@ -93,19 +97,19 @@ public class Map {
 		cellSelection.put('═', new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, roadImages[0]));
 		cellSelection.put('║', new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, roadImages[1]));
 		
-        cellSelection.put('╔', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[2]));
-        cellSelection.put('╚', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[3]));        
-        cellSelection.put('╗', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[4]));
-        cellSelection.put('╝', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[5]));
-        
-       	cellSelection.put('╦', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[6]));
-        cellSelection.put('╩', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[7]));
-        cellSelection.put('╠', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[8]));
-        cellSelection.put('╣', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[9]));
+        cellSelection.put('╔', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[2]));
+        cellSelection.put('╚', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[3]));        
+        cellSelection.put('╗', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[4]));
+        cellSelection.put('╝', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[5]));
+         
+       	cellSelection.put('╦', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[6]));
+        cellSelection.put('╩', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[7]));
+        cellSelection.put('╠', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[8]));
+        cellSelection.put('╣', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[9]));
 		
 		cellSelection.put('╬', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[10]));
 		
-		cellSelection.put('T', new Cell(0,0, null, true, cellHeightPX, cellWidthPX, cellImages[11]));
+		//cellSelection.put('T', new Cell(0,0, null, true, cellHeightPX, cellWidthPX, cellImages[11]));
 
 		//PIKEABLES
         
@@ -152,7 +156,6 @@ public class Map {
 				ByteBuffer byteBuffer = StandardCharsets.UTF_8.encode(actL);
 
 				actualLine = new String(byteBuffer.array(), StandardCharsets.UTF_8);
-				System.out.println(actualLine);
 				
 				
 				for(int col = 0; col < actualLine.length(); col++){
@@ -164,7 +167,7 @@ public class Map {
 					}
 					
 					if(actualLine.charAt(col) == '┉'){
-                        ghostHomes.add(cellSelection.get( actualLine.charAt(col) ));
+                        ghostHomes.add( cells[actualRow][col] );
                     }
 					
 					
@@ -192,15 +195,9 @@ public class Map {
 			
 				ByteBuffer byteBuffer = StandardCharsets.UTF_8.encode(actL);
 
-				actualLine = new String(byteBuffer.array(), StandardCharsets.UTF_8);
-				System.out.println(actualLine);
-				
+				actualLine = new String(byteBuffer.array(), StandardCharsets.UTF_8);	
 				
 				for(int col = 0; col < actualLine.length(); col++){
-					
-					System.out.println(actualLine.charAt(col));
-					
-					System.out.println(pickeableSelection.get( actualLine.charAt(col) ) == null);
 					
 					if(pickeableSelection.get( actualLine.charAt(col) ) != null) {
 						
@@ -456,7 +453,7 @@ public class Map {
 
 		myGame.updatePickupGraphic(aux);		//ACTUALIZAR SOLO PICKUP PARA EVITAR EFECTOS VISUALES RAROS EN LA CELDA
 
-		System.out.println("CONSUMIDO");
+		//System.out.println("CONSUMIDO");
 		
 	}
 	
@@ -471,6 +468,87 @@ public class Map {
 		
 	}
 	
+	public void explode(int centerX, int centerY, int sizeX, int sizeY) {
+		
+		int topLeftX = getCellByPosition(centerX, centerY).getColumn() - sizeX;
+		int topLeftY = getCellByPosition(centerX, centerY).getRow() - sizeY;
+
+		int bottomRightX = topLeftX + ( (sizeX * 2) + 1);
+		int bottomRightY = topLeftY + ( (sizeY * 2) + 1);
+		
+		
+		
+		Cell aux = null;
+		
+		/*
+		System.out.println(centerX + " " + centerY);
+		System.out.println(sizeX + " " + sizeY);
+		System.out.println(topLeftX + " " + topLeftY);
+		
+		System.out.println(ghostHomes.size());
+		*/
+		
+		for(int i = topLeftX; i < bottomRightX ; i++) {
+		
+			
+			
+			for(int k = topLeftY; k < bottomRightY; k++) {
+
+				aux = cells[k][i];
+	
+				
+				if(!isGhostHome(aux) && !isBorder(aux) ) {
+
+					if(aux.getWalkable()) {
+						aux.getGraphicEntity().setIcon(ResourceManager.getProvider().getRoadImages()[11]);
+					} else {
+						aux.getGraphicEntity().setIcon(ResourceManager.getProvider().getWallImages()[7]);
+					}
+				
+					myGame.updateCellGraphic(aux);
+					
+				}
+				
+				
+				
+			}
+			
+		}
+		
+	}
+	
+	
+	public boolean isBorder(Cell c) {
+		
+		boolean result = false;
+		
+		int posX = c.getColumn();
+		int posY = c.getRow();
+		
+		if(posX == 0 || posX == width-1 || posY == 0 || posY == height-1) {
+			result = true;
+		}
+		
+		
+		return result;
+		
+	}
+	
+	public boolean isGhostHome(Cell c){
+		boolean result = false;
+		for(Cell gh : ghostHomes){
+			/*
+			System.out.println("gh: Fila "+gh.getRow()+"Columna "+gh.getColumn());
+			System.out.println("c: Fila "+gh.getRow()+"Columna "+gh.getColumn());
+			*/
+			if(c == gh) {
+				result = true;
+				return result;		
+			}	
+		}
+		//System.out.println("Es una casa de fantasma: "+result);
+		return result;
+	}
 	/**
 	 * Returns a HashMap that contains the adjacent cells with a direction key;
 	 * @param c
@@ -481,10 +559,10 @@ public class Map {
 		HashMap<Object,Cell> result = new HashMap<Object,Cell>();
 		
 		
-		if(c.getColumn() < width-1) 	result.put(Directions.getRight(), cells[c.getRow()][c.getColumn()+1]);
-		if(c.getColumn() > 0 ) 		result.put(Directions.getLeft(), cells[c.getRow()][c.getColumn()-1]);
-		if(c.getRow() < height-1) 	result.put(Directions.getUp(), cells[c.getRow()-1][c.getColumn()]);
-		if(c.getRow() > 0    ) 		result.put(Directions.getDown(), cells[c.getRow()+1][c.getColumn()]);
+		if(c.getColumn() < width-1) 	result.put(Directions.getRight(), cells[c.getRow()][c.getColumn()+1].clone());
+		if(c.getColumn() > 0 ) 		result.put(Directions.getLeft(), cells[c.getRow()][c.getColumn()-1].clone());
+		if(c.getRow() < height-1) 	result.put(Directions.getUp(), cells[c.getRow()-1][c.getColumn()].clone());
+		if(c.getRow() > 0    ) 		result.put(Directions.getDown(), cells[c.getRow()+1][c.getColumn()].clone());
 		
 		
 		return result;

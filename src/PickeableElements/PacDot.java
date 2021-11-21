@@ -16,15 +16,13 @@ public class PacDot extends Pickeable {
 	
 	public PacDot(int posYPX, int posXPX, int width, int height, PickeableManager g) {
 		
-		super(posYPX, posXPX, width, height, 10, g);
+		super(posYPX, posXPX, width, height, 10, g, new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[0] ));
 		
-		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[0] );
 		
 	}
 	
 	public PacDot(PickeableManager g) {
-		super(0,0,0,0,10,g);
-		myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[0] );
+		super(0,0,0,0,10,g, new GraphicEntity( ResourceManager.getProvider().getPickeableImages()[0] ));
 	}
 
 	@Override

@@ -154,6 +154,11 @@ public abstract class ResourceProvider {
 		wallRoutes.add(themeRoute + "/tiles/wall/wall.png");
 		wallRoutes.add(themeRoute + "/tiles/wall/verticalBorderWall.png");
 		wallRoutes.add(themeRoute + "/tiles/wall/horizontalBorderWall.png");
+		wallRoutes.add(themeRoute + "/tiles/wall/limitSI.png");
+		wallRoutes.add(themeRoute + "/tiles/wall/limitII.png");
+		wallRoutes.add(themeRoute + "/tiles/wall/limitSD.png");
+		wallRoutes.add(themeRoute + "/tiles/wall/limitID.png");
+		wallRoutes.add(themeRoute + "/tiles/wall/wallOnFire.gif");
 		
 		
 		//GHOST HOME IMAGES

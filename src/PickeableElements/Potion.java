@@ -1,5 +1,7 @@
 package PickeableElements;
 
+import GUI.GraphicEntity;
+
 /**
 *
 * Potion Class.
@@ -11,8 +13,8 @@ package PickeableElements;
 */
 public abstract class Potion extends Pickeable{
 
-	public Potion(int posYPX, int posXPX, int width, int height,PickeableManager g) {
-		super(posYPX, posXPX, width, height, 150, g);
+	public Potion(int posYPX, int posXPX, int width, int height,PickeableManager g, GraphicEntity graphicEntity) {
+		super(posYPX, posXPX, width, height, 150, g, graphicEntity);
 	}
 	
 }

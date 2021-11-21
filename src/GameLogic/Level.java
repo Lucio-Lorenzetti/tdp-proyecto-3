@@ -40,11 +40,10 @@ public class Level {
 		Factories.add(new MapFactoryA());
 		Factories.add(new MapFactoryB());
 		Factories.add(new MapFactoryC());
-		Factories.add(new MapFactoryBonus());
 
 		cantFactories = Factories.size();
 		
-		levelNumber = 2;
+		levelNumber = 0;
 		
 		System.out.println("Constructor level");
 			

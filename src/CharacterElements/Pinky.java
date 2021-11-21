@@ -27,10 +27,8 @@ public class Pinky extends Ghost{
     * @param moving true if Pinky is moving, false otherwise.
     */
     public Pinky(int posY, int posX, int width, int height, boolean dead, boolean moving, Map m){
-        super(posY, posX, width, height, dead, moving, m);
+        super(posY, posX, width, height, dead, moving, m, new GraphicEntity(ResourceManager.getProvider().getPinkyImages()[1]));
         myVisitor = new VisitorBlinky(this);
-        
-        myGraphicEntity = new GraphicEntity(ResourceManager.getProvider().getPinkyImages()[1]);
     }
 
 

@@ -26,21 +26,18 @@ public class PacMan extends Role{
     */
     public PacMan(int posY, int posX, int width, int height){
     	
-        super(posY, posX, width, height);
+        super(posY, posX, width, height, new GraphicEntity( ResourceManager.getProvider().getPacManImages()[0] ));
         
         
         myVisitor = new VisitorPacMan(this);
         
-        myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPacManImages()[0] );
-        
     }
 
     public PacMan() {
-    	super(0, 0, 0, 0);
+    	super(0, 0, 0, 0, new GraphicEntity( ResourceManager.getProvider().getPacManImages()[0] ));
     	
     	myVisitor = new VisitorPacMan(this);
         
-        myGraphicEntity = new GraphicEntity( ResourceManager.getProvider().getPacManImages()[0] );
     }
 	
     

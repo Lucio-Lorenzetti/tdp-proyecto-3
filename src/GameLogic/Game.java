@@ -119,6 +119,7 @@ public class Game {
 		return true;
     
     }
+    
     /**
      * Set the atributte playerName.
      * @param p the name of the player.
@@ -178,8 +179,8 @@ public class Game {
 	    	}
 	    	
 	    	if( myMap.canMove(check1row, check1col, characterNextDirection)  && myMap.canMove(check2row, check2col, characterNextDirection)) {
-	    	
-	    		if(!myMap.checkIfInIntersection(C.getPosX(), C.getPosY()) || myMap.checkIfInPath(C.getPosX(), C.getPosY())) {
+	    		//!myMap.checkIfInIntersection(C.getPosX(), C.getPosY()) || 
+	    		if(myMap.checkIfInPath(C.getPosX(), C.getPosY())) {
 	    			C.updateDirection();  
 		    		myGUI.paintCharacter(C);
 	    		}	
@@ -446,14 +447,11 @@ public class Game {
     	
 	}
 
-	/*
+	
     public void changeIA() {
     	
     	for(Ghost g : livingGhost) {
-    		g.scare(this);
-    	}
-    	for(Ghost g : vulnerableGhost) {
-    		g.calm(this);
+    		g.ChangeState(0);;
     	}
     	
     	LinkedList<Ghost> aux;
@@ -469,7 +467,7 @@ public class Game {
     		updateCharacterGraphic(g);
     	}
     	
-    }*/
+    }
     
     public void changeSpdPacMan(long time, long speed) {
     	this.myTimerPacMan.setDelay(speed);
@@ -479,16 +477,22 @@ public class Game {
     	myTimerSpeedThread = new Thread(myTimerSpeed);
 		
     	myTimerSpeedThread.start();
+		
     	
     }
     
     public void changeSpdPacMan(long speed) {
     	this.myTimerPacMan.setDelay(speed);
-
     }
     
     public void changeSpdGhost(long delay) {
     	this.myTimerPacMan.setDelay(delay);
+    }
+    
+    public void explodeArea(int centerX, int centerY) {
+    	
+    	myMap.explode(centerX, centerY, 2, 2);
+    	
     }
     
     
