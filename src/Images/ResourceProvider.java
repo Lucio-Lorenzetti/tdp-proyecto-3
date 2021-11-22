@@ -1,6 +1,9 @@
 package Images;
 
 import java.util.LinkedList;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import javax.swing.ImageIcon;
  
@@ -229,6 +232,9 @@ public abstract class ResourceProvider {
 		
 		ghostHomeImages = new ImageIcon[ghostHomeRoutes.size()];
 		createImages(ghostHomeRoutes, ghostHomeImages);
+
+		backgroundMusic = new Clip[backgroundMusicRoutes.size()];
+		createMusic(backgroundMusicRoutes, backgroundMusic);
 		
 	}
 	
@@ -245,6 +251,20 @@ public abstract class ResourceProvider {
 		
 	}
 
+	private void createMusic(LinkedList<String> routeList, Clip[] storageLocation) {
+		Clip music = null;
+		for(int i = 0; i<storageLocation.length; i++) {
+			try {
+				music = AudioSystem.getClip();
+				AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getResource(routeList.get(i)));
+		    	music.open(inputStream);
+			 	
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}		
+			storageLocation[i] = music;
+		}
+	}
 
 	/**
 	 * Returns an ImageIcon array containing PacMan graphics.
@@ -343,6 +363,9 @@ public abstract class ResourceProvider {
 		return ghostHomeImages;
 	}
 	
+	public Clip[] getBackgroundMusic() {
+		return backgroundMusic;
+	}
 	
 	public void resizeTiles(int height, int width) {
 		

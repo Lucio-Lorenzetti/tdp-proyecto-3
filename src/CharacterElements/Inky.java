@@ -28,7 +28,7 @@ public class Inky extends Ghost{
     * @param moving true if Inky is moving, false otherwise.
     */
     public Inky(int posY, int posX, int width, int height, boolean dead, boolean moving, Map m){
-        super(posY, posX, width, height, dead, moving, m, new GraphicEntity(ResourceManager.getProvider().getInkyImages()[1]));
+        super(posY, posX, width, height, dead, moving, m, new GraphicEntity(ResourceManager.getProvider().getInkyImages()[1]), 3);
         myVisitor = new VisitorBlinky(this);
         
         myIA = new IAInky(m, this);

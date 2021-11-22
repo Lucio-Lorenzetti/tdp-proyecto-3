@@ -29,7 +29,7 @@ public class Clyde extends Ghost{
     * @param moving true if Clyde is moving, false otherwise.
     */
     public Clyde(int posY, int posX, int width, int height, boolean dead, boolean moving, Map m){
-        super(posY, posX, width, height, dead, moving, m, new GraphicEntity(ResourceManager.getProvider().getClydeImages()[1]));
+        super(posY, posX, width, height, dead, moving, m, new GraphicEntity(ResourceManager.getProvider().getClydeImages()[1]), 4);
         myVisitor = new VisitorBlinky(this);
     
         myIA = new IAClyde(m, this);

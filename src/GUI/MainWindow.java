@@ -4,10 +4,12 @@ package GUI;
 
 import java.awt.Image;
 
+import java.awt.Color;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import GameLogic.*;
 import Images.ResourceManager;
@@ -33,6 +35,11 @@ import java.awt.GridLayout;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Component;
+import javax.swing.JTable;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 
 public class MainWindow extends JFrame{
@@ -56,6 +63,10 @@ public class MainWindow extends JFrame{
 	private JLabel background;
 	private JLabel lblscore;
 	
+	String[][] tableData;
+	String[] tableHeaders;
+	
+	
 	private Font gameFont;
 	
 	private JPanel BottomLayerPanel;
@@ -63,8 +74,8 @@ public class MainWindow extends JFrame{
 	private JPanel CharacterLayerPanel;
 	private JPanel contentPane;
 	private JPanel panel;
+	private JScrollPane ScoreboardPanel;
 	
-	private JButton TEST_1;
 	private JButton nextlvlButton;
 	
 	private int gridWidth;
@@ -72,6 +83,10 @@ public class MainWindow extends JFrame{
 	
 	private int cellWidth;
 	private int cellHeight;
+	private JTable table;
+
+	private Clip music;
+	private boolean muteMusic;
 	
 	
 	/**
@@ -125,7 +140,7 @@ public class MainWindow extends JFrame{
 		
 		panel = new JPanel();
 		panel.setOpaque(false);
-		panel.setBounds(526, 73, 448, 440);
+		panel.setBounds(542, 40, 448, 525);
 		this.getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -137,30 +152,26 @@ public class MainWindow extends JFrame{
 				System.exit(EXIT_ON_CLOSE);
 			}
 		});
-		EXIT_BUTTON.setBounds(10, 394, 168, 35);
+		EXIT_BUTTON.setBounds(224, 385, 202, 35);
 		panel.add(EXIT_BUTTON);
-		
-		TEST_1 = new JButton("TEST_1");
-		TEST_1.setBounds(276, 11, 162, 95);
-		panel.add(TEST_1);
 		
 		nextlvlButton = new JButton("Siguiente Nivel");
 		nextlvlButton.setBounds(10, 11, 162, 95);
 		panel.add(nextlvlButton);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(276, 279, 150, 150);
+		panel_1.setBounds(224, 279, 202, 95);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
 		JLabel Score = new JLabel("Score");
 		Score.setHorizontalAlignment(SwingConstants.CENTER);
-		Score.setBounds(53, 11, 46, 14);
+		Score.setBounds(10, 11, 182, 14);
 		panel_1.add(Score);
 		
 		lblscore = new JLabel("-Score-");
 		lblscore.setHorizontalAlignment(SwingConstants.CENTER);
-		lblscore.setBounds(53, 50, 46, 14);
+		lblscore.setBounds(10, 50, 182, 14);
 		panel_1.add(lblscore);
 		
 		JButton btnCambiarIa = new JButton("CAMBIAR IA");
@@ -170,6 +181,38 @@ public class MainWindow extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				myGame.changeIA();
+				obtainFocus();
+			}
+		});
+		
+		
+		ScoreboardPanel = new JScrollPane();
+		ScoreboardPanel.setBounds(224, 11, 202, 257);
+		panel.add(ScoreboardPanel);
+		ScoreboardPanel.setLayout(null);
+		
+		table = new JTable();
+		table.setBounds(101, 5, 0, 0);
+		
+		table.setRowSelectionAllowed(false);
+		ScoreboardPanel.add(table);
+		
+		JButton pauseMusic = new JButton("Mute Music");
+		pauseMusic.setBounds(10, 226, 162, 95);
+		panel.add(pauseMusic);
+		pauseMusic.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(!muteMusic){
+					muteMusic = true;
+					pauseMusic.setText("Unmute Music");
+					music.stop();
+				} else {
+					muteMusic = false;
+					pauseMusic.setText("Mute Music");
+					music.start();
+				}
+				
 				obtainFocus();
 			}
 		});
@@ -243,8 +286,9 @@ public class MainWindow extends JFrame{
 		
 		this.setVisible(true);
 		
-		
-		
+		music = ResourceManager.getProvider().getBackgroundMusic()[0];
+		music.loop(music.LOOP_CONTINUOUSLY);
+		music.start();	
 		
 		
 	}
@@ -278,12 +322,13 @@ public class MainWindow extends JFrame{
 		}
 		
 	}
+
 	
 	
 	private JPanel createGamePanel() {
 		
 		JPanel GamePanel = new JPanel();
-		GamePanel.setBounds(44, 73, 440, 440);
+		GamePanel.setBounds(10, 37, 528, 528);
 		this.getContentPane().add(GamePanel);
 		GamePanel.setLayout(new GridLayout(gridHeight, gridWidth, 0, 0));
 		GamePanel.setOpaque(false);
@@ -403,6 +448,27 @@ public class MainWindow extends JFrame{
 		
 	}
 	
+	public void createTable() {
+		
+		int playerAmount = 10;
+		
+		String[] tableHeaders = {"SCORE", "PLAYER"};
+		tableData = new String[playerAmount][2];
+		
+		
+		
+		table = new JTable(tableData, tableHeaders);
+
+		table.setBounds(ScoreboardPanel.getX(), ScoreboardPanel.getY(), ScoreboardPanel.getWidth(), ScoreboardPanel.getHeight());
+		
+		//ScoreboardPanel.clear();
+		
+		table.setVisible(true);
+		
+		ScoreboardPanel.add(table);
+		
+		table.repaint();
+	}
 	
 	private void setBackground(){
 
@@ -461,13 +527,8 @@ public class MainWindow extends JFrame{
 		});
 		
 		
-		TEST_1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				myGame.printScores();
-				obtainFocus();
-			}
-		});
+		createTable();
+
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		

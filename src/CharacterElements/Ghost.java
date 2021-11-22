@@ -36,9 +36,9 @@ public abstract class Ghost extends Role {
     * @param row where the Ghost is created.
     * @param col where the Ghost is created.
     */
-    public Ghost(int posY, int posX, int width, int height, boolean d, boolean m, Map map, GraphicEntity graphicEntity){
+    public Ghost(int posY, int posX, int width, int height, boolean d, boolean m, Map map, GraphicEntity graphicEntity, int characterSpeed){
         
-    	super(posY, posX, width, height, graphicEntity);
+    	super(posY, posX, width, height, graphicEntity, characterSpeed);
         this.dead = d;
         this.moving = m;
         this.scared = false;

@@ -25,7 +25,7 @@ public class TimerSpeedPotion extends Timer{
 			}
 					
 				
-			myGame.changeSpdPacMan(15);
+			myGame.changeSpdPacMan(40);
 			
 	}
 	

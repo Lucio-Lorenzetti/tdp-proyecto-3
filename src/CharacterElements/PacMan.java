@@ -28,7 +28,7 @@ public class PacMan extends Role{
     */
     public PacMan(int posY, int posX, int width, int height){
     	
-        super(posY, posX, width, height, new GraphicEntity( ResourceManager.getProvider().getPacManImages()[0] ));
+        super(posY, posX, width, height, new GraphicEntity( ResourceManager.getProvider().getPacManImages()[0] ), 3);
         
         hearts = 3;
         
@@ -37,7 +37,7 @@ public class PacMan extends Role{
     }
 
     public PacMan() {
-    	super(0, 0, 0, 0, new GraphicEntity( ResourceManager.getProvider().getPacManImages()[0] ));
+    	super(0, 0, 0, 0, new GraphicEntity( ResourceManager.getProvider().getPacManImages()[0] ), 4);
     	
     	myVisitor = new VisitorPacMan(this);
         
@@ -68,13 +68,15 @@ public class PacMan extends Role{
     		myGraphicEntity.setIcon( ResourceManager.getProvider().getPacManImages()[4] );
     	}
     	
-    } 
+    }
 
     public void hurtPacMan(){
         hearts--;
     }
 
-    public int getHearts(){ return hearts; }
+    public int getHearts(){ 
+        return hearts; 
+    }
     
     
    /**

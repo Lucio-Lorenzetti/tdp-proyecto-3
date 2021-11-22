@@ -65,11 +65,11 @@ public class Game {
 
     	actualScore = 0;
     	
-    	myTimerPacMan = new TimerPacMan(15, this);
+    	myTimerPacMan = new TimerPacMan(40, this);
     	
     	myTimerPacManThread = new Thread(myTimerPacMan);
     	
-    	myTimerGhosts = new TimerGhost(20, this);
+    	myTimerGhosts = new TimerGhost(50, this);
     	
     	myTimerGhostsThread = new Thread(myTimerGhosts);
     	
@@ -393,6 +393,10 @@ public class Game {
         	}
     		
     	}
+    	
+    	
+    	myTimerGhosts.setDelay( myLevel.getGhostDelay() );
+    	
     	
     	
     	PacMan = new PacMan(myGUI.getCellHeight() * 12,  myGUI.getCellWidth() * 10 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1);

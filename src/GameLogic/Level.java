@@ -59,9 +59,24 @@ public class Level {
 		changeMap(cellHeightPX, cellWidthPX);
 		levelNumber++;
 		myGame.startGame();
-		System.out.println("PassLevel");
+		System.out.println("PassLevel: " + levelNumber);
 		
 	}
+	
+	public int getGhostDelay() {
+		
+		int minDelay = 35;
+		int startDelay = 75;
+		
+		int ghostDelay = startDelay - 5 * levelNumber;
+		
+		if(ghostDelay <= minDelay) {
+			ghostDelay = minDelay;
+		}
+		
+		return ghostDelay;
+	}
+	
 	
 	/**
 	 * Changes the current map to the next.
@@ -76,6 +91,10 @@ public class Level {
 	
 		System.out.println("ChangeMap");
 	}
+	
+	
+	
+	
 	
 
 }

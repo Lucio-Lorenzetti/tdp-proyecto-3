@@ -30,7 +30,7 @@ public class Blinky extends Ghost{
     * @param moving true if Blinky is moving, false otherwise.
     */
     public Blinky(int posY, int posX, int width, int height, boolean dead, boolean moving, Map m){
-        super(posY, posX, width, height, dead, moving, m, new GraphicEntity(ResourceManager.getProvider().getBlinkyImages()[1]));
+        super(posY, posX, width, height, dead, moving, m, new GraphicEntity(ResourceManager.getProvider().getBlinkyImages()[1]), 4);
 
 		myVisitor = new VisitorBlinky(this);
         

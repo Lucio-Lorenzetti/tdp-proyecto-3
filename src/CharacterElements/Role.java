@@ -20,6 +20,8 @@ public abstract class Role extends Element {
 
     protected Object actualDirection;
     protected Object nextDirection;
+
+    protected int speed;
     
     /**
     * Creates and initialize a Character;
@@ -28,9 +30,11 @@ public abstract class Role extends Element {
     * @param width of the Character.
     * @param height of the Character.
     */
-    public Role(int posYPX, int posXPX, int width, int height, GraphicEntity graphicEntity){
+    public Role(int posYPX, int posXPX, int width, int height, GraphicEntity graphicEntity, int characterSpeed){
         super(posYPX, posXPX, width, height, graphicEntity);
     
+        speed = characterSpeed;
+        
         actualDirection = Directions.getLeft();
         nextDirection = Directions.getLeft();
     }
@@ -74,29 +78,29 @@ public abstract class Role extends Element {
     * Moves the character up.
     */
     protected void moveUp() {
-    	posYPX--;
+    	posYPX = posYPX - speed;
     }
     
     /**
     * Moves the character down.
     */
      protected void moveDown() {
-    	posYPX++;
+    	 posYPX = posYPX + speed;
      }
     
     /**
     * Moves the character left.
     */
      protected  void moveLeft() {
-    	 posXPX--;
+    	 posXPX = posXPX - speed;
      }
     
     /**
     * Moves the character right.
     */
      protected  void moveRight() {
-    	posXPX++;
-    }
+    	 posXPX = posXPX + speed;
+     }
     
      
      
