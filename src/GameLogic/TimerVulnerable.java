@@ -23,7 +23,7 @@ public class TimerVulnerable extends Timer{
 			}
 					
 				
-			myGame.returnAllGhostToNormal();
+			myGame.returnVulnerableGhostToNormal();
 			
 	}
 	

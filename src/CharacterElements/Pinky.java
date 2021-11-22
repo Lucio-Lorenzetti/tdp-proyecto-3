@@ -1,7 +1,9 @@
 package CharacterElements;
+import javax.swing.ImageIcon;
+
 import GUI.GraphicEntity;
 import GameLogic.Directions;
-import GameLogic.Game;
+import IA.IAPinky;
 import Images.ResourceManager;
 import Visitor.*;
 import Maps.Map;
@@ -28,38 +30,60 @@ public class Pinky extends Ghost{
     */
     public Pinky(int posY, int posX, int width, int height, boolean dead, boolean moving, Map m){
         super(posY, posX, width, height, dead, moving, m, new GraphicEntity(ResourceManager.getProvider().getPinkyImages()[1]));
-        myVisitor = new VisitorBlinky(this);
+        
+        
+        myVisitor = new VisitorPinky(this);
+        
+        myIA = new IAPinky(m, this);
+        
+        ghostState.add(myIA);
+        
     }
 
 
 	@Override
 	protected void doOnDirectionChange() {
-		if(nextDirection == Directions.getNeutral()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getPinkyImages()[0] );
-    	}
-    	if(nextDirection == Directions.getLeft()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getPinkyImages()[1] );
-    	}
-    	if(nextDirection == Directions.getUp()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getPinkyImages()[2] );
-    	}
-    	if(nextDirection == Directions.getRight()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getPinkyImages()[3] );
-    	}
-    	if(nextDirection == Directions.getDown()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getPinkyImages()[4] );
-    	}
+    	updateGraphics(nextDirection);
 	}
 
-    @Override
-    public void accept(VisitorPacMan c){
+	@Override	
+	public void updateGraphics(Object direction) {
+		
+		ImageIcon[] images = null;
+		
+		if(indexState == 2) {
+			images = ResourceManager.getProvider().getPinkyImages();
+		} else if (indexState == 1) {
+			images = ResourceManager.getProvider().getScaredImages();
+		} else {
+			images = ResourceManager.getProvider().getScaredImages(); //CAMBIAR POR DEAD
+		} 
+		
+    	if(direction == Directions.getNeutral()) {
+    		myGraphicEntity.setIcon( images[0] );
+    	} else
+    	if(direction == Directions.getLeft()) {
+    		myGraphicEntity.setIcon( images[1] );
+    	} else
+    	if(direction == Directions.getUp()) {
+    		myGraphicEntity.setIcon( images[2] );
+    	} else
+    	if(direction == Directions.getRight()) {
+    		myGraphicEntity.setIcon( images[3] );
+    	} else
+    	if(direction == Directions.getDown()) {
+    		myGraphicEntity.setIcon( images[4] );
+    	}
+    	
+		
+	}
 
+
+    @Override
+    public void accept(Visitor c){
+		myVisitor.visitPinky(this);
     }
 
 
-	@Override
-	public void updateGraphics(Object d) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }

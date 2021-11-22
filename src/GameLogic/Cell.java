@@ -4,12 +4,13 @@ package GameLogic;
 
 import GUI.GraphicEntity;
 import Images.ResourceManager;
-import Images.ResourceProvider;
 import PickeableElements.Pickeable;
 import java.util.LinkedList;
 import Elements.*;
 
 import javax.swing.ImageIcon;
+
+import CharacterElements.Role;
 
 /**
 *
@@ -28,7 +29,7 @@ public class Cell extends Element{
 	private int column;
 	private int row;
 	
-    private LinkedList<CharacterElements.Role> charactersOnTop;
+    private LinkedList<Role> charactersOnTop;
 	
 	private Pickeable pickeable;
 	
@@ -53,6 +54,8 @@ public class Cell extends Element{
         
         this.row = row;
         column = col;
+        
+        charactersOnTop = new LinkedList<Role>();
         
         
         if(walkable && p != null) {
@@ -273,6 +276,10 @@ public class Cell extends Element{
      */
      public void setIsIntersection(boolean i) {
     	 isIntersection = i;
+     }
+
+     public LinkedList<CharacterElements.Role> getCharactersOnTop(){
+         return charactersOnTop;
      }
     
 }

@@ -8,6 +8,7 @@ import Elements.Element;
 import GameLogic.Cell;
 import GameLogic.Directions;
 import Maps.Map;
+import java.lang.Math;
 
 /**
 *
@@ -56,10 +57,12 @@ public abstract class GhostGPS {
 		
 		HashMap<Object, Cell> adjacentCells = myMap.getAdjacentCellsByPX(myGhostX, myGhostY); 
 		
+		adjacentCells.remove(Directions.getOpposite(myGhost.getActualDirection()));
+		
 
 		int hypotenuse = 0;
 		int minValue = Integer.MAX_VALUE;
-		Object chosenDirection = null;
+		Object chosenDirection = Directions.getNeutral();
 		
 		for( Entry<Object, Cell> e : adjacentCells.entrySet()) {
 			
@@ -71,11 +74,6 @@ public abstract class GhostGPS {
 					chosenDirection = e.getKey();
 				}
 			}
-		}
-		
-		
-		if(chosenDirection == null) {
-			chosenDirection = Directions.getNeutral();
 		}
 		
 		myGhost.setNextDirection(chosenDirection);

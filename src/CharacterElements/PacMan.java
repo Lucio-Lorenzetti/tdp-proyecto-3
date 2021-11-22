@@ -17,6 +17,8 @@ import Images.ResourceManager;
 */
 public class PacMan extends Role{
 
+    private int hearts;
+
     /**
     * Creates and initialize a PacMan;
     * @param posX where the PacMan is created.
@@ -28,6 +30,7 @@ public class PacMan extends Role{
     	
         super(posY, posX, width, height, new GraphicEntity( ResourceManager.getProvider().getPacManImages()[0] ));
         
+        hearts = 3;
         
         myVisitor = new VisitorPacMan(this);
         
@@ -66,10 +69,16 @@ public class PacMan extends Role{
     	}
     	
     } 
+
+    public void hurtPacMan(){
+        hearts--;
+    }
+
+    public int getHearts(){ return hearts; }
     
     
-    /**
-    * Accept the visitor of another Character passed by parameter
+   /**
+    * Accept the visitor of another Role passed by parameter
     */
     public  void accept(Visitor v){
         myVisitor.visitPacMan(this);

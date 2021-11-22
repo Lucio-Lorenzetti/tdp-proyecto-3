@@ -1,7 +1,10 @@
 package CharacterElements;
+import javax.swing.ImageIcon;
+
 import GUI.GraphicEntity;
 import GameLogic.Directions;
 import GameLogic.Game;
+import IA.IAClyde;
 import Images.ResourceManager;
 import Maps.Map;
 import Visitor.*;
@@ -29,37 +32,54 @@ public class Clyde extends Ghost{
         super(posY, posX, width, height, dead, moving, m, new GraphicEntity(ResourceManager.getProvider().getClydeImages()[1]));
         myVisitor = new VisitorBlinky(this);
     
+        myIA = new IAClyde(m, this);
+        ghostState.add(myIA);
+        
     }
 
 
 	@Override
 	protected void doOnDirectionChange() {
-		if(nextDirection == Directions.getNeutral()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getClydeImages()[0] );
-    	}
-    	if(nextDirection == Directions.getLeft()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getClydeImages()[1] );
-    	}
-    	if(nextDirection == Directions.getUp()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getClydeImages()[2] );
-    	}
-    	if(nextDirection == Directions.getRight()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getClydeImages()[3] );
-    	}
-    	if(nextDirection == Directions.getDown()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getClydeImages()[4] );
-    	}
+		updateGraphics(nextDirection);
 	}
+	
+	
 
     @Override
-    public void accept(VisitorPacMan c){
-
+    public  void accept(Visitor v){
+        myVisitor.visitClyde(this);
     }
 
 
-	@Override
-	public void updateGraphics(Object d) {
-		// TODO Auto-generated method stub
+    public void updateGraphics(Object direction) {
+		
+		ImageIcon[] images = null;
+		
+		if(indexState == 2) {
+			images = ResourceManager.getProvider().getClydeImages();
+		} else if (indexState == 1) {
+			images = ResourceManager.getProvider().getScaredImages();
+			System.out.println("GRAFICO ASUSTADO CLYDE");
+		} else {
+			images = ResourceManager.getProvider().getScaredImages(); //CAMBIAR POR DEAD
+		} 
+		
+    	if(direction == Directions.getNeutral()) {
+    		myGraphicEntity.setIcon( images[0] );
+    	} else
+    	if(direction == Directions.getLeft()) {
+    		myGraphicEntity.setIcon( images[1] );
+    	} else
+    	if(direction == Directions.getUp()) {
+    		myGraphicEntity.setIcon( images[2] );
+    	} else
+    	if(direction == Directions.getRight()) {
+    		myGraphicEntity.setIcon( images[3] );
+    	} else
+    	if(direction == Directions.getDown()) {
+    		myGraphicEntity.setIcon( images[4] );
+    	}
+    	
 		
 	}
 }

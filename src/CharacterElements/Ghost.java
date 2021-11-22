@@ -109,10 +109,6 @@ public abstract class Ghost extends Role {
     
     public abstract void updateGraphics(Object d);
     
-    /**
-    * Accept the visitorPacMan.
-    * @param c Visitor of PacMan
-    */
-    public abstract void accept(VisitorPacMan c);
+    
 
 }

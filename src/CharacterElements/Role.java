@@ -137,4 +137,12 @@ public abstract class Role extends Element {
 		 return nextDirection;
 	 }
 
+    public Visitor getVisitor(){
+        return myVisitor;
+    }
+
+     /**
+    * Accept the visitor of another Role passed by parameter
+    */
+    public  abstract void accept(Visitor v);
 }

@@ -29,11 +29,7 @@ public class VulnerableGhostGPS extends GhostGPS {
 
 	@Override
 	public void buildRoute() {
-		
-		int myGhostX = myGhost.getPosX();
-		int myGhostY = myGhost.getPosY();
 
-		
 		myGhost.setNextDirection(Directions.getRandomDirection());
 		
 		

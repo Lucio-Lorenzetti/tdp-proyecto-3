@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.HashMap;
 
 import CharacterElements.Role;
+import Elements.Element;
 import GameLogic.Cell;
 import GameLogic.Directions;
 import GameLogic.Game;
@@ -85,7 +86,7 @@ public class Map {
 		cellSelection.put('╜', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[2]));	
     	
     	//GHOST HOME
-		cellSelection.put('┉', new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, ghostHomeImages[0]));
+		cellSelection.put('┉', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, ghostHomeImages[0]));
 		cellSelection.put('┌', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, ghostHomeImages[1]));
 		cellSelection.put('└', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, ghostHomeImages[2]));
 		cellSelection.put('┐', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, ghostHomeImages[3]));
@@ -160,7 +161,6 @@ public class Map {
 				
 				for(int col = 0; col < actualLine.length(); col++){
 					
-					//System.out.println(actualLine.charAt(col));
 			
 					if(cellSelection.get( actualLine.charAt(col) ) != null) {
 						cells[actualRow][col] = cellSelection.get( actualLine.charAt(col) ).cloneInPosition(actualRow, col);
@@ -329,7 +329,7 @@ public class Map {
     }
 
 
-    private Cell getCellByPosition(int posX, int posY) {
+    public Cell getCellByPosition(int posX, int posY) {
     
     	int cellWidth = cells[0][0].getWidth();
         int cellHeight = cells[0][0].getHeight();
@@ -387,7 +387,17 @@ public class Map {
     * @return the cell that it's called searched by it's position.
     */
     public Cell getCell(int row, int col){
-        return cells[row][col];        
+    	
+		if(row < 0)
+			row = 1;
+		else if(row >= height)
+				row = height - 2; //height + 2
+		if(col < 0)
+			col = 1;
+		else if(col >= width)
+				col = width - 2; 
+		//
+		return cells[row][col];        
     }
     
     
@@ -453,10 +463,10 @@ public class Map {
 
 		myGame.updatePickupGraphic(aux);		//ACTUALIZAR SOLO PICKUP PARA EVITAR EFECTOS VISUALES RAROS EN LA CELDA
 
+		
 		//System.out.println("CONSUMIDO");
 		
 	}
-	
 	
 	public HashMap<Object,Cell> getAdjacentCellsByPX(int posX, int posY){
 		
@@ -480,6 +490,7 @@ public class Map {
 		
 		Cell aux = null;
 		
+		
 		/*
 		System.out.println(centerX + " " + centerY);
 		System.out.println(sizeX + " " + sizeY);
@@ -487,7 +498,6 @@ public class Map {
 		
 		System.out.println(ghostHomes.size());
 		*/
-		
 		for(int i = topLeftX; i < bottomRightX ; i++) {
 		
 			
@@ -537,18 +547,19 @@ public class Map {
 	public boolean isGhostHome(Cell c){
 		boolean result = false;
 		for(Cell gh : ghostHomes){
+			if(c == gh) {
 			/*
 			System.out.println("gh: Fila "+gh.getRow()+"Columna "+gh.getColumn());
 			System.out.println("c: Fila "+gh.getRow()+"Columna "+gh.getColumn());
 			*/
-			if(c == gh) {
 				result = true;
 				return result;		
 			}	
 		}
-		//System.out.println("Es una casa de fantasma: "+result);
 		return result;
+		//System.out.println("Es una casa de fantasma: "+result);
 	}
+	
 	/**
 	 * Returns a HashMap that contains the adjacent cells with a direction key;
 	 * @param c
@@ -569,15 +580,55 @@ public class Map {
 	}
 	
 	public LinkedList<Cell> getGhostHome(){
+
        LinkedList<Cell> ghList = new LinkedList<Cell>();
-       for(Cell c: ghostHomes){
+
+	   for(Cell c: ghostHomes){
            ghList.add(c.clone());
        }
        return ghList;
     }
 
+	
+	
+	public LinkedList<Role> checkCellColitions(Role r){
+		
+		Cell cell = getCellByPosition(r.getPosX(),r.getPosY());
+		LinkedList<Role> returnList = new LinkedList<Role>();
+		LinkedList<Role> roleList = cell.getCharactersOnTop();
 
+		if(roleList.size() > 1){
+			
+			for(Role rle : roleList) {
+				if(rle != r && (r.collidesWith(rle) || rle.collidesWith(cell)) ) {
+					returnList.add(rle);
+				}
+			}
+			
+		}
+		
+		return returnList;
+	}
 	
-	
+	public void updateOnTopCellElements(Role c, Object direction){
+		Cell actualCell = getCellByPosition(c.getPosX(),c.getPosY());
+		Cell nextCell = null;
+
+		if(direction == Directions.getDown()){
+			nextCell = cells[actualCell.getRow() + 1][actualCell.getColumn()];
+		}
+		if(direction == Directions.getLeft()){
+			nextCell = cells[actualCell.getRow()][actualCell.getColumn() - 1];
+		}
+		if(direction == Directions.getUp()){
+			nextCell = cells[actualCell.getRow() - 1][actualCell.getColumn()];
+		}
+		if(direction == Directions.getRight()){
+			nextCell = cells[actualCell.getRow()][actualCell.getColumn() + 1];
+		}
+
+		actualCell.removeCharacterOnTop(c);
+		nextCell.addCharacterOnTop(c);
+	}
 	
 }

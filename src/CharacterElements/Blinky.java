@@ -77,14 +77,11 @@ public class Blinky extends Ghost{
 	}
 
 	@Override
-	public void accept(VisitorPacMan c) {
+	public void accept(Visitor v) {
+		myVisitor.visitBlinky(this);
 		
 	}
-	/*
-	@Override
-	public void calm(Game g) {
-		myIA = new IABlinky(myMap, this);
-		this.scared = false;
-		updateGraphics(actualDirection);
-	}*/ 
+
+	
+	
 }

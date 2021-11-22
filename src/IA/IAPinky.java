@@ -26,37 +26,37 @@ public class IAPinky extends AliveGhostGPS {
 	@Override
 	public void buildRoute() {
 		
-		myObjective = calculoObjetivoInky(Game.getPacMan());
+		myObjective = calculateObjectivePinky(Game.getPacMan());
 		
 		shortestRouteToObjective();
 		
 	}
 
-	private Element calculoObjetivoInky(Role p){
+	private Element calculateObjectivePinky(Role p){
 		
 		Cell nextObj = null;
 		
 		int pacmanPosX = p.getPosX();
 		int pacmanPosY = p.getPosY();
 		
-		int posXAux = pacmanPosX;
-		int posYAux = pacmanPosY;
+		int posRow = myMap.getCellByPosition(pacmanPosX, pacmanPosY).getRow();
+		int posColumn = myMap.getCellByPosition(pacmanPosX, pacmanPosY).getColumn();
 		
 		if(p.getActualDirection() == Directions.getUp()){
-			posXAux -= 4;
-			posYAux -= 4;
-		}
+			posRow -= 4;
+			posColumn -= 4;
+		} else
 		if(p.getActualDirection() == Directions.getDown()){
-			posYAux += 4;
-		}
+			posRow += 4;
+		} else
 		if(p.getActualDirection() == Directions.getRight()){
-			posXAux += 4;
-		}
+			posColumn += 4;
+		} else
 		if(p.getActualDirection() == Directions.getLeft()){
-			posXAux -= 4;
-		}
-		if(myMap.getCell(posXAux, posYAux) != null) {
-			nextObj = myMap.getCell(posXAux, posYAux);
+			posColumn -= 4;
+		} 
+		if(myMap.getCell(posRow, posColumn) != null) {
+			nextObj = myMap.getCell(posRow, posColumn);
 		}
 		
 		return nextObj;

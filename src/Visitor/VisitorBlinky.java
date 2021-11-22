@@ -27,9 +27,7 @@ public class VisitorBlinky extends Visitor {
 
 	@Override
 	public void visitPacMan(PacMan p) {
-		if(p.collidesWith(blinky) && blinky.returnIndexState() == 1){
-            //pacman muere
-        }
+		p.hurtPacMan();
 	}
 
 	@Override

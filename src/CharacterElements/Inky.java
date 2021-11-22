@@ -3,7 +3,7 @@ import javax.swing.ImageIcon;
 
 import GUI.GraphicEntity;
 import GameLogic.Directions;
-import GameLogic.Game;
+import IA.IAInky;
 import Images.ResourceManager;
 import Visitor.*;
 import Maps.Map;
@@ -30,6 +30,12 @@ public class Inky extends Ghost{
     public Inky(int posY, int posX, int width, int height, boolean dead, boolean moving, Map m){
         super(posY, posX, width, height, dead, moving, m, new GraphicEntity(ResourceManager.getProvider().getInkyImages()[1]));
         myVisitor = new VisitorBlinky(this);
+        
+        myIA = new IAInky(m, this);
+        
+        ghostState.add(myIA);
+
+        
     }
 
 	@Override
@@ -43,7 +49,7 @@ public class Inky extends Ghost{
 		ImageIcon[] images = null;
 		
 		if(indexState == 2) {
-			images = ResourceManager.getProvider().getBlinkyImages();
+			images = ResourceManager.getProvider().getInkyImages();
 		} else if (indexState == 1) {
 			images = ResourceManager.getProvider().getScaredImages();
 		} else {
@@ -70,8 +76,8 @@ public class Inky extends Ghost{
 	}
 
     @Override
-    public void accept(VisitorPacMan c){
-
+    public void accept(Visitor c){
+		myVisitor.visitInky(this);
     }
 
 	

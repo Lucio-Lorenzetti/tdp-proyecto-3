@@ -39,7 +39,17 @@ public class Game {
     protected Map myMap;
     protected MainWindow myGUI;
     protected Level myLevel;
+    
+    
     protected static Role PacMan;
+    protected static Role myBlinky;
+    protected static Role myPinky;
+    protected static Role myInky;
+    protected static Role myClyde;
+    
+    
+    
+    
     private String playerName;
     protected int actualScore;
     
@@ -139,50 +149,51 @@ public class Game {
     
     /**
     * Move the character to his next direction.
-    * @param C the character who will be move
+    * @param c the character who will be move
     */
-    public void doMove(CharacterElements.Role C) {
+    public void doMove(CharacterElements.Role c) {
     
     	Object characterDirection = null;
-    	Object characterNextDirection = C.getNextDirection();
+    	Object characterNextDirection = c.getNextDirection();
 
     	int check1col = 0;
     	int check1row = 0;
     	int check2col = 0;
     	int check2row = 0;
     
-    	if(characterNextDirection != C.getActualDirection()) {
-    	
+    	if(characterNextDirection != c.getActualDirection()) {
+
 	    	if(characterNextDirection == Directions.getLeft()) {
-				check1col = C.getPosX();
-				check1row = C.getPosY();
-				check2col = C.getPosX();
-				check2row = C.getPosY() + C.getHeight();
+				check1col = c.getPosX();
+				check1row = c.getPosY();
+				check2col = c.getPosX();
+				check2row = c.getPosY() + c.getHeight();
 	    	} else
 	    	if(characterNextDirection == Directions.getDown()) {
-				check1col = C.getPosX();
-		    	check1row = C.getPosY() + C.getWidth();
-		    	check2col = C.getPosX() + C.getWidth();
-		    	check2row = C.getPosY() + C.getHeight();
+				check1col = c.getPosX();
+		    	check1row = c.getPosY() + c.getWidth();
+		    	check2col = c.getPosX() + c.getWidth();
+		    	check2row = c.getPosY() + c.getHeight();
 	    	} else
 	    	if(characterNextDirection == Directions.getUp()) {
-	    		check1col = C.getPosX();
-	        	check1row = C.getPosY();
-	        	check2col = C.getPosX() + C.getWidth();
-	        	check2row = C.getPosY();
+	    		check1col = c.getPosX();
+	        	check1row = c.getPosY();
+	        	check2col = c.getPosX() + c.getWidth();
+	        	check2row = c.getPosY();
 	    	} else
 	    	if(characterNextDirection == Directions.getRight()) {
-	    		check1col = C.getPosX() + C.getWidth();
-	        	check1row = C.getPosY();
-	        	check2col = C.getPosX() + C.getWidth();
-	        	check2row = C.getPosY() + C.getHeight();
+	    		check1col = c.getPosX() + c.getWidth();
+	        	check1row = c.getPosY();
+	        	check2col = c.getPosX() + c.getWidth();
+	        	check2row = c.getPosY() + c.getHeight();
 	    	}
 	    	
 	    	if( myMap.canMove(check1row, check1col, characterNextDirection)  && myMap.canMove(check2row, check2col, characterNextDirection)) {
 	    		//!myMap.checkIfInIntersection(C.getPosX(), C.getPosY()) || 
-	    		if(myMap.checkIfInPath(C.getPosX(), C.getPosY())) {
-	    			C.updateDirection();  
-		    		myGUI.paintCharacter(C);
+	    		if(myMap.checkIfInPath(c.getPosX(), c.getPosY())) {
+					//myMap.updateOnTopCellElements(c, characterNextDirection);
+	    			c.updateDirection();  
+		    		myGUI.paintCharacter(c);
 	    		}	
 	    		
 	    	}
@@ -191,41 +202,61 @@ public class Game {
     	}
     	
     	
-    	characterDirection = C.getActualDirection();
+    	characterDirection = c.getActualDirection();
     	
     	if(characterDirection == Directions.getLeft()) {	
-    		doMoveLeft(C);
+    		doMoveLeft(c);
     	} else
     	if(characterDirection == Directions.getDown()) {
-    		doMoveDown(C);
+    		doMoveDown(c);
     	} else
     	if(characterDirection == Directions.getUp()) {
-    		doMoveUp(C);
+    		doMoveUp(c);
     	} else
     	if(characterDirection == Directions.getRight()) {
-    		doMoveRight(C);
+    		doMoveRight(c);
     	}
     
 
-    	if(C == PacMan) {
+    	if(c == PacMan) {
     		
-    		Pickeable detectedPickeable = myMap.checkPickeableCollision(C);
-    		
+    		Pickeable detectedPickeable = myMap.checkPickeableCollision(c);
+
     		if(detectedPickeable != null) {
     			
 				myMap.consumePickeable(detectedPickeable);
     			
     		}
     		
-    	} else if(myMap.checkIfInIntersection(C.getPosX(), C.getPosY())) {
+    	} else { 
+				Ghost ghostCharacter = (Ghost) c;
+				/*
+				LinkedList<Role> collidesWithGhost = myMap.checkCellColitions(ghostCharacter); 
 
-    		Ghost ghostCharacter = (Ghost) C;
-    		
-    		ghostCharacter.getGhostGPS().buildRoute();
-    		
+				if(!collidesWithGhost.isEmpty() && collidesWithGhost != null)
+					for(Role rle : collidesWithGhost){
+						if(rle.equals(PacMan)){
+							ghostCharacter.accept(PacMan.getVisitor());
+							//checkPacManHearts();
+						}
+					}
+				*/
+
+
+				if(myMap.checkIfInIntersection(c.getPosX(), c.getPosY())) {
+
+					ghostCharacter.getGhostGPS().buildRoute();
+
+				}
     	}
     	
     }
+
+    /*
+	public void checkPacManHearts(){
+		if(PacMan.gethearts == 0)
+			gameOver();
+	}*/
     
     /**
      * Moves the PacMan up.
@@ -368,9 +399,24 @@ public class Game {
     	myGUI.createCharacterGraphic(PacMan);
     	
     	livingGhost.clear();
-    	livingGhost.add(new Blinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, myMap ));
-    	myGUI.createCharacterGraphic(livingGhost.get(0));
-    		
+    	deadGhost.clear();
+    	vulnerableGhost.clear();
+    	
+    	myBlinky = new Blinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, myMap );
+    	myPinky = new Pinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, myMap );
+    	myInky = new Inky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, myMap );
+    	myClyde = new Clyde(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, myMap );
+    	
+
+    	livingGhost.add((Ghost) myBlinky);
+    	livingGhost.add((Ghost) myPinky);
+    	livingGhost.add((Ghost) myInky);
+    	livingGhost.add((Ghost) myClyde);
+
+    	
+    	for(Role R : livingGhost) {
+    		myGUI.createCharacterGraphic(R);
+    	}
     	
     	for(Ghost g : livingGhost) {
     		g.onMapUpdate(myMap);
@@ -415,10 +461,15 @@ public class Game {
 		updateCharacterGraphic(g);
 	}
 
-    public void returnAllGhostToNormal(){
+    public void returnVulnerableGhostToNormal(){
 		for(Ghost g : vulnerableGhost){
-			returnGhostToNormal(g);
-		}    	
+			g.ChangeState(2);
+			updateCharacterGraphic(g);
+			livingGhost.add(g);
+		}
+		
+		vulnerableGhost.clear();
+		
 	}
 
 	public void killGhost(Ghost g){
@@ -434,10 +485,25 @@ public class Game {
 	}
 
     public void scareAllGhosts(){
+    	
+    	System.out.println(livingGhost.size());
+    	System.out.println(vulnerableGhost.size());
+    	System.out.println(deadGhost.size());
+    	
+    	
 		for(Ghost g : livingGhost) {
-    		scareGhost(g);
+			System.out.println("Asustado");
+			g.ChangeState(1);
+    		vulnerableGhost.add(g);
+    		updateCharacterGraphic(g);
     	}
 		
+		livingGhost.clear();
+		
+		System.out.println(livingGhost.size());
+    	System.out.println(vulnerableGhost.size());
+    	System.out.println(deadGhost.size());
+    	
 		
     	myTimerVulnerable = new TimerVulnerable(8000, this);
     	
@@ -501,6 +567,22 @@ public class Game {
     		PacMan = new CharacterElements.PacMan(10, 10, 10, 10);
     	}
     	return PacMan;
+    }
+    
+    public static Role getBlinky() {
+    	return myBlinky;
+    }
+    
+    public static Role getPinky() {
+    	return myPinky;
+    }
+    
+    public static Role getInky() {
+    	return myInky;
+    }
+    
+    public static Role getClyde() {
+    	return myClyde;
     }
     
     

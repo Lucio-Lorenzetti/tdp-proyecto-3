@@ -22,7 +22,8 @@ public abstract class ResourceProvider {
 	protected LinkedList<String> wallRoutes;
 	protected LinkedList<String> roadRoutes;
 	protected LinkedList<String> ghostHomeRoutes;
-	
+
+	protected LinkedList<String> backgroundMusicRoutes;	
 	
 	protected ImageIcon[] pacmanImages;
 	protected ImageIcon[] blinkyImages;
@@ -38,6 +39,8 @@ public abstract class ResourceProvider {
 	protected ImageIcon[] wallImages;
 	protected ImageIcon[] roadImages;
 	protected ImageIcon[] ghostHomeImages;
+
+	protected Clip[] backgroundMusic;
 	
 	protected String themeRoute;
 	
@@ -64,6 +67,8 @@ public abstract class ResourceProvider {
 		ghostHomeRoutes = new LinkedList<String>();
 		wallRoutes = new LinkedList<String>();
 		
+ 		backgroundMusicRoutes = new LinkedList<String>();		
+
 		int index;
 	
 		//PACMAN IMAGES
@@ -186,7 +191,8 @@ public abstract class ResourceProvider {
 		pickeableRoutes.add(themeRoute +  "/pickeable/speedPotion.gif");
 		pickeableRoutes.add(themeRoute +  "/pickeable/bombPotion.gif");
 		
-		
+		//MUSIC
+		backgroundMusicRoutes.add(themeRoute +  "/music/backgroundMusic/BM1.wav");
 		
 		pacmanImages = new ImageIcon[pacmanRoutes.size()];
 		createImages(pacmanRoutes, pacmanImages);
