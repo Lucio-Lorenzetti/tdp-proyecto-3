@@ -17,7 +17,7 @@ import Visitor.*;
 * 
 * Defines the applicable operations of a Ghost element.
 * 
-* @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
+* @author Agustï¿½n Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
 *
 */
 public abstract class Ghost extends Role {

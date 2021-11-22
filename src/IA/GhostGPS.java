@@ -15,7 +15,7 @@ import Maps.Map;
 * 
 * Defines the applicable operations of a GhostGPS.
 * 
-* @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
+* @author Agustï¿½n Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
 *
 */
 public abstract class GhostGPS {
@@ -66,13 +66,11 @@ public abstract class GhostGPS {
 			if(e.getValue().getWalkable()) {
 				hypotenuse = calculateHypotenuse( e.getValue().getPosX(), e.getValue().getPosY(), objectiveX, objectiveY);
 				
-				
 				if( minValue > hypotenuse ) {
 					minValue = hypotenuse;
 					chosenDirection = e.getKey();
 				}
 			}
-			
 		}
 		
 		

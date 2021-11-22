@@ -559,10 +559,10 @@ public class Map {
 		HashMap<Object,Cell> result = new HashMap<Object,Cell>();
 		
 		
-		if(c.getColumn() < width-1) 	result.put(Directions.getRight(), cells[c.getRow()][c.getColumn()+1].clone());
-		if(c.getColumn() > 0 ) 		result.put(Directions.getLeft(), cells[c.getRow()][c.getColumn()-1].clone());
-		if(c.getRow() < height-1) 	result.put(Directions.getUp(), cells[c.getRow()-1][c.getColumn()].clone());
-		if(c.getRow() > 0    ) 		result.put(Directions.getDown(), cells[c.getRow()+1][c.getColumn()].clone());
+		if(c.getColumn() < width-1 && c.getWalkable()) 	result.put(Directions.getRight(), cells[c.getRow()][c.getColumn()+1].clone());
+		if(c.getColumn() > 0 && c.getWalkable()) 		result.put(Directions.getLeft(), cells[c.getRow()][c.getColumn()-1].clone());
+		if(c.getRow() < height-1 && c.getWalkable()) 	result.put(Directions.getUp(), cells[c.getRow()-1][c.getColumn()].clone());
+		if(c.getRow() > 0    && c.getWalkable()) 		result.put(Directions.getDown(), cells[c.getRow()+1][c.getColumn()].clone());
 		
 		
 		return result;
