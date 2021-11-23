@@ -13,7 +13,7 @@ import java.lang.Math;
 * 
 * Defines the applicable operations of a IAClyde.
 * 
-* @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
+* @author Agustï¿½n Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
 *
 */
 public class IAClyde extends GhostGPS{
@@ -49,7 +49,7 @@ public class IAClyde extends GhostGPS{
 		shortestRouteToObjective();
 	}
 	
-	protected Element calculateObjectiveClyde(Element objective) {
+	private Element calculateObjectiveClyde(Element objective) {
 		
 		 
 		

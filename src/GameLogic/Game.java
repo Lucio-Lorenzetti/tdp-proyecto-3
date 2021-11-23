@@ -1,9 +1,6 @@
 package GameLogic;
 
-import Elements.*;
 import GUI.*;
-import IA.AliveGhostGPS;
-import IA.VulnerableGhostGPS;
 import Maps.Map;
 import PickeableElements.Pickeable;
 import CharacterElements.*;
@@ -15,7 +12,7 @@ import java.util.LinkedList;
  * 
  * Defines the applicable operations of a Game.
  * 
- * @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
+ * @author Agustï¿½n Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
  *
  */
 public class Game {
@@ -98,7 +95,138 @@ public class Game {
     	
     }
     
-    //MÉTODO DE PRUEBA DE SCOREBOARD
+  	//---------------------------Setters-------------------------------
+    
+    /**
+     * Sets the GUI to use.
+     * @param newMainWindow new GUI to be setted.
+     */
+    public void setMap(Map m) {
+    	
+    	myMap = m;
+    	
+    	Cell aux;
+    	
+    	GraphicEntity auxGraph;
+    	
+    	myGUI.clearGameScreen();
+    	
+    	
+    	for(int i = 0; i < myMap.getHeight(); i++) {
+    		
+    		for(int k = 0; k < myMap.getWidth(); k++) {
+    			
+    			aux = myMap.getCell(i, k);
+
+    			//System.out.println("Fila " + i +  " Columna " + k + " is null: " + (aux == null));
+    			
+    			
+    			updateCellGraphic(aux);
+    			
+        	}
+    		
+    	}
+    	
+    	
+    	myTimerGhosts.setDelay( myLevel.getGhostDelay() );
+    	
+    	
+    	
+    	PacMan = new PacMan(myGUI.getCellHeight() * 12,  myGUI.getCellWidth() * 10 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1);
+    	myGUI.createCharacterGraphic(PacMan);
+    	
+    	livingGhost.clear();
+    	deadGhost.clear();
+    	vulnerableGhost.clear();
+    	
+    	myBlinky = new Blinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, myMap );
+    	myPinky = new Pinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, myMap );
+    	myInky = new Inky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, myMap );
+    	myClyde = new Clyde(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, myMap );
+    	
+
+    	livingGhost.add((Ghost) myBlinky);
+    	livingGhost.add((Ghost) myPinky);
+    	livingGhost.add((Ghost) myInky);
+    	livingGhost.add((Ghost) myClyde);
+
+    	
+    	for(Role R : livingGhost) {
+    		myGUI.createCharacterGraphic(R);
+    	}
+    	
+    	for(Ghost g : livingGhost) {
+    		g.onMapUpdate(myMap);
+    	}
+    	
+    	
+    }
+    
+    /**
+     * Sets the GUI to use.
+     * @param newMainWindow new GUI to be setted.
+     */
+    public void setGUI(MainWindow newMainWindow) {
+    	myGUI = newMainWindow;
+    }
+    
+    /**
+     * Set the atributte playerName.
+     * @param p the name of the player.
+     */
+    public void setPlayerName(String p){
+    	playerName = p;
+    }
+    
+    //---------------------------Getters-------------------------------
+    
+    public static Role getPacMan() {
+    	if(PacMan == null) {
+    		PacMan = new CharacterElements.PacMan(10, 10, 10, 10);
+    	}
+    	return PacMan;
+    }
+    
+    public static Role getBlinky() {
+    	return myBlinky;
+    }
+    
+    public static Role getPinky() {
+    	return myPinky;
+    }
+    
+    public static Role getInky() {
+    	return myInky;
+    }
+    
+    public static Role getClyde() {
+    	return myClyde;
+    }
+    
+    
+    /**
+    * Return the level of the game.
+    * @return level of the game.
+    */
+    public Level getLevel() {
+    	return myLevel;
+    }
+
+	public LinkedList<Ghost> getLivingGhost(){
+    	return (LinkedList<Ghost>) livingGhost.clone();
+    }
+	
+	public LinkedList<Ghost> getVulnerableGhost(){
+    	return (LinkedList<Ghost>) vulnerableGhost.clone();
+    }
+
+	public Map getMap() {
+		return myMap;
+	}
+    
+    //---------------------------Operaciones-------------------------------
+    
+    //Mï¿½TODO DE PRUEBA DE SCOREBOARD
     public void printScores() {
     	Player p;
     	
@@ -111,6 +239,7 @@ public class Game {
     		}
     	}
     }
+
     
     
     /**
@@ -130,13 +259,7 @@ public class Game {
     
     }
     
-    /**
-     * Set the atributte playerName.
-     * @param p the name of the player.
-     */
-    public void setPlayerName(String p){
-    	playerName = p;
-    }
+   
     
 	/**
 	* Change the direction of the character.
@@ -330,15 +453,7 @@ public class Game {
     private void onMove(CharacterElements.Role C) {
     	myGUI.displaceCharacter(C);
     }
-    
-    
-    /**
-    * Moves the ghosts.
-    *
-    */
-    public void moveGhost(){
-        
-    }    
+       
 
     /**
     * Add points to the actual player of the.
@@ -347,86 +462,6 @@ public class Game {
     public void addPoints(int p){
     	actualScore = actualScore + p;
     	myGUI.updateScore(actualScore);
-    }
-    
-    /**
-     * Create all elements that will participate in the game.
-     */
-    public void createElements(){
-        
-    }
-    
-    /**
-     * Sets the GUI to use.
-     * @param newMainWindow new GUI to be setted.
-     */
-    public void setGUI(MainWindow newMainWindow) {
-    	myGUI = newMainWindow;
-    }
-    
-    /**
-     * Sets the GUI to use.
-     * @param newMainWindow new GUI to be setted.
-     */
-    public void setMap(Map m) {
-    	
-    	myMap = m;
-    	
-    	Cell aux;
-    	
-    	GraphicEntity auxGraph;
-    	
-    	myGUI.clearGameScreen();
-    	
-    	
-    	for(int i = 0; i < myMap.getHeight(); i++) {
-    		
-    		for(int k = 0; k < myMap.getWidth(); k++) {
-    			
-    			aux = myMap.getCell(i, k);
-
-    			//System.out.println("Fila " + i +  " Columna " + k + " is null: " + (aux == null));
-    			
-    			
-    			updateCellGraphic(aux);
-    			
-        	}
-    		
-    	}
-    	
-    	
-    	myTimerGhosts.setDelay( myLevel.getGhostDelay() );
-    	
-    	
-    	
-    	PacMan = new PacMan(myGUI.getCellHeight() * 12,  myGUI.getCellWidth() * 10 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1);
-    	myGUI.createCharacterGraphic(PacMan);
-    	
-    	livingGhost.clear();
-    	deadGhost.clear();
-    	vulnerableGhost.clear();
-    	
-    	myBlinky = new Blinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, myMap );
-    	myPinky = new Pinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, myMap );
-    	myInky = new Inky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, myMap );
-    	myClyde = new Clyde(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, myMap );
-    	
-
-    	livingGhost.add((Ghost) myBlinky);
-    	livingGhost.add((Ghost) myPinky);
-    	livingGhost.add((Ghost) myInky);
-    	livingGhost.add((Ghost) myClyde);
-
-    	
-    	for(Role R : livingGhost) {
-    		myGUI.createCharacterGraphic(R);
-    	}
-    	
-    	for(Ghost g : livingGhost) {
-    		g.onMapUpdate(myMap);
-    	}
-    	
-    	
     }
     
     public void startGame() {
@@ -566,45 +601,7 @@ public class Game {
     }
     
     
-    public static Role getPacMan() {
-    	if(PacMan == null) {
-    		PacMan = new CharacterElements.PacMan(10, 10, 10, 10);
-    	}
-    	return PacMan;
-    }
-    
-    public static Role getBlinky() {
-    	return myBlinky;
-    }
-    
-    public static Role getPinky() {
-    	return myPinky;
-    }
-    
-    public static Role getInky() {
-    	return myInky;
-    }
-    
-    public static Role getClyde() {
-    	return myClyde;
-    }
-    
-    
-    /**
-    * Return the level of the game.
-    * @return level of the game.
-    */
-    public Level getLevel() {
-    	return myLevel;
-    }
-
-	public LinkedList<Ghost> getLivingGhost(){
-    	return (LinkedList<Ghost>) livingGhost.clone();
-    }
-	
-	public LinkedList<Ghost> getVulnerableGhost(){
-    	return (LinkedList<Ghost>) vulnerableGhost.clone();
-    }
+   
     
 
     /*
@@ -639,9 +636,7 @@ public class Game {
 		myGUI.paintCharacter(c);
 	}
 
-	public Map getMap() {
-		return myMap;
-	}
+	
 	
 	
 	

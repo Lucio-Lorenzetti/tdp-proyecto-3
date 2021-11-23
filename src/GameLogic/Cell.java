@@ -18,7 +18,7 @@ import CharacterElements.Role;
 * 
 * Defines the applicable operations of a Cell.
 * 
-* @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
+* @author Agustï¿½n Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
 *
 */
 public class Cell extends Element{
@@ -117,8 +117,9 @@ public class Cell extends Element{
     	}
     }
     
+    //----------------Setters------------------
     
-    /**
+   /**
     * Adds a pickeable to the cell.
     * @param p pickeable to add in the cell.
     */
@@ -126,7 +127,82 @@ public class Cell extends Element{
         pickeable = p;
         adjustPickeable();
     }
+    
+    /**
+     * Sets the row of the cell.
+     * @param r row to be setted.
+     */
+     public void setRow(int r) {
+     	row = r;
+         posYPX = heightPX * r;	
+     }
+     
+     /**
+     * Sets the column of the cell.
+     * @param c column to be setted.
+     */
+     public void setColumn(int c) {
+     	column = c;
+     	posXPX = widthPX * c;
+     }
+     
+     /**
+     * Sets the atributte pickeable.
+     * @param p the pikeable element.
+     */
+     public void setPickup(Pickeable p) {
+     	pickeable = p;
+     }
+     
+     /**
+      * Sets the isIntersection attribute.
+      * @param new value of isIntersection.
+      */
+      public void setIsIntersection(boolean i) {
+     	 isIntersection = i;
+      }
 
+    //----------------Getters------------------
+    
+    /**
+     * Returns the pickup contained in the cell
+     * @return pickeable element.
+     */
+    public Pickeable getPickup() {
+    	return pickeable;
+    }
+    
+    /**
+     * Returns the atributte walkable.
+     * @return if the cell is walkable or not.
+     */    
+    public boolean getWalkable() {
+    	return walkable;
+    }
+    
+    /**
+     * Returns the atributte row.
+     * @return the row where the cell is.
+     */ 
+    public int getRow(){
+        return row;
+    }
+    
+    /**
+     * Returns the atributte column.
+     * @return the column where the cell is.
+     */ 
+    public int getColumn(){
+        return column;
+    }
+    
+    public LinkedList<CharacterElements.Role> getCharactersOnTop(){
+        return charactersOnTop;
+    }
+    
+    //----------------Operaciones----------------
+    
+   
     /**
     * Removes the pickeable of the cell which is called.
     * @Returns the removed pickeable.
@@ -211,75 +287,6 @@ public class Cell extends Element{
     public boolean isIntersection() {
     	return isIntersection;
     }
-    
-    /**
-     * Returns the pickup contained in the cell
-     * @return pickeable element.
-     */
-    public Pickeable getPickup() {
-    	return pickeable;
-    }
-    
-    /**
-     * Returns the atributte walkable.
-     * @return if the cell is walkable or not.
-     */    
-    public boolean getWalkable() {
-    	return walkable;
-    }
-    
-    /**
-     * Returns the atributte row.
-     * @return the row where the cell is.
-     */ 
-    public int getRow(){
-        return row;
-    }
-    
-    /**
-     * Returns the atributte column.
-     * @return the column where the cell is.
-     */ 
-    public int getColumn(){
-        return column;
-    }
 
-    /**
-    * Sets the row of the cell.
-    * @param r row to be setted.
-    */
-    public void setRow(int r) {
-    	row = r;
-        posYPX = heightPX * r;	
-    }
-    
-    /**
-    * Sets the column of the cell.
-    * @param c column to be setted.
-    */
-    public void setColumn(int c) {
-    	column = c;
-    	posXPX = widthPX * c;
-    }
-    
-    /**
-    * Sets the atributte pickeable.
-    * @param p the pikeable element.
-    */
-    public void setPickup(Pickeable p) {
-    	pickeable = p;
-    }
-    
-    /**
-     * Sets the isIntersection attribute.
-     * @param new value of isIntersection.
-     */
-     public void setIsIntersection(boolean i) {
-    	 isIntersection = i;
-     }
-
-     public LinkedList<CharacterElements.Role> getCharactersOnTop(){
-         return charactersOnTop;
-     }
     
 }

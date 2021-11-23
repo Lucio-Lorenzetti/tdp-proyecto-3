@@ -222,6 +222,91 @@ public class Map {
         
     }
     
+
+    //--------------------Setters---------------------------
+    
+    
+    
+ 	//--------------------Getters---------------------------
+    
+    /**
+    * Return the cell located to the column and row passed by parameter.
+    * @param row
+    * @param col
+    * @return the cell that it's called searched by it's position.
+    */
+    public Cell getCell(int row, int col){
+    	
+		if(row < 0)
+			row = 1;
+		else if(row >= height)
+				row = height - 2; //height + 2
+		if(col < 0)
+			col = 1;
+		else if(col >= width)
+				col = width - 2; 
+		//
+		return cells[row][col];        
+    }
+    
+    
+    /**
+    * Return the Map height in cells.
+    */
+    public int getHeight() {
+    	return height;
+    }
+    
+    
+    /**
+     * Return the Map width in cells.
+     */
+    public int getWidth() {
+    	return width;
+    }
+    
+	public HashMap<Object,Cell> getAdjacentCellsByPX(int posX, int posY){
+		
+		HashMap<Object,Cell> result;
+		
+		result = getAdjacentCells( getCellByPosition(posX, posY) );
+		
+		return result;
+		
+	}
+	
+	
+	/**
+	 * Returns a HashMap that contains the adjacent cells with a direction key;
+	 * @param c
+	 * @return
+	 */
+	public HashMap<Object,Cell> getAdjacentCells(Cell c){
+		
+		HashMap<Object,Cell> result = new HashMap<Object,Cell>();
+		
+		
+		if(c.getColumn() < width-1 && c.getWalkable()) 	result.put(Directions.getRight(), cells[c.getRow()][c.getColumn()+1].clone());
+		if(c.getColumn() > 0 && c.getWalkable()) 		result.put(Directions.getLeft(), cells[c.getRow()][c.getColumn()-1].clone());
+		if(c.getRow() < height-1 && c.getWalkable()) 	result.put(Directions.getUp(), cells[c.getRow()-1][c.getColumn()].clone());
+		if(c.getRow() > 0    && c.getWalkable()) 		result.put(Directions.getDown(), cells[c.getRow()+1][c.getColumn()].clone());
+		
+		
+		return result;
+	}
+	
+	public LinkedList<Cell> getGhostHome(){
+
+    LinkedList<Cell> ghList = new LinkedList<Cell>();
+
+	   for(Cell c: ghostHomes){
+        ghList.add(c.clone());
+    }
+    return ghList;
+ }
+    
+ 	//--------------------Operaciones---------------------------
+    
     /**
     * Returns if the movement, depending on the direction, its possible.
     * @param posY to check.
@@ -378,43 +463,6 @@ public class Map {
     	return obtainedCell.isIntersection();
     	
     }
-    
-    
-    /**
-    * Return the cell located to the column and row passed by parameter.
-    * @param row
-    * @param col
-    * @return the cell that it's called searched by it's position.
-    */
-    public Cell getCell(int row, int col){
-    	
-		if(row < 0)
-			row = 1;
-		else if(row >= height)
-				row = height - 2; //height + 2
-		if(col < 0)
-			col = 1;
-		else if(col >= width)
-				col = width - 2; 
-		//
-		return cells[row][col];        
-    }
-    
-    
-    /**
-    * Return the Map height in cells.
-    */
-    public int getHeight() {
-    	return height;
-    }
-    
-    
-    /**
-     * Return the Map width in cells.
-     */
-    public int getWidth() {
-    	return width;
-    }
 
     public boolean checkAllCollision(Role c) {
     	
@@ -468,15 +516,7 @@ public class Map {
 		
 	}
 	
-	public HashMap<Object,Cell> getAdjacentCellsByPX(int posX, int posY){
-		
-		HashMap<Object,Cell> result;
-		
-		result = getAdjacentCells( getCellByPosition(posX, posY) );
-		
-		return result;
-		
-	}
+	
 	
 	public void explode(int centerX, int centerY, int sizeX, int sizeY) {
 		
@@ -559,36 +599,6 @@ public class Map {
 		return result;
 		//System.out.println("Es una casa de fantasma: "+result);
 	}
-	
-	/**
-	 * Returns a HashMap that contains the adjacent cells with a direction key;
-	 * @param c
-	 * @return
-	 */
-	public HashMap<Object,Cell> getAdjacentCells(Cell c){
-		
-		HashMap<Object,Cell> result = new HashMap<Object,Cell>();
-		
-		
-		if(c.getColumn() < width-1 && c.getWalkable()) 	result.put(Directions.getRight(), cells[c.getRow()][c.getColumn()+1].clone());
-		if(c.getColumn() > 0 && c.getWalkable()) 		result.put(Directions.getLeft(), cells[c.getRow()][c.getColumn()-1].clone());
-		if(c.getRow() < height-1 && c.getWalkable()) 	result.put(Directions.getUp(), cells[c.getRow()-1][c.getColumn()].clone());
-		if(c.getRow() > 0    && c.getWalkable()) 		result.put(Directions.getDown(), cells[c.getRow()+1][c.getColumn()].clone());
-		
-		
-		return result;
-	}
-	
-	public LinkedList<Cell> getGhostHome(){
-
-       LinkedList<Cell> ghList = new LinkedList<Cell>();
-
-	   for(Cell c: ghostHomes){
-           ghList.add(c.clone());
-       }
-       return ghList;
-    }
-
 	
 	
 	public LinkedList<Role> checkCellColitions(Role r){
