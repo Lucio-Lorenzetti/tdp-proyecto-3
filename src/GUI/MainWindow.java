@@ -72,6 +72,7 @@ public class MainWindow extends JFrame{
 	private JPanel BottomLayerPanel;
 	private JPanel PickupLayerPanel;
 	private JPanel CharacterLayerPanel;
+	private JPanel GameOverPanel;
 	private JPanel contentPane;
 	private JPanel panel;
 	private JScrollPane ScoreboardPanel;
@@ -95,7 +96,7 @@ public class MainWindow extends JFrame{
 	
 	/**
 	 * Initialize the contents of the frame.
-	 */
+	 */	
 	public MainWindow() {
 		setUndecorated(true);
 		
@@ -180,7 +181,7 @@ public class MainWindow extends JFrame{
 		btnCambiarIa.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				myGame.changeIA();
+				//myGame.changeIA();
 				obtainFocus();
 			}
 		});
@@ -225,17 +226,7 @@ public class MainWindow extends JFrame{
 		
 		
 		
-		/**
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(0, 458, 708, 41);
-		frame.getContentPane().add(panel_1);
-		panel_1.setLayout(null);
 		
-		JPanel RightPanel = new JPanel();
-		RightPanel.setBounds(458, 0, 250, 448);
-		frame.getContentPane().add(RightPanel);
-		RightPanel.setLayout(null);
-		*/
 		
 		for(int i = 0; i < gridWidth ; i++)
 			for(int k = 0; k < gridHeight ; k++) {
@@ -244,11 +235,13 @@ public class MainWindow extends JFrame{
 			
 				ImageIcon iconoLabel = ResourceManager.getProvider().getWallImages()[0];
 				
-				iconoLabel.setImageObserver(temp); //Allows playing gifs.
+				iconoLabel.setImageObserver(temp); 
+	
+				resize(iconoLabel, cellWidth, cellHeight);
 				
-				//temp.setIcon(iconoLabel);
+				updateLabelIcon(temp, iconoLabel);
 				
-				resize(iconoLabel, temp);		//Resize the 
+				
 				
 				BottomLayerPanel.add(temp);
 				
@@ -273,7 +266,7 @@ public class MainWindow extends JFrame{
 		
 		
 		
-		ImageIcon characterIcon = new ImageIcon(this.getClass().getResource("/Images/sprites1.png"));
+		ImageIcon characterIcon = new ImageIcon(this.getClass().getResource("/Images/AmongUs/characters/pacman/Neutral.gif"));
 		
 		mainCharacter.setIcon(characterIcon);
 		
@@ -298,11 +291,12 @@ public class MainWindow extends JFrame{
 		for(int i = 0; i < gridWidth ; i++) {
 			for(int k = 0; k < gridHeight ; k++) {
 							
-				ImageIcon iconoLabel = new ImageIcon(this.getClass().getResource("/Images/road.png"));
+				ImageIcon iconoLabel = new ImageIcon(this.getClass().getResource("/Images/AmongUs/tiles/road/road.png"));
 				
 				temp = BottomLayer[i][k];
 				
-				resize(iconoLabel, temp);
+				updateLabelIcon(temp, null);
+				
 			}
 		}
 		
@@ -312,7 +306,7 @@ public class MainWindow extends JFrame{
 					
 				temp = PickupLayer[i][k];				
 				
-				temp.setIcon(null);
+				updateLabelIcon(temp, null);
 		
 			}
 		}
@@ -336,7 +330,7 @@ public class MainWindow extends JFrame{
 		return GamePanel;
 	}
 	
-	
+	/*
 	private void resize(ImageIcon grafico, JLabel label) {
 		
 		Image imagen = grafico.getImage();
@@ -348,8 +342,9 @@ public class MainWindow extends JFrame{
 			label.repaint();	
 		}
 		
-	}
+	}*/
 	
+	/*
 	private void resize(ImageIcon grafico, JLabel label, int width, int heigth) {
 		
 		Image imagen = null;
@@ -366,14 +361,34 @@ public class MainWindow extends JFrame{
 				
 			} 
 			
-		} else {
-		
-			label.setIcon(null);
-			
 		} 
+		
+		label.setIcon(grafico);
 		
 		label.repaint();	
 		
+	}*/
+	
+	
+	private void resize(ImageIcon image, int width, int height) {
+		
+		Image recoveredImage = null;
+		
+		if(image != null) {
+			recoveredImage = image.getImage();
+		}
+		
+		if(recoveredImage != null) {
+			recoveredImage = recoveredImage.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+		}
+		
+		image.setImage(recoveredImage);
+		
+	}
+	
+	private void updateLabelIcon(JLabel label, ImageIcon image) {
+		label.setIcon(image);
+		label.repaint();
 	}
 	
 	
@@ -381,7 +396,11 @@ public class MainWindow extends JFrame{
 		
 		ImageIcon nuevaImagen = celda.getGraphicEntity().getIcon();
 		
-		resize(nuevaImagen, BottomLayer[celda.getRow()][celda.getColumn()]);
+		resize(nuevaImagen, cellWidth, cellHeight);
+		
+		updateLabelIcon(BottomLayer[celda.getRow()][celda.getColumn()], nuevaImagen);
+		
+		//resize(nuevaImagen, BottomLayer[celda.getRow()][celda.getColumn()]);
 		
 	}
 	
@@ -403,7 +422,12 @@ public class MainWindow extends JFrame{
 		
 		//System.out.println( pEsNulo + " width: " + width + " height: " + height + " Fila: " + posFila + " Columna: " + posColumna);
 		
-		resize(nuevaImagen, PickupLayer[posFila][posColumna], width, height);
+		//resize(nuevaImagen, PickupLayer[posFila][posColumna], width, height);
+		
+		if(nuevaImagen != null) {
+			resize(nuevaImagen, width, height);
+		}
+		updateLabelIcon(PickupLayer[posFila][posColumna], nuevaImagen);
 		
 	}
 	
@@ -412,7 +436,11 @@ public class MainWindow extends JFrame{
 		
 		//System.out.println("Painting Character");
 		
-		resize(nuevaImagen, characterLabels.get(c));
+		resize(nuevaImagen, c.getWidth(), c.getHeight());
+		
+		updateLabelIcon(characterLabels.get(c), nuevaImagen);
+		
+		//resize(nuevaImagen, characterLabels.get(c));
 	}
 	
 	
@@ -521,7 +549,7 @@ public class MainWindow extends JFrame{
 		nextlvlButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				myGame.getLevel().passLevel(cellHeight, cellWidth);
+				myGame.getLevel().passLevel();
 				obtainFocus();
 			}
 		});

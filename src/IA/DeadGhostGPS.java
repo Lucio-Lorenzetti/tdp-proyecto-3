@@ -32,6 +32,10 @@ public class DeadGhostGPS extends GhostGPS{
 			
 			setObjective( possibleObjectiveList.get(objectiveSelection) );
 
+		} else {	//If the dead ghost has an objective (A ghost home) check if it can revive
+
+			myGhost.reviveCheck(myObjective);
+			
 		}
 
 		shortestRouteToObjective();

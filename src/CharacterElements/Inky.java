@@ -27,9 +27,9 @@ public class Inky extends Ghost{
     * @param dead true if Inky is dead, false otherwise. 
     * @param moving true if Inky is moving, false otherwise.
     */
-    public Inky(int posY, int posX, int width, int height, boolean dead, boolean moving, Map m){
-        super(posY, posX, width, height, dead, moving, m, new GraphicEntity(ResourceManager.getProvider().getInkyImages()[1]), 3);
-        myVisitor = new VisitorBlinky(this);
+    public Inky(int posY, int posX, int width, int height, Map m){
+        super(posY, posX, width, height, m, new GraphicEntity(ResourceManager.getProvider().getInkyImages()[1]), 3);
+        myVisitor = new VisitorGhost(this);
         
         myIA = new IAInky(m, this);
         
@@ -53,7 +53,7 @@ public class Inky extends Ghost{
 		} else if (indexState == 1) {
 			images = ResourceManager.getProvider().getScaredImages();
 		} else {
-			images = ResourceManager.getProvider().getScaredImages(); //CAMBIAR POR DEAD
+			images = ResourceManager.getProvider().getInkyDeathImages();
 		} 
 		
     	if(direction == Directions.getNeutral()) {
@@ -75,10 +75,6 @@ public class Inky extends Ghost{
 		
 	}
 
-    @Override
-    public void accept(Visitor c){
-		myVisitor.visitInky(this);
-    }
 
 	
 	

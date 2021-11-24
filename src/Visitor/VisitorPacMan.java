@@ -14,14 +14,14 @@ import CharacterElements.PacMan;
 */
 public class VisitorPacMan extends Visitor{
 
-    protected PacMan pacman;
+    protected PacMan myPacMan;
 
     /**
     * Creates and initialize a VisitorPacMan.
     * @param p PacMan.
     */
     public VisitorPacMan(PacMan p){
-        this.pacman = p;
+        this.myPacMan = p;
     }
 
 	@Override
@@ -30,25 +30,17 @@ public class VisitorPacMan extends Visitor{
 	}
 
 	@Override
-	public void visitInky(Ghost g) {		
-	}
-
-	@Override
-	public void visitPinky(Ghost g) {
+	public void visitGhost(Ghost g) {
+		int ghostState = g.getIndexState();
+		
+		if( ghostState == 2 ) {
+			myPacMan.death();
+		} else if( ghostState == 1 ) {
+			g.ChangeState(0);
+		}
+		
 		
 	}
 
-	@Override
-	public void visitClyde(Ghost g) {
-		
-	}
-
-	@Override
-	public void visitBlinky(Ghost g) {
-		if(pacman.collidesWith(g) && g.returnIndexState() == 1){
-            //blinky muere
-            
-        }
-	}
 
 }

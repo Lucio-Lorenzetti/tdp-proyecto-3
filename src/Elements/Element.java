@@ -144,7 +144,35 @@ public abstract class Element {
 	 public void setHeight(int h) {
 		 heightPX = h;
 	 }
+	 
+	 public int[][] calculateCorners() {
+	 
+		 int[][] corners = new int[2][2];
+		 
+		 corners[0] = getTopLeftCorner();
+		 corners[1] = getBottomRightCorner();
+		 
+		 return corners;
+	 }
+	 
+	 protected int[] getTopLeftCorner() {
+		 int[] corner = new int[2];
+		 
+		 corner[0] = posXPX;
+		 corner[1] = posYPX;
 
+		 return corner;
+		 
+	 }
+	 
+	 protected int[] getBottomRightCorner() {
+		 int[] corner = new int[2];
+		 
+		 corner[0] = posXPX + widthPX;
+		 corner[1] = posYPX + heightPX;
+
+		 return corner;
+	 }
     
 	
 }

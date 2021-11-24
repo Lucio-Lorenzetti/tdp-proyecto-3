@@ -2,14 +2,14 @@ package GameLogic;
 
 import CharacterElements.Ghost;
 
-public class TimerSpeedPotion extends Timer{
+public class TimerBombPotion extends Timer{
 
 	/**
 	 * Creates and initializes a TimerGhost.
 	 * @param del Delay for the movement of the Ghosts.
 	 * @param game Game that the timer calls.
 	 */
-	public TimerSpeedPotion(long del, Game game) {
+	public TimerBombPotion(long del, Game game) {
 		super(del, game);
 	}
 
@@ -25,7 +25,7 @@ public class TimerSpeedPotion extends Timer{
 			}
 					
 				
-			myGame.changeSpdPacMan(40);
+			myGame.explodeArea(Game.getPacMan().getPosX(), Game.getPacMan().getPosY());
 						
 			Game.getPacMan().ChangeState(0);
 			

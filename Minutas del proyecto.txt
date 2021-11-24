@@ -1,0 +1,10 @@
+Minutas del proyecto:
+	Por falta de tiempo, el juego no cuenta con:
+		*Un game over (pacman no muere)
+		*Un diagrama actualizado
+		*Un sistema de direcciones actualizado basandonos en la sugerencia de Rocio
+		*El display del Scoreboard (el scoreboard está hecho con una cola con prioridad)
+		*El juego tiene un solo tema (pero está hecho de una forma extensible para que puedan agregarse con 		facilidad)
+		*No cuenta con sonidos (extras a la musica de fondo)	
+		
+	Dificultad de los niveles: va aumentando la velocidad de los fantasmas, y se modifica el laberinto sacando paredes 		y generando más espacios por los que los fantasmas te pueden atrapar

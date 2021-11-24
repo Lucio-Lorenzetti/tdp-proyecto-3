@@ -18,7 +18,7 @@ public class MapC extends Map{
      */
 	 public MapC(Game g, int cellHeightPX, int cellWidthPX){
     	
-    	super(g, cellHeightPX, cellWidthPX, "src/Maps/MapCRoad.txt", "src/Maps/MapCPikeable.txt", "src/Maps/MapCRole.txt");
+    	super(g, cellHeightPX, cellWidthPX, "src/Maps/MapCRoad.txt", "src/Maps/MapCPikeable.txt", "src/Maps/MapCRole.txt", 12,12);
     }
 
     

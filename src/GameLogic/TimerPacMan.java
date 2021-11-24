@@ -23,7 +23,7 @@ public class TimerPacMan extends Timer{
 			}
 					
 			if(!paused) {
-				myGame.doMove(myGame.getPacMan());
+				myGame.doMove(Game.getPacMan());
 			}
 			
 		}

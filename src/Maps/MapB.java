@@ -18,7 +18,7 @@ public class MapB extends Map {
 	 */
 	public MapB(Game g, int cellHeightPX, int cellWidthPX) {
     	
-    	super(g, cellHeightPX, cellWidthPX, "src/Maps/MapBRoad.txt", "src/Maps/MapBPikeable.txt", "src/Maps/MapBRole.txt");
+    	super(g, cellHeightPX, cellWidthPX, "src/Maps/MapBRoad.txt", "src/Maps/MapBPikeable.txt", "src/Maps/MapBRole.txt", 11, 11);
 	}	
 	
 }

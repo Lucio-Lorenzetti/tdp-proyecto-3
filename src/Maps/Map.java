@@ -42,13 +42,18 @@ public class Map {
     protected String route;
 	protected PickeableManager manager;
 	protected LinkedList<Cell> ghostHomes;
+	protected int pikeableCounter;
+	protected int posXPacMan;
+	protected int posYPacMan;
+	protected int cellWidth;
+	protected int cellHeight;
 
 	
 
     /**
      * Creates and initializes Map.
      */
-    public Map(Game g, int cellHeightPX, int cellWidthPX, String mapRoute, String pickeableRoute, String characterRoute){
+    public Map(Game g, int cellHeightPX, int cellWidthPX, String mapRoute, String pickeableRoute, String characterRoute, int posXPacMan, int posYPacMan){
    
     	myGame = g;
         cells = new Cell[height][width];
@@ -56,7 +61,15 @@ public class Map {
         int fruitScore = 50;
 
 		manager = new PickeableManager(myGame);
+
+		this.posXPacMan = posXPacMan * cellWidthPX;
+		this.posYPacMan = posYPacMan * cellHeightPX;
+
+		cellWidth = cellWidthPX;
+		cellHeight = cellHeightPX;
 		
+		pikeableCounter = 0;
+
 		ghostHomes = new LinkedList<Cell>();
 		
 		
@@ -65,8 +78,6 @@ public class Map {
 		HashMap<Character, Role> roleSelection = new HashMap<Character, Role>();
 		
 		
-        
-        ImageIcon[] cellImages = ResourceManager.getProvider().getRoadImages();
     	
         
         ImageIcon[] roadImages = ResourceManager.getProvider().getRoadImages();
@@ -80,10 +91,10 @@ public class Map {
 		cellSelection.put('■', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, wallImages[0]));
         cellSelection.put('▌', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[1]));
 		cellSelection.put('▬', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[2]));
-		cellSelection.put('╓', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[2]));
-		cellSelection.put('╙', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[2]));
-		cellSelection.put('╖', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[2]));
-		cellSelection.put('╜', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[2]));	
+		cellSelection.put('╓', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[3]));
+		cellSelection.put('╙', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[4]));
+		cellSelection.put('╖', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[5]));
+		cellSelection.put('╜', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[6]));	
     	
     	//GHOST HOME
 		cellSelection.put('┉', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, ghostHomeImages[0]));
@@ -110,7 +121,6 @@ public class Map {
 		
 		cellSelection.put('╬', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[10]));
 		
-		//cellSelection.put('T', new Cell(0,0, null, true, cellHeightPX, cellWidthPX, cellImages[11]));
 
 		//PIKEABLES
         
@@ -121,25 +131,6 @@ public class Map {
         pickeableSelection.put('F', new Fruit(fruitScore, manager));
         pickeableSelection.put('O', new PowerPellet(manager));
         
-        
-
-    	/*
-    	PIKEABLES
-	    	P --> PACDOTS
-	    	B --> BOMBA
-	    	E --> EMPTY
-	    	S --> SPEED
-	    	F --> FRUIT
-	    	֎ --> POWERPELLET    	
-    	ROLES
-    		E --> EMPTY
-    		P --> PINKY
-    		I --> INKY
-    		C --> CLYDE
-    		B --> BLINKY
-    		M --> PACMAN
-    	*/
-    			
     	try {
     		
     		File f = new File(mapRoute);    		
@@ -203,6 +194,8 @@ public class Map {
 						
 						cells[actualRow][col].setPickeable( pickeableSelection.get( actualLine.charAt(col) ).clone() );
 						
+						pikeableCounter ++;
+
 						
 					}
 				}
@@ -250,6 +243,11 @@ public class Map {
     
     }
     
+    public boolean canMove( int posY, int posX){
+        
+        return checkMovablePosition(posX, posY);
+    
+    }
     
     
 
@@ -328,6 +326,13 @@ public class Map {
     
     }
 
+	public int getCellWidth(){
+		return cellWidth;
+	}
+
+	public int getCellHeight(){
+		return cellHeight;
+	}
 
     public Cell getCellByPosition(int posX, int posY) {
     
@@ -416,58 +421,14 @@ public class Map {
     	return width;
     }
 
-    public boolean checkAllCollision(Role c) {
-    	
-    	
-		
-		
-		return false;
-	}
-    
-	public Pickeable checkPickeableCollision(Role c) {
-		
-		Pickeable result = null;
-		
-		LinkedList<Cell> cellList = new LinkedList<Cell>();
-		
-		Cell aux1 = getCellByPosition(c.getPosX(), c.getPosY());     	
-		
-        cellList.add(aux1);
-		
-		Cell aux2 = getCellByPosition(c.getPosX() + c.getWidth(), c.getPosY() + c.getHeight());
-		
-        if(aux1 != aux2) {
-        	cellList.add(aux2);
-        }
-
-        for(Cell cellAux : cellList){
-        	
-        	if(cellAux.getPickup() != null && (c.collidesWith( cellAux.getPickup() ) || cellAux.getPickup().collidesWith( c ))) {
-        		result = cellAux.getPickup();
-        	}
-        	 	
-        }
-        
-		return result;
-		
+    public int getPacmanPositionX(){
+		return posXPacMan;
 	}
 	
-	
-	public void consumePickeable(Pickeable p) {
-		
-		Cell aux = getCellByPosition(p.getPosX(), p.getPosY());
-		
-		aux.setPickup(null);
-		
-		myGame.addPoints( p.consume() );
-
-		myGame.updatePickupGraphic(aux);		//ACTUALIZAR SOLO PICKUP PARA EVITAR EFECTOS VISUALES RAROS EN LA CELDA
-
-		
-		//System.out.println("CONSUMIDO");
-		
+    public int getPacmanPositionY(){
+		return posYPacMan;
 	}
-	
+
 	public HashMap<Object,Cell> getAdjacentCellsByPX(int posX, int posY){
 		
 		HashMap<Object,Cell> result;
@@ -478,7 +439,10 @@ public class Map {
 		
 	}
 	
-	public void explode(int centerX, int centerY, int sizeX, int sizeY) {
+	public LinkedList<Role> explode(int centerX, int centerY, int sizeX, int sizeY) {
+		
+		
+		LinkedList<Role> resultList = new LinkedList<Role>(); 
 		
 		int topLeftX = getCellByPosition(centerX, centerY).getColumn() - sizeX;
 		int topLeftY = getCellByPosition(centerX, centerY).getRow() - sizeY;
@@ -486,27 +450,29 @@ public class Map {
 		int bottomRightX = topLeftX + ( (sizeX * 2) + 1);
 		int bottomRightY = topLeftY + ( (sizeY * 2) + 1);
 		
+		if(topLeftX < 0) topLeftX = 0;
+		if(topLeftY < 0) topLeftX = 0;
+		
+		if(bottomRightX >= width) bottomRightX = width;
+		if(bottomRightY >= height) bottomRightY = height;
 		
 		
 		Cell aux = null;
 		
 		
-		/*
-		System.out.println(centerX + " " + centerY);
-		System.out.println(sizeX + " " + sizeY);
-		System.out.println(topLeftX + " " + topLeftY);
-		
-		System.out.println(ghostHomes.size());
-		*/
 		for(int i = topLeftX; i < bottomRightX ; i++) {
 		
-			
 			
 			for(int k = topLeftY; k < bottomRightY; k++) {
 
 				aux = cells[k][i];
-	
 				
+				for(Role r : aux.getCharactersOnTop()) {
+					if(!resultList.contains(r)) {
+						resultList.add(r);
+					}
+				}
+	
 				if(!isGhostHome(aux) && !isBorder(aux) ) {
 
 					if(aux.getWalkable()) {
@@ -515,15 +481,18 @@ public class Map {
 						aux.getGraphicEntity().setIcon(ResourceManager.getProvider().getWallImages()[7]);
 					}
 				
-					myGame.updateCellGraphic(aux);
+				myGame.updateCellGraphic(aux);
+
 					
 				}
-				
-				
+
 				
 			}
 			
 		}
+		
+		
+		return resultList;
 		
 	}
 	
@@ -548,16 +517,11 @@ public class Map {
 		boolean result = false;
 		for(Cell gh : ghostHomes){
 			if(c == gh) {
-			/*
-			System.out.println("gh: Fila "+gh.getRow()+"Columna "+gh.getColumn());
-			System.out.println("c: Fila "+gh.getRow()+"Columna "+gh.getColumn());
-			*/
 				result = true;
 				return result;		
 			}	
 		}
 		return result;
-		//System.out.println("Es una casa de fantasma: "+result);
 	}
 	
 	/**
@@ -589,46 +553,92 @@ public class Map {
        return ghList;
     }
 
-	
-	
-	public LinkedList<Role> checkCellColitions(Role r){
+	public int getPikeableCounter(){
+		return pikeableCounter;
+	}
+
+	public Cell getRandomGhostHome() {
+
+		int home = (int)(Math. random() * ghostHomes.size());
+					
+		return ( ghostHomes.get(home) );					
+
+	}
+
+	public Pickeable checkPickeableCollision(Role c) {
 		
-		Cell cell = getCellByPosition(r.getPosX(),r.getPosY());
+		Pickeable result = null;
+		
+		LinkedList<Cell> cellList = new LinkedList<Cell>();
+		
+		Cell aux1 = getCellByPosition(c.getPosX(), c.getPosY());     	
+		
+        cellList.add(aux1);
+		
+		Cell aux2 = getCellByPosition(c.getPosX() + c.getWidth(), c.getPosY() + c.getHeight());
+		
+        if(aux1 != aux2) {
+        	cellList.add(aux2);
+        }
+
+        for(Cell cellAux : cellList){
+        	
+        	if(cellAux.getPickup() != null && (c.collidesWith( cellAux.getPickup() )) ) {
+        		result = cellAux.getPickup();
+        	}
+        	 	
+        }
+        
+		return result;
+		
+	}
+	
+	
+	public void consumePickeable(Pickeable p) {
+		
+		Cell aux = getCellByPosition(p.getPosX(), p.getPosY());
+		
+		aux.setPickup(null);
+		
+		myGame.addPoints( p.consume() );
+
+		myGame.updatePickupGraphic(aux);	
+		
+		pikeableCounter--;
+		if(pikeableCounter == 0) {
+			myGame.getLevel().passLevel();
+		}
+		
+	}
+	
+	
+	public LinkedList<Role> checkCharacterColitions(Role r, int posX, int posY){
+		
+		Cell cell = getCellByPosition(posX, posY);
 		LinkedList<Role> returnList = new LinkedList<Role>();
 		LinkedList<Role> roleList = cell.getCharactersOnTop();
 
-		if(roleList.size() > 1){
-			
-			for(Role rle : roleList) {
-				if(rle != r && (r.collidesWith(rle) || rle.collidesWith(cell)) ) {
-					returnList.add(rle);
-				}
+		for(Role cellRole : roleList) {
+			if(r != cellRole && r.collidesWith(cellRole) ) {
+				returnList.add(cellRole);
 			}
-			
 		}
-		
+
 		return returnList;
 	}
 	
-	public void updateOnTopCellElements(Role c, Object direction){
-		Cell actualCell = getCellByPosition(c.getPosX(),c.getPosY());
-		Cell nextCell = null;
-
-		if(direction == Directions.getDown()){
-			nextCell = cells[actualCell.getRow() + 1][actualCell.getColumn()];
-		}
-		if(direction == Directions.getLeft()){
-			nextCell = cells[actualCell.getRow()][actualCell.getColumn() - 1];
-		}
-		if(direction == Directions.getUp()){
-			nextCell = cells[actualCell.getRow() - 1][actualCell.getColumn()];
-		}
-		if(direction == Directions.getRight()){
-			nextCell = cells[actualCell.getRow()][actualCell.getColumn() + 1];
-		}
-
-		actualCell.removeCharacterOnTop(c);
-		nextCell.addCharacterOnTop(c);
+	
+	
+	public void removeCharacterOnTop(Role R, int posX, int posY) {
+		Cell cellToRemoveCharacter = getCellByPosition(posX, posY);
+		cellToRemoveCharacter.removeCharacterOnTop(R);
+		
+	}
+	
+	public void addCharacterOnTop(Role R, int posX, int posY) {
+		
+		Cell cellToAddCharacter = getCellByPosition(posX, posY);
+		cellToAddCharacter.addCharacterOnTop(R);
 	}
 	
 }

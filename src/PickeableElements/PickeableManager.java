@@ -11,12 +11,12 @@ public class PickeableManager {
 	}
 	
 	public void speedEffect() {
-		myGame.changeSpdPacMan(5, 5);
+		myGame.changeSpdPacMan(8000, 20);
 	}
 	
 	public void bombEffect(int posX, int posY) {
 	
-		myGame.explodeArea(posX, posY);
+		myGame.bombAfterTime(8000);
 		
 	}
 	

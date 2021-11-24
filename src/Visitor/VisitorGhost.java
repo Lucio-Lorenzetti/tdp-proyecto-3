@@ -12,44 +12,38 @@ import CharacterElements.PacMan;
 * @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
 *
 */
-public class VisitorPinky extends Visitor{
+public class VisitorGhost extends Visitor{
 
-    protected Ghost pinky;
+    protected Ghost myGhost;
 
     /**
     * Creates and initialize a VisitorPinky.
     * @param p Pinky.
     */
-    public VisitorPinky(Ghost p){
-        this.pinky = p;
+    public VisitorGhost(Ghost p){
+        myGhost = p;
     }
 
 	@Override
 	public void visitPacMan(PacMan p) {
-        if(intersect(p,pinky)){
 
-        }
+		int ghostState = myGhost.getIndexState();
+		
+		if( ghostState == Ghost.getAliveState() ) {
+			p.death();
+		} else if( ghostState == Ghost.getVulnerableState() ) {
+			myGhost.ChangeState(0);
+		}
 		
 	}
 
 	@Override
-	public void visitInky(Ghost g){
+	public void visitGhost(Ghost g) {
+	
+		
 		
 	}
 
-	@Override
-	public void visitPinky(Ghost g) {
-		
-	}
 
-	@Override
-	public void visitClyde(Ghost g) {
-		
-	}
-
-	@Override
-	public void visitBlinky(Ghost g) {
-		
-	}
 
 }

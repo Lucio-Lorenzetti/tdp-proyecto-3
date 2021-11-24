@@ -278,8 +278,9 @@ public class Cell extends Element{
     	 isIntersection = i;
      }
 
-     public LinkedList<CharacterElements.Role> getCharactersOnTop(){
-         return charactersOnTop;
+     public LinkedList<Role> getCharactersOnTop(){
+    	  
+         return (LinkedList<Role>) charactersOnTop.clone();
      }
     
 }

@@ -1,9 +1,8 @@
 package Images;
 
+import java.awt.Image;
 import java.util.LinkedList;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+import javax.sound.sampled.*;
 
 import javax.swing.ImageIcon;
  
@@ -18,6 +17,10 @@ public abstract class ResourceProvider {
 	protected LinkedList<String> blinkyRoutes;
 	protected LinkedList<String> clydeRoutes;
 	protected LinkedList<String> pinkyRoutes;
+	protected LinkedList<String> inkyDeathRoutes;
+	protected LinkedList<String> blinkyDeathRoutes;
+	protected LinkedList<String> clydeDeathRoutes;
+	protected LinkedList<String> pinkyDeathRoutes;
 	protected LinkedList<String> scaredRoutes;
 	protected LinkedList<String> tileRoutes;
 	protected LinkedList<String> pickeableRoutes;
@@ -29,10 +32,16 @@ public abstract class ResourceProvider {
 	protected LinkedList<String> backgroundMusicRoutes;	
 	
 	protected ImageIcon[] pacmanImages;
+	protected ImageIcon[] pacmanBPImages;
+	protected ImageIcon[] pacmanSPImages;
 	protected ImageIcon[] blinkyImages;
 	protected ImageIcon[] inkyImages;
 	protected ImageIcon[] pinkyImages;
 	protected ImageIcon[] clydeImages;
+	protected ImageIcon[] blinkyDeathImages;
+	protected ImageIcon[] inkyDeathImages;
+	protected ImageIcon[] pinkyDeathImages;
+	protected ImageIcon[] clydeDeathImages;
 	protected ImageIcon[] scaredImages;
 	
 	
@@ -62,6 +71,10 @@ public abstract class ResourceProvider {
 		pinkyRoutes = new LinkedList<String>();
 		blinkyRoutes = new LinkedList<String>();
 		clydeRoutes = new LinkedList<String>();
+		inkyDeathRoutes = new LinkedList<String>();
+		blinkyDeathRoutes = new LinkedList<String>();
+		clydeDeathRoutes = new LinkedList<String>();
+		pinkyDeathRoutes = new LinkedList<String>();
 		scaredRoutes = new LinkedList<String>();
 		tileRoutes = new LinkedList<String>();
 		backgroundRoutes = new LinkedList<String>();
@@ -85,22 +98,24 @@ public abstract class ResourceProvider {
 		pacmanRoutes.add(themeRoute + "/characters/pacman/pacmanToSP.gif");
 		
 		//PACMANBP IMAGES
-		pacmanBPRoutes.add(themeRoute + "/characters/pacmanBP/Neutral.gif");		
+		pacmanBPRoutes.add(themeRoute + "/characters/pacmanBP/NeutralD.gif");		
 		pacmanBPRoutes.add(themeRoute + "/characters/pacmanBP/Left.gif");
 		pacmanBPRoutes.add(themeRoute + "/characters/pacmanBP/Up.gif");
 		pacmanBPRoutes.add(themeRoute + "/characters/pacmanBP/Right.gif");
 		pacmanBPRoutes.add(themeRoute + "/characters/pacmanBP/Down.gif");
 		pacmanBPRoutes.add(themeRoute + "/characters/pacmanBP/Death.gif");
 		pacmanBPRoutes.add(themeRoute + "/characters/pacmanBP/BPTopacman.gif");
+		pacmanBPRoutes.add(themeRoute + "/characters/pacman/pacmanToSP.gif");
 		
 		//PACMANSP IMAGES
-		pacmanSPRoutes.add(themeRoute + "/characters/pacmanSP/Neutral.gif");		
+		pacmanSPRoutes.add(themeRoute + "/characters/pacmanSP/NeutralD.gif");		
 		pacmanSPRoutes.add(themeRoute + "/characters/pacmanSP/Left.gif");
 		pacmanSPRoutes.add(themeRoute + "/characters/pacmanSP/Up.gif");
 		pacmanSPRoutes.add(themeRoute + "/characters/pacmanSP/Right.gif");
 		pacmanSPRoutes.add(themeRoute + "/characters/pacmanSP/Down.gif");
 		pacmanSPRoutes.add(themeRoute + "/characters/pacmanSP/Death.gif");
 		pacmanSPRoutes.add(themeRoute + "/characters/pacmanSP/SPTopacman.gif");
+		pacmanSPRoutes.add(themeRoute + "/characters/pacman/pacmanToBP.gif");
 		
 		//INKY IMAGES
 		inkyRoutes.add(themeRoute + "/characters/inky/Neutral.gif");
@@ -109,7 +124,14 @@ public abstract class ResourceProvider {
 		inkyRoutes.add(themeRoute + "/characters/inky/Right.gif");
 		inkyRoutes.add(themeRoute + "/characters/inky/Down.gif");
 		inkyRoutes.add(themeRoute + "/characters/inky/Death.gif");
-		
+
+		//INKY DEATH IMAGES
+		inkyDeathRoutes.add(themeRoute + "/characters/inky/Death.png");
+		inkyDeathRoutes.add(themeRoute + "/characters/inky/Death.png");
+		inkyDeathRoutes.add(themeRoute + "/characters/inky/Death.png");
+		inkyDeathRoutes.add(themeRoute + "/characters/inky/Death.png");
+		inkyDeathRoutes.add(themeRoute + "/characters/inky/Death.png");
+		inkyDeathRoutes.add(themeRoute + "/characters/inky/Death.png");
 		
 		//CLYDE IMAGES
 		clydeRoutes.add(themeRoute + "/characters/clyde/Neutral.gif");
@@ -118,6 +140,14 @@ public abstract class ResourceProvider {
 		clydeRoutes.add(themeRoute + "/characters/clyde/Right.gif");
 		clydeRoutes.add(themeRoute + "/characters/clyde/Down.gif");
 		clydeRoutes.add(themeRoute + "/characters/clyde/Death.gif");
+
+		//CLYDE DEATH IMAGES
+		clydeDeathRoutes.add(themeRoute + "/characters/clyde/Death.png");
+		clydeDeathRoutes.add(themeRoute + "/characters/clyde/Death.png");
+		clydeDeathRoutes.add(themeRoute + "/characters/clyde/Death.png");
+		clydeDeathRoutes.add(themeRoute + "/characters/clyde/Death.png");
+		clydeDeathRoutes.add(themeRoute + "/characters/clyde/Death.png");
+		clydeDeathRoutes.add(themeRoute + "/characters/clyde/Death.png");
 				
 		//PINKY IMAGES
 		pinkyRoutes.add(themeRoute + "/characters/pinky/Neutral.gif");
@@ -126,6 +156,14 @@ public abstract class ResourceProvider {
 		pinkyRoutes.add(themeRoute + "/characters/pinky/Right.gif");
 		pinkyRoutes.add(themeRoute + "/characters/pinky/Down.gif");
 		pinkyRoutes.add(themeRoute + "/characters/pinky/Death.gif");
+
+		//PINKY DEATH IMAGES
+		pinkyDeathRoutes.add(themeRoute + "/characters/pinky/Death.png");
+		pinkyDeathRoutes.add(themeRoute + "/characters/pinky/Death.png");
+		pinkyDeathRoutes.add(themeRoute + "/characters/pinky/Death.png");
+		pinkyDeathRoutes.add(themeRoute + "/characters/pinky/Death.png");
+		pinkyDeathRoutes.add(themeRoute + "/characters/pinky/Death.png");
+		pinkyDeathRoutes.add(themeRoute + "/characters/pinky/Death.png");
 		
 		//BLINKY IMAGES
 		blinkyRoutes.add(themeRoute + "/characters/blinky/Neutral.gif");
@@ -134,6 +172,14 @@ public abstract class ResourceProvider {
 		blinkyRoutes.add(themeRoute + "/characters/blinky/Right.gif");
 		blinkyRoutes.add(themeRoute + "/characters/blinky/Down.gif");
 		blinkyRoutes.add(themeRoute + "/characters/blinky/Death.gif");
+
+		//BLINKY DEATH IMAGES
+		blinkyDeathRoutes.add(themeRoute + "/characters/blinky/Death.png");
+		blinkyDeathRoutes.add(themeRoute + "/characters/blinky/Death.png");
+		blinkyDeathRoutes.add(themeRoute + "/characters/blinky/Death.png");
+		blinkyDeathRoutes.add(themeRoute + "/characters/blinky/Death.png");
+		blinkyDeathRoutes.add(themeRoute + "/characters/blinky/Death.png");
+		blinkyDeathRoutes.add(themeRoute + "/characters/blinky/Death.png");
 		
 		//SCARED IMAGES
 		scaredRoutes.add(themeRoute + "/characters/scared/Neutral.gif");
@@ -199,19 +245,36 @@ public abstract class ResourceProvider {
 		
 		pacmanImages = new ImageIcon[pacmanRoutes.size()];
 		createImages(pacmanRoutes, pacmanImages);
-		
+
+		pacmanBPImages = new ImageIcon[pacmanBPRoutes.size()];
+		createImages(pacmanBPRoutes, pacmanBPImages);
+
+		pacmanSPImages = new ImageIcon[pacmanSPRoutes.size()];
+		createImages(pacmanSPRoutes, pacmanSPImages);		
 		
 		blinkyImages = new ImageIcon[blinkyRoutes.size()];
 		createImages(blinkyRoutes, blinkyImages);
 
+		blinkyDeathImages = new ImageIcon[blinkyDeathRoutes.size()];
+		createImages(blinkyDeathRoutes, blinkyDeathImages);
+
 		inkyImages = new ImageIcon[inkyRoutes.size()];
 		createImages(inkyRoutes, inkyImages);
+
+		inkyDeathImages = new ImageIcon[inkyDeathRoutes.size()];
+		createImages(inkyDeathRoutes, inkyDeathImages);
 
 		clydeImages = new ImageIcon[clydeRoutes.size()];
 		createImages(clydeRoutes, clydeImages);
 
+		clydeDeathImages = new ImageIcon[clydeDeathRoutes.size()];
+		createImages(clydeDeathRoutes, clydeDeathImages);
+
 		pinkyImages = new ImageIcon[pinkyRoutes.size()];
 		createImages(pinkyRoutes, pinkyImages);
+
+		pinkyDeathImages = new ImageIcon[pinkyDeathRoutes.size()];
+		createImages(pinkyDeathRoutes, pinkyDeathImages);
 		
 		scaredImages = new ImageIcon[scaredRoutes.size()];
 		createImages(scaredRoutes, scaredImages);
@@ -258,7 +321,8 @@ public abstract class ResourceProvider {
 				music = AudioSystem.getClip();
 				AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getResource(routeList.get(i)));
 		    	music.open(inputStream);
-			 	
+			 	FloatControl gainControl = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);
+				gainControl.setValue(-10.0f); 
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}		
@@ -273,6 +337,27 @@ public abstract class ResourceProvider {
 	public ImageIcon[] getPacManImages() {
 	
 		return pacmanImages;
+		
+	}
+
+	/**
+	 * Returns an ImageIcon array containing PacMan graphics.
+	 * @return ImageIcon array with PacMan graphics.
+	 */
+	public ImageIcon[] getPacManBPImages() {
+	
+		return pacmanBPImages;
+		
+	}
+
+	
+	/**
+	 * Returns an ImageIcon array containing PacMan graphics.
+	 * @return ImageIcon array with PacMan graphics.
+	 */
+	public ImageIcon[] getPacManSPImages() {
+	
+		return pacmanSPImages;
 		
 	}
 	
@@ -353,6 +438,29 @@ public abstract class ResourceProvider {
 		
 	}
 	
+	public ImageIcon[] getBlinkyDeathImages() {
+		
+		return blinkyDeathImages;
+		
+	}
+	
+	public ImageIcon[] getInkyDeathImages() {
+			
+			return inkyDeathImages;
+			
+		}
+	
+	public ImageIcon[] getClydeDeathImages() {
+		
+		return clydeDeathImages;
+		
+	}
+	
+	public ImageIcon[] getPinkyDeathImages() {
+		
+		return pinkyDeathImages;
+		
+	}
 	public ImageIcon[] getScaredImages() {
 		
 		return scaredImages;
@@ -367,6 +475,9 @@ public abstract class ResourceProvider {
 		return backgroundMusic;
 	}
 	
+	
+	
+	
 	public void resizeTiles(int height, int width) {
 		
 	}
@@ -379,6 +490,22 @@ public abstract class ResourceProvider {
 		
 	}
 
+	
+	private void resize(ImageIcon image, int width, int height) {
+		
+		Image recoveredImage = null;
+		
+		if(image != null) {
+			recoveredImage = image.getImage();
+		}
+		
+		if(recoveredImage != null) {
+			recoveredImage = recoveredImage.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+		}
+		
+		image.setImage(recoveredImage);
+		
+	}
 
 	
 	

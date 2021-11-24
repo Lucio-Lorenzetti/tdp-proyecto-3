@@ -1,10 +1,15 @@
 package CharacterElements;
 
+import javax.swing.ImageIcon;
+
+import Elements.Element;
 import GUI.GraphicEntity;
 import GameLogic.Directions;
 import Visitor.*;
 import Images.ResourceManager;
 //import Images.ResourceProvider;
+import Maps.Map;
+import PickeableElements.Pickeable;
 
 /**
 *
@@ -18,6 +23,8 @@ import Images.ResourceManager;
 public class PacMan extends Role{
 
     private int hearts;
+    private int state;
+    private int counter;
 
     /**
     * Creates and initialize a PacMan;
@@ -26,19 +33,28 @@ public class PacMan extends Role{
     * @param width of the PacMan.
     * @param heigth of the PacMan.
     */
-    public PacMan(int posY, int posX, int width, int height){
+    public PacMan(int posY, int posX, int width, int height, Map map){
     	
-        super(posY, posX, width, height, new GraphicEntity( ResourceManager.getProvider().getPacManImages()[0] ), 3);
+        super(posY, posX, width, height, new GraphicEntity( ResourceManager.getProvider().getPacManImages()[0] ), 3, map);
         
         hearts = 3;
         
+        state = 0; 
+
         myVisitor = new VisitorPacMan(this);
+        
+        counter = 0;
         
     }
 
-    public PacMan() {
-    	super(0, 0, 0, 0, new GraphicEntity( ResourceManager.getProvider().getPacManImages()[0] ), 4);
+    public PacMan(Map map) {
     	
+    	super(0, 0, 0, 0, new GraphicEntity( ResourceManager.getProvider().getPacManImages()[0] ), 4, map);
+    	
+        hearts = 3;
+        
+        state = 0;
+
     	myVisitor = new VisitorPacMan(this);
         
     }
@@ -46,28 +62,59 @@ public class PacMan extends Role{
     
     @Override
     public void doOnMovement() {
+    	
+    	Pickeable detectedPickeable = myMap.checkPickeableCollision(this);
 
+    	if(detectedPickeable != null) {
+    			
+			myMap.consumePickeable(detectedPickeable);
+    			
+    	}
+    	
     }
     
     @Override
     protected void doOnDirectionChange() {
     	
-    	if(nextDirection == Directions.getNeutral()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getPacManImages()[0] );
-    	}
-    	if(nextDirection == Directions.getLeft()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getPacManImages()[1] );
-    	}
-    	if(nextDirection == Directions.getUp()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getPacManImages()[2] );
-    	}
-    	if(nextDirection == Directions.getRight()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getPacManImages()[3] );
-    	}
-    	if(nextDirection == Directions.getDown()) {
-    		myGraphicEntity.setIcon( ResourceManager.getProvider().getPacManImages()[4] );
-    	}
+        updateGraphics(actualDirection);
     	
+    }
+    
+    public void ChangeState(int s){
+        ImageIcon[] imageState = null;
+        switch(state){
+            case 0: {
+                imageState = ResourceManager.getProvider().getPacManImages();
+                if(s == 1){
+                    myGraphicEntity.setIcon(imageState[7]);
+                }else{
+                    myGraphicEntity.setIcon(imageState[6]);;
+                }
+                break;
+            }
+            case 1: {
+                imageState = ResourceManager.getProvider().getPacManSPImages();
+                if(s == 0){
+                    myGraphicEntity.setIcon(imageState[6]);
+                }else{
+                    myGraphicEntity.setIcon(imageState[7]);;
+                }
+                break;
+            }
+            case 2: {
+                imageState = ResourceManager.getProvider().getPacManBPImages();
+                if(s == 0){
+                    myGraphicEntity.setIcon(imageState[6]);
+                }else{
+                    myGraphicEntity.setIcon(imageState[7]);;
+                }
+                break;
+            }
+
+        }        
+        state = s;
+        //updateGraphics(actualDirection);
+        
     }
 
     public void hurtPacMan(){
@@ -75,15 +122,66 @@ public class PacMan extends Role{
     }
 
     public int getHearts(){ 
-        return hearts; 
+        return hearts;
     }
-    
-    
-   /**
-    * Accept the visitor of another Role passed by parameter
-    */
-    public  void accept(Visitor v){
-        myVisitor.visitPacMan(this);
-    }
+   
+
+	@Override
+	public void updateGraphics(Object d) {
+		
+		ImageIcon[] imageState = null;
+        
+        
+        switch(state){
+            case 0: {
+                imageState = ResourceManager.getProvider().getPacManImages();
+                break;
+            }
+            case 1: {
+                imageState = ResourceManager.getProvider().getPacManSPImages();
+                break;
+            }
+            case 2: {
+                imageState = ResourceManager.getProvider().getPacManBPImages();
+                break;
+            }
+
+        }
+    	
+    	if(nextDirection == Directions.getNeutral()) {
+    		myGraphicEntity.setIcon( imageState[0] );
+    	}
+    	if(nextDirection == Directions.getLeft()) {
+    		myGraphicEntity.setIcon( imageState[1] );
+    	}
+    	if(nextDirection == Directions.getUp()) {
+    		myGraphicEntity.setIcon( imageState[2] );
+    	}
+    	if(nextDirection == Directions.getRight()) {
+    		myGraphicEntity.setIcon( imageState[3] );
+    	}
+    	if(nextDirection == Directions.getDown()) {
+    		myGraphicEntity.setIcon( imageState[4] );
+    	}
+		
+	}
+
+	
+	public void death() {
+		hearts--;
+	}
+	
+	public void accept(Visitor v) {
+		v.visitPacMan(this);
+	}
+
+	@Override
+	public void onMapUpdate() {
+		heightPX = myMap.getCellHeight() - 1;
+    	widthPX = myMap.getCellWidth() - 1;
+    	posXPX = myMap.getPacmanPositionX();
+    	posYPX = myMap.getPacmanPositionY();
+	}
+	
 
 }

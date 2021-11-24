@@ -28,9 +28,9 @@ public class Clyde extends Ghost{
     * @param dead true if Clyde is dead, false otherwise. 
     * @param moving true if Clyde is moving, false otherwise.
     */
-    public Clyde(int posY, int posX, int width, int height, boolean dead, boolean moving, Map m){
-        super(posY, posX, width, height, dead, moving, m, new GraphicEntity(ResourceManager.getProvider().getClydeImages()[1]), 4);
-        myVisitor = new VisitorBlinky(this);
+    public Clyde(int posY, int posX, int width, int height, Map m){
+        super(posY, posX, width, height, m, new GraphicEntity(ResourceManager.getProvider().getClydeImages()[1]), 4);
+        myVisitor = new VisitorGhost(this);
     
         myIA = new IAClyde(m, this);
         ghostState.add(myIA);
@@ -43,13 +43,6 @@ public class Clyde extends Ghost{
 		updateGraphics(nextDirection);
 	}
 	
-	
-
-    @Override
-    public  void accept(Visitor v){
-        myVisitor.visitClyde(this);
-    }
-
 
     public void updateGraphics(Object direction) {
 		
@@ -59,9 +52,8 @@ public class Clyde extends Ghost{
 			images = ResourceManager.getProvider().getClydeImages();
 		} else if (indexState == 1) {
 			images = ResourceManager.getProvider().getScaredImages();
-			System.out.println("GRAFICO ASUSTADO CLYDE");
 		} else {
-			images = ResourceManager.getProvider().getScaredImages(); //CAMBIAR POR DEAD
+			images = ResourceManager.getProvider().getClydeDeathImages();
 		} 
 		
     	if(direction == Directions.getNeutral()) {

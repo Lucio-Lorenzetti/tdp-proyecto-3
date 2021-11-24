@@ -20,10 +20,13 @@ import java.util.LinkedList;
  */
 public class Game {
 
+	/*
 	protected LinkedList<Ghost> livingGhost;
 	protected LinkedList<Ghost> vulnerableGhost;
 	protected LinkedList<Ghost> deadGhost;
+	*/
 	
+	protected LinkedList<Ghost> ghostList;
 	
     protected ScoreBoard<Player> myScoreboard;
     
@@ -35,6 +38,8 @@ public class Game {
     protected Thread myTimerVulnerableThread;
     protected Timer myTimerSpeed;
     protected Thread myTimerSpeedThread;
+    protected Timer myTimerBomb;
+    protected Thread myTimerBombThread;
     
     protected Map myMap;
     protected MainWindow myGUI;
@@ -46,8 +51,6 @@ public class Game {
     protected static Role myPinky;
     protected static Role myInky;
     protected static Role myClyde;
-    
-    
     
     
     private String playerName;
@@ -76,40 +79,50 @@ public class Game {
     	myTimerPacManThread.start();
     	myTimerGhostsThread.start();	
     	
+    	pauseGame();
+    	
     	
     	myScoreboard = new ScoreBoard<Player>(20, new scoreComparator<Player>());
     	
-    	
+    	/*
     	livingGhost = new LinkedList<Ghost>();
     	vulnerableGhost = new LinkedList<Ghost>();
     	deadGhost = new LinkedList<Ghost>();
+    	*/
     	
+    	ghostList = new LinkedList<Ghost>();
     	
     	myGUI = g;
     	
-    	myLevel = new Level(this);
+    	myLevel = new Level(this, myGUI.getCellHeight(), myGUI.getCellWidth());
     	
     	////////////////////////////////////////////////////////////////////////
     	
-    	myLevel.passLevel(myGUI.getCellHeight(), myGUI.getCellWidth());
+    	System.out.println("ANTES DE CREAR PACMAN");
+    	
+    	PacMan = new PacMan(myGUI.getCellHeight() * 12,  myGUI.getCellWidth() * 10 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, myMap);
     	
     	
     	
+    	System.out.println("ANTES DE PASAR NIVEL");
     	
-    }
-    
-    //MÉTODO DE PRUEBA DE SCOREBOARD
-    public void printScores() {
-    	Player p;
     	
-    	for(int i = 1; i<=10; i++) {
-    		
-    		if(!myScoreboard.isEmpty()) {
-	    		p = myScoreboard.remove();
-	    		
-	    		System.out.println("Posicion " + i + ", Nombre:" + p.getName() + " Puntos: " + p.getPoints() );
-    		}
-    	}
+    	myBlinky = new Blinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, myMap );
+    	myPinky = new Pinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, myMap );
+    	myInky = new Inky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, myMap );
+    	myClyde = new Clyde(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, myMap );
+    	
+    	ghostList.add((Ghost) myBlinky);
+    	ghostList.add((Ghost) myPinky);
+    	ghostList.add((Ghost) myInky);
+    	ghostList.add((Ghost) myClyde);
+    	
+    	myLevel.passLevel();
+    	
+    	
+    	
+    	startGame();
+    	
     }
     
     
@@ -118,18 +131,19 @@ public class Game {
      * Set actualScore to 0.
      * @return if the game is over or not.
      */
-    public boolean gameOver(){
-    	    	
-    	myScoreboard.add(new Player(playerName, actualScore));
-      
-    	actualScore = 0;
-    	playerName = "";
-
-
-		return true;
-    
+    public void gameOver(){
+    	
+    	//myGUI.displayGameOver();
+    	
     }
     
+    public void resetGame() {
+		myLevel.changeMap();
+	}
+    
+    
+    
+
     /**
      * Set the atributte playerName.
      * @param p the name of the player.
@@ -151,194 +165,16 @@ public class Game {
     * Move the character to his next direction.
     * @param c the character who will be move
     */
-    public void doMove(CharacterElements.Role c) {
+    public void doMove(Role c) {
     
-    	Object characterDirection = null;
-    	Object characterNextDirection = c.getNextDirection();
-
-    	int check1col = 0;
-    	int check1row = 0;
-    	int check2col = 0;
-    	int check2row = 0;
-    
-    	if(characterNextDirection != c.getActualDirection()) {
-
-	    	if(characterNextDirection == Directions.getLeft()) {
-				check1col = c.getPosX();
-				check1row = c.getPosY();
-				check2col = c.getPosX();
-				check2row = c.getPosY() + c.getHeight();
-	    	} else
-	    	if(characterNextDirection == Directions.getDown()) {
-				check1col = c.getPosX();
-		    	check1row = c.getPosY() + c.getWidth();
-		    	check2col = c.getPosX() + c.getWidth();
-		    	check2row = c.getPosY() + c.getHeight();
-	    	} else
-	    	if(characterNextDirection == Directions.getUp()) {
-	    		check1col = c.getPosX();
-	        	check1row = c.getPosY();
-	        	check2col = c.getPosX() + c.getWidth();
-	        	check2row = c.getPosY();
-	    	} else
-	    	if(characterNextDirection == Directions.getRight()) {
-	    		check1col = c.getPosX() + c.getWidth();
-	        	check1row = c.getPosY();
-	        	check2col = c.getPosX() + c.getWidth();
-	        	check2row = c.getPosY() + c.getHeight();
-	    	}
-	    	
-	    	if( myMap.canMove(check1row, check1col, characterNextDirection)  && myMap.canMove(check2row, check2col, characterNextDirection)) {
-	    		//!myMap.checkIfInIntersection(C.getPosX(), C.getPosY()) || 
-	    		if(myMap.checkIfInPath(c.getPosX(), c.getPosY())) {
-					//myMap.updateOnTopCellElements(c, characterNextDirection);
-	    			c.updateDirection();  
-		    		myGUI.paintCharacter(c);
-	    		}	
-	    		
-	    	}
-	    	 
-	    	
+    	if(c.checkDirectionChange()) {
+    		updateCharacterGraphic(c);
     	}
-    	
-    	
-    	characterDirection = c.getActualDirection();
-    	
-    	if(characterDirection == Directions.getLeft()) {	
-    		doMoveLeft(c);
-    	} else
-    	if(characterDirection == Directions.getDown()) {
-    		doMoveDown(c);
-    	} else
-    	if(characterDirection == Directions.getUp()) {
-    		doMoveUp(c);
-    	} else
-    	if(characterDirection == Directions.getRight()) {
-    		doMoveRight(c);
+    	if(c.move()) {
+    		myGUI.displaceCharacter(c);
     	}
-    
 
-    	if(c == PacMan) {
-    		
-    		Pickeable detectedPickeable = myMap.checkPickeableCollision(c);
-
-    		if(detectedPickeable != null) {
-    			
-				myMap.consumePickeable(detectedPickeable);
-    			
-    		}
-    		
-    	} else { 
-				Ghost ghostCharacter = (Ghost) c;
-				/*
-				LinkedList<Role> collidesWithGhost = myMap.checkCellColitions(ghostCharacter); 
-
-				if(!collidesWithGhost.isEmpty() && collidesWithGhost != null)
-					for(Role rle : collidesWithGhost){
-						if(rle.equals(PacMan)){
-							ghostCharacter.accept(PacMan.getVisitor());
-							//checkPacManHearts();
-						}
-					}
-				*/
-
-
-				if(myMap.checkIfInIntersection(c.getPosX(), c.getPosY())) {
-
-					ghostCharacter.getGhostGPS().buildRoute();
-
-				}
-    	}
-    	
-    }
-
-    /*
-	public void checkPacManHearts(){
-		if(PacMan.gethearts == 0)
-			gameOver();
-	}*/
-    
-    /**
-     * Moves the PacMan up.
-     */
-    public void doMoveUp(CharacterElements.Role C){
-    	
-    	int check1col = C.getPosX();
-    	int check1row = C.getPosY();
-    	int check2col = C.getPosX() + C.getWidth();
-    	int check2row = C.getPosY();
-        
-       	if( myMap.canMoveUp(check1row, check1col)  &&  myMap.canMoveUp(check2row, check2col) ){
-          C.move();
-          onMove(C);
-        }
-       	
-    }
-
-    /**
-     * Moves the PacMan down.
-     */
-    public void doMoveDown(CharacterElements.Role C){
-    	
-    	int check1col = C.getPosX();
-    	int check1row = C.getPosY() + C.getWidth();
-    	int check2col = C.getPosX() + C.getWidth();
-    	int check2row = C.getPosY() + C.getHeight();
-    	
-        if(myMap.canMoveDown(check1row, check1col)  &&  myMap.canMoveDown(check2row, check2col)){
-          C.move();
-          onMove(C);
-        }
-    }
-    
-    /**
-    * Moves the PacMan to the left.
-    *
-    */
-    public void doMoveLeft(CharacterElements.Role C){
-    	
-        int check1col = C.getPosX();
-        int check1row = C.getPosY();
-        int check2col = C.getPosX();
-        int check2row = C.getPosY() + C.getHeight();
-        
-        if(myMap.canMoveLeft(check1row, check1col)  &&  myMap.canMoveLeft(check2row, check2col)){
-          C.move();
-          onMove(C);
-        }
-    }
-    
-    /**
-    * Moves the PacMan to the right.
-    *
-    */
-    public void doMoveRight(CharacterElements.Role C){
-    	
-    	int check1col = C.getPosX() + C.getWidth();
-    	int check1row = C.getPosY();
-    	int check2col = C.getPosX() + C.getWidth();
-    	int check2row = C.getPosY() + C.getHeight();
-    	
-        if(myMap.canMoveRight(check1row, check1col)  &&  myMap.canMoveRight(check2row, check2col)){
-          C.move();
-          onMove(C);
-        }
-        
-    }
-    
-    
-    private void onMove(CharacterElements.Role C) {
-    	myGUI.displaceCharacter(C);
-    }
-    
-    
-    /**
-    * Moves the ghosts.
-    *
-    */
-    public void moveGhost(){
-        
-    }    
+    } 
 
     /**
     * Add points to the actual player of the.
@@ -347,13 +183,6 @@ public class Game {
     public void addPoints(int p){
     	actualScore = actualScore + p;
     	myGUI.updateScore(actualScore);
-    }
-    
-    /**
-     * Create all elements that will participate in the game.
-     */
-    public void createElements(){
-        
     }
     
     /**
@@ -372,9 +201,9 @@ public class Game {
     	
     	myMap = m;
     	
-    	Cell aux;
     	
-    	GraphicEntity auxGraph;
+    	
+    	Cell aux;
     	
     	myGUI.clearGameScreen();
     	
@@ -384,11 +213,10 @@ public class Game {
     		for(int k = 0; k < myMap.getWidth(); k++) {
     			
     			aux = myMap.getCell(i, k);
-
-    			//System.out.println("Fila " + i +  " Columna " + k + " is null: " + (aux == null));
-    			
     			
     			updateCellGraphic(aux);
+    		
+    			updatePickupGraphic(aux);
     			
         	}
     		
@@ -396,35 +224,28 @@ public class Game {
     	
     	
     	myTimerGhosts.setDelay( myLevel.getGhostDelay() );
+
+    	
+    	PacMan.setMap(m);
     	
     	
-    	
-    	PacMan = new PacMan(myGUI.getCellHeight() * 12,  myGUI.getCellWidth() * 10 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1);
     	myGUI.createCharacterGraphic(PacMan);
     	
-    	livingGhost.clear();
-    	deadGhost.clear();
-    	vulnerableGhost.clear();
+    	/*
+    	PacMan = new PacMan(myGUI.getCellHeight() * 12,  myGUI.getCellWidth() * 10 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, myMap);
+    	myGUI.createCharacterGraphic(PacMan);
+    	*/
     	
-    	myBlinky = new Blinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, myMap );
-    	myPinky = new Pinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, myMap );
-    	myInky = new Inky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, myMap );
-    	myClyde = new Clyde(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, false, true, myMap );
+    	for(Ghost g : ghostList) {
+    		System.out.println(m);
+    		g.setMap(m);
+    	}
     	
-
-    	livingGhost.add((Ghost) myBlinky);
-    	livingGhost.add((Ghost) myPinky);
-    	livingGhost.add((Ghost) myInky);
-    	livingGhost.add((Ghost) myClyde);
-
-    	
-    	for(Role R : livingGhost) {
+    	for(Role R : ghostList) {
     		myGUI.createCharacterGraphic(R);
     	}
     	
-    	for(Ghost g : livingGhost) {
-    		g.onMapUpdate(myMap);
-    	}
+    	
     	
     	
     }
@@ -434,122 +255,74 @@ public class Game {
     	myTimerGhosts.setPaused(false);
     }
     
-    public void endGame() {
+    public void pauseGame() {
     	myTimerPacMan.setPaused(true);
     	myTimerGhosts.setPaused(true);
     }
 
-	public void addLivingList(Ghost g){
-		if(deadGhost.contains(g))
-			deadGhost.remove(g);
-		if(vulnerableGhost.contains(g))
-			vulnerableGhost.remove(g);
-		
-		livingGhost.add(g);
-	}
-
-	public void addVulnerableList(Ghost g){
-		livingGhost.remove(g);
-		vulnerableGhost.add(g);
-	}
-
-	public void addDeadList(Ghost g){
-		vulnerableGhost.remove(g);
-		deadGhost.add(g);
-	}
-
-	
-	public void returnGhostToNormal(Ghost g) {
-		g.ChangeState(2);
-		addLivingList(g);
-		updateCharacterGraphic(g);
-	}
-
-    public void returnVulnerableGhostToNormal(){
-		for(Ghost g : vulnerableGhost){
-			g.ChangeState(2);
-			updateCharacterGraphic(g);
-			livingGhost.add(g);
-		}
-		
-		vulnerableGhost.clear();
-		
-	}
-
-	public void killGhost(Ghost g){
-		g.ChangeState(0);
-		addDeadList(g);
-		updateCharacterGraphic(g);
-	}
-	
-	public void scareGhost(Ghost g){
-		g.ChangeState(1);
-		addVulnerableList(g);
-		updateCharacterGraphic(g);
-	}
-
-    public void scareAllGhosts(){
-    	
-    	System.out.println(livingGhost.size());
-    	System.out.println(vulnerableGhost.size());
-    	System.out.println(deadGhost.size());
-    	
-    	
-		for(Ghost g : livingGhost) {
-			System.out.println("Asustado");
-			g.ChangeState(1);
-    		vulnerableGhost.add(g);
-    		updateCharacterGraphic(g);
+    public void scareAllGhosts() {
+    	for(Ghost g : ghostList) {
+    		if(g.getIndexState() == Ghost.getAliveState()) {
+				g.ChangeState(Ghost.getVulnerableState());
+	    		updateCharacterGraphic(g);
+    		}
     	}
-		
-		livingGhost.clear();
-		
-		System.out.println(livingGhost.size());
-    	System.out.println(vulnerableGhost.size());
-    	System.out.println(deadGhost.size());
     	
-		
     	myTimerVulnerable = new TimerVulnerable(8000, this);
     	
     	myTimerVulnerableThread = new Thread(myTimerVulnerable);
 		
     	myTimerVulnerableThread.start();
     	
+    }
+    
+    public void returnVulnerableGhostToNormal(){
+		for(Ghost g : ghostList) {
+			if(g.getIndexState() == Ghost.getVulnerableState()) {
+				g.ChangeState(Ghost.getAliveState());
+	    		updateCharacterGraphic(g);
+    		}
+		}
 	}
+    
+    
+    
+    public void changeSpdPacMan(long time, long speed) {
+    	
+    	this.myTimerPacMan.setDelay(speed);
+		
+    	myTimerSpeed = new TimerSpeedPotion(time, this);
+    	
+    	myTimerSpeedThread = new Thread(myTimerSpeed);
 
+
+		PacMan.ChangeState(1);
+
+		updateCharacterGraphic(PacMan);
 	
-    public void changeIA() {
+		
+		myTimerSpeedThread.start();
+		
     	
-    	for(Ghost g : livingGhost) {
-    		g.ChangeState(0);;
-    	}
-    	
-    	LinkedList<Ghost> aux;
-    	
-    	aux = livingGhost;
-    	livingGhost = vulnerableGhost;
-    	vulnerableGhost = aux;
+    }
 
-    	for(Ghost g : livingGhost) {
-    		updateCharacterGraphic(g);
-    	}
-    	for(Ghost g : vulnerableGhost) {
-    		updateCharacterGraphic(g);
-    	}
+    
+    public void bombAfterTime(long time) {
+
+    	myTimerBomb = new TimerBombPotion(time, this);
+    	
+    	myTimerBombThread = new Thread(myTimerBomb);
+
+
+		PacMan.ChangeState(2);
+
+		updateCharacterGraphic(PacMan);
+	
+		myTimerBombThread.start();
     	
     }
     
-    public void changeSpdPacMan(long time, long speed) {
-    	this.myTimerPacMan.setDelay(speed);
-		
-    	myTimerSpeed = new TimerSpeedPotion(8000, this);
-    	
-    	myTimerSpeedThread = new Thread(myTimerSpeed);
-		
-    	myTimerSpeedThread.start();
-		
-    	
-    }
+    
     
     public void changeSpdPacMan(long speed) {
     	this.myTimerPacMan.setDelay(speed);
@@ -560,16 +333,37 @@ public class Game {
     }
     
     public void explodeArea(int centerX, int centerY) {
+    
+    	LinkedList<Role> detectedAliveGhostInArea = myMap.explode(centerX, centerY, 2, 2);
     	
-    	myMap.explode(centerX, centerY, 2, 2);
+    	LinkedList<Ghost> temporaryVulnerability = new LinkedList<Ghost>();
+    	
+    	
+    	for(Ghost r : ghostList) {
+    		
+    		if(r.getIndexState() == Ghost.getAliveState()) {
+    		
+    			r.ChangeState(Ghost.getVulnerableState());
+    			temporaryVulnerability.add(r);
+	
+    		}
+    		
+    	}
+
+    	for(Role g : detectedAliveGhostInArea) {
+    		g.accept(PacMan.getVisitor());
+    	}
+    	
+    	for(Ghost r : temporaryVulnerability) {
+    		if(r.getIndexState() == Ghost.getVulnerableState()) {
+    			r.ChangeState(Ghost.getAliveState());
+    		}
+    	}
     	
     }
     
     
     public static Role getPacMan() {
-    	if(PacMan == null) {
-    		PacMan = new CharacterElements.PacMan(10, 10, 10, 10);
-    	}
     	return PacMan;
     }
     
@@ -598,13 +392,10 @@ public class Game {
     	return myLevel;
     }
 
-	public LinkedList<Ghost> getLivingGhost(){
-    	return (LinkedList<Ghost>) livingGhost.clone();
+	public LinkedList<Ghost> getGhostList(){
+    	return (LinkedList<Ghost>) ghostList.clone();
     }
-	
-	public LinkedList<Ghost> getVulnerableGhost(){
-    	return (LinkedList<Ghost>) vulnerableGhost.clone();
-    }
+
     
 
     /*
@@ -615,7 +406,7 @@ public class Game {
 		
 		GraphicEntity auxGraph;
 		
-		updatePickupGraphic(c);
+		//updatePickupGraphic(c);
 		
 		auxGraph = c.getGraphicEntity();
 
@@ -642,6 +433,9 @@ public class Game {
 	public Map getMap() {
 		return myMap;
 	}
+
+
+	
 	
 	
 	

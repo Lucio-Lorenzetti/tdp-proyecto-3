@@ -5,7 +5,6 @@ import Maps.MapFactory;
 import Maps.MapFactoryA;
 import Maps.MapFactoryB;
 import Maps.MapFactoryC;
-import Maps.MapFactoryBonus;
 
 import java.util.LinkedList;
 
@@ -26,13 +25,19 @@ public class Level {
 	private int levelNumber;
 	
 	private Game myGame;
+	private int widthOfCell;
+	private int heightOfCell;
 	
 	/**
 	 * Create and initialize a Level.
 	 * @param g Game to be modified by the level object.
 	 */
-	public Level(Game g) {
+	public Level(Game g, int cellHeight, int cellWidth) {
 	
+		widthOfCell = cellWidth;
+		heightOfCell = cellHeight;
+		
+		
 		myGame = g;
 		
 		Factories = new LinkedList<MapFactory>();
@@ -44,7 +49,6 @@ public class Level {
 		cantFactories = Factories.size();
 		
 		levelNumber = 0;
-		
 		System.out.println("Constructor level");
 			
 	}
@@ -54,18 +58,18 @@ public class Level {
 	 * @param cellHeightPX height of the map's cells.
 	 * @param cellWidthPX width of the map's cells.
 	 */
-	public void passLevel(int cellHeightPX, int cellWidthPX) {
-		myGame.endGame();
-		changeMap(cellHeightPX, cellWidthPX);
-		levelNumber++;
-		myGame.startGame();
-		System.out.println("PassLevel: " + levelNumber);
+	public void passLevel() {
 		
+		changeMap();
+		levelNumber++;
+		
+		System.out.println("PassLevel: " + levelNumber);	
 	}
+	
 	
 	public int getGhostDelay() {
 		
-		int minDelay = 35;
+		int minDelay = 50;
 		int startDelay = 75;
 		
 		int ghostDelay = startDelay - 5 * levelNumber;
@@ -83,13 +87,14 @@ public class Level {
 	 * @param cellHeightPX height of the map's cells.
 	 * @param cellWidthPX width of the map's cells.
 	 */
-	private void changeMap(int cellHeightPX, int cellWidthPX) {
+	public void changeMap() {
+		myGame.pauseGame();
 	
-		Map newMap = Factories.get( levelNumber % cantFactories ).CreateMap(myGame, cellHeightPX, cellWidthPX);
+		Map newMap = Factories.get( levelNumber % cantFactories ).CreateMap(myGame, heightOfCell, widthOfCell);
 		
 		myGame.setMap(newMap);
 	
-		System.out.println("ChangeMap");
+		myGame.startGame();
 	}
 	
 	

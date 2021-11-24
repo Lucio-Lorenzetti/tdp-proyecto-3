@@ -25,13 +25,9 @@ public class TimerGhost extends Timer{
 					
 			if(!paused) {
 				
-				for(Ghost g : myGame.getLivingGhost()) {
+				for(Ghost g : myGame.getGhostList()) {
 					myGame.doMove(g);
 				}
-				for(Ghost g : myGame.getVulnerableGhost()) {
-					myGame.doMove(g);
-				}
-				
 			}
 			
 		}

@@ -22,7 +22,6 @@ public class TimerVulnerable extends Timer{
 				e.printStackTrace();
 			}
 					
-				
 			myGame.returnVulnerableGhostToNormal();
 			
 	}

@@ -28,11 +28,11 @@ public class Pinky extends Ghost{
     * @param dead true if Pinky is dead, false otherwise. 
     * @param moving true if Pinky is moving, false otherwise.
     */
-    public Pinky(int posY, int posX, int width, int height, boolean dead, boolean moving, Map m){
-        super(posY, posX, width, height, dead, moving, m, new GraphicEntity(ResourceManager.getProvider().getPinkyImages()[1]), 4);
+    public Pinky(int posY, int posX, int width, int height, Map m){
+        super(posY, posX, width, height, m, new GraphicEntity(ResourceManager.getProvider().getPinkyImages()[1]), 4);
         
         
-        myVisitor = new VisitorPinky(this);
+        myVisitor = new VisitorGhost(this);
         
         myIA = new IAPinky(m, this);
         
@@ -56,7 +56,7 @@ public class Pinky extends Ghost{
 		} else if (indexState == 1) {
 			images = ResourceManager.getProvider().getScaredImages();
 		} else {
-			images = ResourceManager.getProvider().getScaredImages(); //CAMBIAR POR DEAD
+			images = ResourceManager.getProvider().getPinkyDeathImages();
 		} 
 		
     	if(direction == Directions.getNeutral()) {
@@ -77,13 +77,5 @@ public class Pinky extends Ghost{
     	
 		
 	}
-
-
-    @Override
-    public void accept(Visitor c){
-		myVisitor.visitPinky(this);
-    }
-
-
 	
 }
