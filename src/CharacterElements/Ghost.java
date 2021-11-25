@@ -104,9 +104,7 @@ public abstract class Ghost extends Role {
     
     
     public void onMapUpdate() {
-    	
-    	System.out.println(myMap);
- 
+
     	for(GhostGPS g : ghostState) {
     		g.setMap(myMap);
     	}

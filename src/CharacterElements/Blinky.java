@@ -4,10 +4,10 @@ import javax.swing.ImageIcon;
 import GUI.GraphicEntity;
 import GameLogic.Directions;
 import GameLogic.Game;
-import Images.ResourceManager;
 import Maps.Map;
 import Visitor.*;
 import IA.IABlinky;
+import Images.ResourceManager;
 
 /**
 *

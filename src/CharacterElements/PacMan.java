@@ -2,11 +2,10 @@ package CharacterElements;
 
 import javax.swing.ImageIcon;
 
-import Elements.Element;
 import GUI.GraphicEntity;
 import GameLogic.Directions;
-import Visitor.*;
 import Images.ResourceManager;
+import Visitor.*;
 //import Images.ResourceProvider;
 import Maps.Map;
 import PickeableElements.Pickeable;

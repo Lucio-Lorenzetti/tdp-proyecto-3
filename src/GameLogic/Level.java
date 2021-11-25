@@ -49,7 +49,6 @@ public class Level {
 		cantFactories = Factories.size();
 		
 		levelNumber = 0;
-		System.out.println("Constructor level");
 			
 	}
 	
@@ -61,9 +60,7 @@ public class Level {
 	public void passLevel() {
 		
 		changeMap();
-		levelNumber++;
-		
-		System.out.println("PassLevel: " + levelNumber);	
+		levelNumber++;	
 	}
 	
 	

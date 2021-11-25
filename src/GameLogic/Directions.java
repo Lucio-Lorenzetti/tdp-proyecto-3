@@ -94,9 +94,7 @@ public class Directions {
 		directionList.add(down);
 		
 		int directionSelection = (int) ((Math.random() * (directionList.size() - 0)) + 0);
-		
-		//int directionSelection = (int) (java.lang.System.currentTimeMillis() % directionList.size());
-		
+			
 
 		return directionList.get(directionSelection);
 		

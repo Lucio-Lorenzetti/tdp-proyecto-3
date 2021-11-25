@@ -1,9 +1,6 @@
 package GameLogic;
 
-import Elements.*;
 import GUI.*;
-import IA.AliveGhostGPS;
-import IA.VulnerableGhostGPS;
 import Maps.Map;
 import PickeableElements.Pickeable;
 import CharacterElements.*;
@@ -15,17 +12,11 @@ import java.util.LinkedList;
  * 
  * Defines the applicable operations of a Game.
  * 
- * @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
+ * @author Agustï¿½n Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
  *
  */
 public class Game {
 
-	/*
-	protected LinkedList<Ghost> livingGhost;
-	protected LinkedList<Ghost> vulnerableGhost;
-	protected LinkedList<Ghost> deadGhost;
-	*/
-	
 	protected LinkedList<Ghost> ghostList;
 	
     protected ScoreBoard<Player> myScoreboard;
@@ -84,11 +75,6 @@ public class Game {
     	
     	myScoreboard = new ScoreBoard<Player>(20, new scoreComparator<Player>());
     	
-    	/*
-    	livingGhost = new LinkedList<Ghost>();
-    	vulnerableGhost = new LinkedList<Ghost>();
-    	deadGhost = new LinkedList<Ghost>();
-    	*/
     	
     	ghostList = new LinkedList<Ghost>();
     	
@@ -96,16 +82,8 @@ public class Game {
     	
     	myLevel = new Level(this, myGUI.getCellHeight(), myGUI.getCellWidth());
     	
-    	////////////////////////////////////////////////////////////////////////
-    	
-    	System.out.println("ANTES DE CREAR PACMAN");
     	
     	PacMan = new PacMan(myGUI.getCellHeight() * 12,  myGUI.getCellWidth() * 10 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, myMap);
-    	
-    	
-    	
-    	System.out.println("ANTES DE PASAR NIVEL");
-    	
     	
     	myBlinky = new Blinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, myMap );
     	myPinky = new Pinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, myMap );
@@ -122,8 +100,8 @@ public class Game {
     	
     	
     	startGame();
-    	
     }
+
     
     
     /**
@@ -133,17 +111,13 @@ public class Game {
      */
     public void gameOver(){
     	
-    	//myGUI.displayGameOver();
-    	
     }
     
     public void resetGame() {
 		myLevel.changeMap();
 	}
     
-    
-    
-
+   
     /**
      * Set the atributte playerName.
      * @param p the name of the player.
@@ -175,6 +149,80 @@ public class Game {
     	}
 
     } 
+    
+    /**
+     * Moves the PacMan up.
+     */
+    public void doMoveUp(CharacterElements.Role C){
+    	
+    	int check1col = C.getPosX();
+    	int check1row = C.getPosY();
+    	int check2col = C.getPosX() + C.getWidth();
+    	int check2row = C.getPosY();
+        
+       	if( myMap.canMoveUp(check1row, check1col)  &&  myMap.canMoveUp(check2row, check2col) ){
+          C.move();
+          onMove(C);
+        }
+       	
+    }
+
+    /**
+     * Moves the PacMan down.
+     */
+    public void doMoveDown(CharacterElements.Role C){
+    	
+    	int check1col = C.getPosX();
+    	int check1row = C.getPosY() + C.getWidth();
+    	int check2col = C.getPosX() + C.getWidth();
+    	int check2row = C.getPosY() + C.getHeight();
+    	
+        if(myMap.canMoveDown(check1row, check1col)  &&  myMap.canMoveDown(check2row, check2col)){
+          C.move();
+          onMove(C);
+        }
+    }
+    
+    /**
+    * Moves the PacMan to the left.
+    *
+    */
+    public void doMoveLeft(CharacterElements.Role C){
+    	
+        int check1col = C.getPosX();
+        int check1row = C.getPosY();
+        int check2col = C.getPosX();
+        int check2row = C.getPosY() + C.getHeight();
+        
+        if(myMap.canMoveLeft(check1row, check1col)  &&  myMap.canMoveLeft(check2row, check2col)){
+          C.move();
+          onMove(C);
+        }
+    }
+    
+    /**
+    * Moves the PacMan to the right.
+    *
+    */
+    public void doMoveRight(CharacterElements.Role C){
+    	
+    	int check1col = C.getPosX() + C.getWidth();
+    	int check1row = C.getPosY();
+    	int check2col = C.getPosX() + C.getWidth();
+    	int check2row = C.getPosY() + C.getHeight();
+    	
+        if(myMap.canMoveRight(check1row, check1col)  &&  myMap.canMoveRight(check2row, check2col)){
+          C.move();
+          onMove(C);
+        }
+        
+    }
+    
+    
+    private void onMove(CharacterElements.Role C) {
+    	myGUI.displaceCharacter(C);
+    }
+       
 
     /**
     * Add points to the actual player of the.
@@ -200,8 +248,6 @@ public class Game {
     public void setMap(Map m) {
     	
     	myMap = m;
-    	
-    	
     	
     	Cell aux;
     	
@@ -231,13 +277,8 @@ public class Game {
     	
     	myGUI.createCharacterGraphic(PacMan);
     	
-    	/*
-    	PacMan = new PacMan(myGUI.getCellHeight() * 12,  myGUI.getCellWidth() * 10 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, myMap);
-    	myGUI.createCharacterGraphic(PacMan);
-    	*/
     	
     	for(Ghost g : ghostList) {
-    		System.out.println(m);
     		g.setMap(m);
     	}
     	
@@ -361,7 +402,7 @@ public class Game {
     	}
     	
     }
-    
+
     
     public static Role getPacMan() {
     	return PacMan;
@@ -395,20 +436,13 @@ public class Game {
 	public LinkedList<Ghost> getGhostList(){
     	return (LinkedList<Ghost>) ghostList.clone();
     }
-
-    
+   
 
     /*
      * Updates the graphic of the cell on the GUI.
      * @param c cell to be updated.
      */
 	public void updateCellGraphic(Cell c){ 
-		
-		GraphicEntity auxGraph;
-		
-		//updatePickupGraphic(c);
-		
-		auxGraph = c.getGraphicEntity();
 
 		myGUI.paintCell(c);
 		

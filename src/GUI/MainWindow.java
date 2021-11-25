@@ -77,8 +77,6 @@ public class MainWindow extends JFrame{
 	private JPanel panel;
 	private JScrollPane ScoreboardPanel;
 	
-	private JButton nextlvlButton;
-	
 	private int gridWidth;
 	private int gridHeight;
 	
@@ -156,10 +154,6 @@ public class MainWindow extends JFrame{
 		EXIT_BUTTON.setBounds(224, 385, 202, 35);
 		panel.add(EXIT_BUTTON);
 		
-		nextlvlButton = new JButton("Siguiente Nivel");
-		nextlvlButton.setBounds(10, 11, 162, 95);
-		panel.add(nextlvlButton);
-		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(224, 279, 202, 95);
 		panel.add(panel_1);
@@ -175,17 +169,6 @@ public class MainWindow extends JFrame{
 		lblscore.setBounds(10, 50, 182, 14);
 		panel_1.add(lblscore);
 		
-		JButton btnCambiarIa = new JButton("CAMBIAR IA");
-		btnCambiarIa.setBounds(10, 120, 162, 95);
-		panel.add(btnCambiarIa);
-		btnCambiarIa.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				//myGame.changeIA();
-				obtainFocus();
-			}
-		});
-		
 		
 		ScoreboardPanel = new JScrollPane();
 		ScoreboardPanel.setBounds(224, 11, 202, 257);
@@ -199,7 +182,7 @@ public class MainWindow extends JFrame{
 		ScoreboardPanel.add(table);
 		
 		JButton pauseMusic = new JButton("Mute Music");
-		pauseMusic.setBounds(10, 226, 162, 95);
+		pauseMusic.setBounds(10, 11, 204, 95);
 		panel.add(pauseMusic);
 		pauseMusic.addMouseListener(new MouseAdapter() {
 			@Override
@@ -544,15 +527,6 @@ public class MainWindow extends JFrame{
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////
-		
-		
-		nextlvlButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				myGame.getLevel().passLevel();
-				obtainFocus();
-			}
-		});
 		
 		
 		createTable();

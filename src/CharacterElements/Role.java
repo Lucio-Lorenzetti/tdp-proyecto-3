@@ -240,17 +240,15 @@ public abstract class Role extends Element {
     	int[] bottomRightCorner = getBottomRightCorner();
     	
     	
-    	
-    	
     	LinkedList<Role> elementosColisionados1 = myMap.checkCharacterColitions(this, topLeftCorner[0], topLeftCorner[1]);
     	LinkedList<Role> elementosColisionados2 = myMap.checkCharacterColitions(this, bottomRightCorner[0], bottomRightCorner[1]);
     	
     	
     	for(Role colision : elementosColisionados1) {
-    		colision.accept(myVisitor); //AJUSTAR CUANDO PASEMOS MOVIMIENTO A PERSONAJE
+    		colision.accept(myVisitor); 
     	}
     	for(Role colision : elementosColisionados2) {
-    		colision.accept(myVisitor); //AJUSTAR CUANDO PASEMOS MOVIMIENTO A PERSONAJE
+    		colision.accept(myVisitor);
     	}
     }
     
