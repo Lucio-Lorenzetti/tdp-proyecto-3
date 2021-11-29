@@ -44,6 +44,11 @@ import javax.sound.sampled.Clip;
 
 public class MainWindow extends JFrame{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private Game myGame;
 	
 	private JLabel[][] BottomLayer;
@@ -53,11 +58,6 @@ public class MainWindow extends JFrame{
 	private HashMap<Object,JLabel> characterLabels;
 	
 	private JLabel mainCharacter;
-	private JLabel Ghost1;
-	private JLabel Ghost2;
-	private JLabel Ghost3;
-	private JLabel Ghost4;
-	
 	
 	private JLabel temp;
 	private JLabel background;
@@ -107,9 +107,6 @@ public class MainWindow extends JFrame{
 		
 		gameFont = null;
 
-		/*
-		gameFont = loadFont("/Fonts/text-font.ttf", 16f);
-		*/
 		
 		gridHeight = 22;
 		gridWidth = 22;
@@ -132,7 +129,6 @@ public class MainWindow extends JFrame{
 		CharacterLayerPanel.setLayout(null);
 		
 		PickupLayerPanel = createGamePanel();
-		//PickupLayerPanel.setLayout(null);
 		
 		BottomLayerPanel = createGamePanel();
 		
@@ -313,44 +309,6 @@ public class MainWindow extends JFrame{
 		return GamePanel;
 	}
 	
-	/*
-	private void resize(ImageIcon grafico, JLabel label) {
-		
-		Image imagen = grafico.getImage();
-		
-		if(imagen != null) {
-			Image nuevaImagen = imagen.getScaledInstance(cellWidth, cellHeight, Image.SCALE_FAST);
-			grafico.setImage(nuevaImagen);
-			label.setIcon(grafico);
-			label.repaint();	
-		}
-		
-	}*/
-	
-	/*
-	private void resize(ImageIcon grafico, JLabel label, int width, int heigth) {
-		
-		Image imagen = null;
-		
-		if(grafico != null) { 
-			
-			imagen = grafico.getImage();
-			
-			if(imagen != null) {
-				
-				Image nuevaImagen = imagen.getScaledInstance(width, heigth, Image.SCALE_FAST);
-				grafico.setImage(nuevaImagen);
-				label.setIcon(grafico);
-				
-			} 
-			
-		} 
-		
-		label.setIcon(grafico);
-		
-		label.repaint();	
-		
-	}*/
 	
 	
 	private void resize(ImageIcon image, int width, int height) {
@@ -383,8 +341,6 @@ public class MainWindow extends JFrame{
 		
 		updateLabelIcon(BottomLayer[celda.getRow()][celda.getColumn()], nuevaImagen);
 		
-		//resize(nuevaImagen, BottomLayer[celda.getRow()][celda.getColumn()]);
-		
 	}
 	
 	
@@ -401,12 +357,6 @@ public class MainWindow extends JFrame{
 			height = p.getHeight();
 		}
 		
-		//boolean pEsNulo =  p == null;
-		
-		//System.out.println( pEsNulo + " width: " + width + " height: " + height + " Fila: " + posFila + " Columna: " + posColumna);
-		
-		//resize(nuevaImagen, PickupLayer[posFila][posColumna], width, height);
-		
 		if(nuevaImagen != null) {
 			resize(nuevaImagen, width, height);
 		}
@@ -417,13 +367,10 @@ public class MainWindow extends JFrame{
 	public void paintCharacter(Role c) {
 		ImageIcon nuevaImagen = c.getGraphicEntity().getIcon();
 		
-		//System.out.println("Painting Character");
-		
 		resize(nuevaImagen, c.getWidth(), c.getHeight());
 		
 		updateLabelIcon(characterLabels.get(c), nuevaImagen);
 		
-		//resize(nuevaImagen, characterLabels.get(c));
 	}
 	
 	
@@ -452,9 +399,7 @@ public class MainWindow extends JFrame{
 	
 	
 	public void displaceCharacter(Role displacedCharacter) {
-		
-		//System.out.println(displacedCharacter.getPosX() + " " + displacedCharacter.getPosY() + " " + displacedCharacter.getWidth() + " " + displacedCharacter.getHeight());
-		
+
 		characterLabels.get(displacedCharacter).setBounds(displacedCharacter.getPosX(), displacedCharacter.getPosY(), displacedCharacter.getWidth(), displacedCharacter.getHeight());
 		
 	}
@@ -471,8 +416,6 @@ public class MainWindow extends JFrame{
 		table = new JTable(tableData, tableHeaders);
 
 		table.setBounds(ScoreboardPanel.getX(), ScoreboardPanel.getY(), ScoreboardPanel.getWidth(), ScoreboardPanel.getHeight());
-		
-		//ScoreboardPanel.clear();
 		
 		table.setVisible(true);
 		

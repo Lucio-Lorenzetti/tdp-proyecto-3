@@ -3,6 +3,12 @@ package GameLogic;
 import GUI.*;
 import Maps.Map;
 import PickeableElements.Pickeable;
+import Timer.Timer;
+import Timer.TimerBombPotion;
+import Timer.TimerGhost;
+import Timer.TimerPacMan;
+import Timer.TimerSpeedPotion;
+import Timer.TimerVulnerable;
 import CharacterElements.*;
 import java.util.LinkedList;
 
@@ -149,79 +155,6 @@ public class Game {
     	}
 
     } 
-    
-    /**
-     * Moves the PacMan up.
-     */
-    public void doMoveUp(CharacterElements.Role C){
-    	
-    	int check1col = C.getPosX();
-    	int check1row = C.getPosY();
-    	int check2col = C.getPosX() + C.getWidth();
-    	int check2row = C.getPosY();
-        
-       	if( myMap.canMoveUp(check1row, check1col)  &&  myMap.canMoveUp(check2row, check2col) ){
-          C.move();
-          onMove(C);
-        }
-       	
-    }
-
-    /**
-     * Moves the PacMan down.
-     */
-    public void doMoveDown(CharacterElements.Role C){
-    	
-    	int check1col = C.getPosX();
-    	int check1row = C.getPosY() + C.getWidth();
-    	int check2col = C.getPosX() + C.getWidth();
-    	int check2row = C.getPosY() + C.getHeight();
-    	
-        if(myMap.canMoveDown(check1row, check1col)  &&  myMap.canMoveDown(check2row, check2col)){
-          C.move();
-          onMove(C);
-        }
-    }
-    
-    /**
-    * Moves the PacMan to the left.
-    *
-    */
-    public void doMoveLeft(CharacterElements.Role C){
-    	
-        int check1col = C.getPosX();
-        int check1row = C.getPosY();
-        int check2col = C.getPosX();
-        int check2row = C.getPosY() + C.getHeight();
-        
-        if(myMap.canMoveLeft(check1row, check1col)  &&  myMap.canMoveLeft(check2row, check2col)){
-          C.move();
-          onMove(C);
-        }
-    }
-    
-    /**
-    * Moves the PacMan to the right.
-    *
-    */
-    public void doMoveRight(CharacterElements.Role C){
-    	
-    	int check1col = C.getPosX() + C.getWidth();
-    	int check1row = C.getPosY();
-    	int check2col = C.getPosX() + C.getWidth();
-    	int check2row = C.getPosY() + C.getHeight();
-    	
-        if(myMap.canMoveRight(check1row, check1col)  &&  myMap.canMoveRight(check2row, check2col)){
-          C.move();
-          onMove(C);
-        }
-        
-    }
-    
-    
-    private void onMove(CharacterElements.Role C) {
-    	myGUI.displaceCharacter(C);
-    }
        
 
     /**

@@ -8,7 +8,7 @@ import GUI.GraphicEntity;
 * 
 * Defines the applicable operations of an Element.
 * 
-* @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
+* @author Agustï¿½n Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
 *
 */
 public abstract class Element {
@@ -50,17 +50,9 @@ public abstract class Element {
 		int limitELeft = E.getPosX();
 		int limitERight = E.getPosX() + E.getWidth();
 
-		boolean EHigherInThis = (limitThisHigher <= limitEHigher) && (limitThisLower >= limitEHigher);
-		boolean ELowerInThis = (limitThisHigher <= limitELower) && (limitThisLower >= limitELower);
-		boolean ELeftInThis = (limitThisLeft <= limitELeft) && (limitThisRight >= limitELeft);
-		boolean ERightInThis = (limitThisLeft <= limitERight) && (limitThisRight >= limitERight);
-
 		
-		
-		sameArea = (EHigherInThis && ELeftInThis) || (EHigherInThis && ERightInThis)
-                   || (ELowerInThis && ELeftInThis) || (ELowerInThis && ERightInThis);
-		
-		return sameArea;
+		return limitThisLeft <= limitERight && limitThisRight >= limitELeft 
+				&& limitThisHigher <= limitELower && limitThisLower >= limitEHigher;
 	 }
 	
 	

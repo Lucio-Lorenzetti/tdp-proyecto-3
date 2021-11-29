@@ -1,6 +1,7 @@
 package IA;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map.Entry;
 
 import CharacterElements.Ghost;
@@ -55,7 +56,7 @@ public abstract class GhostGPS {
 		int myGhostY = myGhost.getPosY();
 
 		
-		HashMap<Object, Cell> adjacentCells = myMap.getAdjacentCellsByPX(myGhostX, myGhostY); 
+		HashMap<Object,Cell> adjacentCells = myMap.getAdjacentCellsByPX(myGhostX, myGhostY); 
 		
 		adjacentCells.remove(Directions.getOpposite(myGhost.getActualDirection()));
 		
@@ -74,7 +75,10 @@ public abstract class GhostGPS {
 					chosenDirection = e.getKey();
 				}
 			}
-		}
+		}				//Cuando cambiemos el sistema de velocidad, cambiar direccion por velocidad en X e Y,
+						//Restandole a la posicion de la celda actual la celda siguiente, y multiplicando por la velocidad
+						//(Quizás en role al momento de establecer la siguiente dirección)
+						//Asi nos ahorramos 4 if y podemos sacar las direcciones
 		
 		myGhost.setNextDirection(chosenDirection);
 	}

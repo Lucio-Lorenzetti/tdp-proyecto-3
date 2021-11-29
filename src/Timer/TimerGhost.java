@@ -1,37 +1,37 @@
-package GameLogic;
+package Timer;
 
 import CharacterElements.Ghost;
+import GameLogic.Game;
 
-public class TimerBombPotion extends Timer{
+public class TimerGhost extends Timer{
 
 	/**
 	 * Creates and initializes a TimerGhost.
 	 * @param del Delay for the movement of the Ghosts.
 	 * @param game Game that the timer calls.
 	 */
-	public TimerBombPotion(long del, Game game) {
+	public TimerGhost(long del, Game game) {
 		super(del, game);
 	}
 
 	@Override
 	public void run() {
+		while(true) {
 			
 			try {
-				
 				Thread.sleep(delay);
-				
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 					
+			if(!paused) {
 				
-			myGame.explodeArea(Game.getPacMan().getPosX(), Game.getPacMan().getPosY());
-						
-			Game.getPacMan().ChangeState(0);
+				for(Ghost g : myGame.getGhostList()) {
+					myGame.doMove(g);
+				}
+			}
 			
-			myGame.updateCharacterGraphic(Game.PacMan);
-			
+		}
 	}
-	
-	
+
 }

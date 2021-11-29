@@ -253,11 +253,7 @@ public class Map {
     
 	public HashMap<Object,Cell> getAdjacentCellsByPX(int posX, int posY){
 		
-		HashMap<Object,Cell> result;
-		
-		result = getAdjacentCells( getCellByPosition(posX, posY) );
-		
-		return result;
+		return getAdjacentCells( getCellByPosition(posX, posY) );
 		
 	}
 	
@@ -272,14 +268,34 @@ public class Map {
 		HashMap<Object,Cell> result = new HashMap<Object,Cell>();
 		
 		
-		if(c.getColumn() < width-1 && c.getWalkable()) 	result.put(Directions.getRight(), cells[c.getRow()][c.getColumn()+1].clone());
-		if(c.getColumn() > 0 && c.getWalkable()) 		result.put(Directions.getLeft(), cells[c.getRow()][c.getColumn()-1].clone());
-		if(c.getRow() < height-1 && c.getWalkable()) 	result.put(Directions.getUp(), cells[c.getRow()-1][c.getColumn()].clone());
-		if(c.getRow() > 0    && c.getWalkable()) 		result.put(Directions.getDown(), cells[c.getRow()+1][c.getColumn()].clone());
+		if(c.getColumn() < width-1 && c.getWalkable()) 	result.put(Directions.getRight(), 	cells[c.getRow()][c.getColumn()+1].clone());
+		if(c.getColumn() > 0 && c.getWalkable()) 		result.put(Directions.getLeft(), 	cells[c.getRow()][c.getColumn()-1].clone());
+		if(c.getRow() < height-1 && c.getWalkable()) 	result.put(Directions.getUp(), 		cells[c.getRow()-1][c.getColumn()].clone());
+		if(c.getRow() > 0    && c.getWalkable()) 		result.put(Directions.getDown(),	cells[c.getRow()+1][c.getColumn()].clone());
 		
 		
 		return result;
 	}
+	
+	
+	/**
+	 * Returns a HashMap that contains the adjacent cells with a direction key;
+	 * @param c
+	 * @return
+	
+	public LinkedList<Cell> getAdjacentCells(Cell c){
+		
+		LinkedList<Cell> result = new LinkedList<Cell>();
+		
+		
+		if(c.getColumn() < width-1 && c.getWalkable()) 	result.add(cells[c.getRow()][c.getColumn()+1].clone());
+		if(c.getColumn() > 0 && c.getWalkable()) 		result.add(cells[c.getRow()][c.getColumn()-1].clone());
+		if(c.getRow() < height-1 && c.getWalkable()) 	result.add(cells[c.getRow()-1][c.getColumn()].clone());
+		if(c.getRow() > 0    && c.getWalkable()) 		result.add(cells[c.getRow()+1][c.getColumn()].clone());
+		
+		
+		return result;
+	} */
 	
 	public LinkedList<Cell> getGhostHome(){
 
@@ -327,65 +343,6 @@ public class Map {
     
     }
     
-    
-
-    /**
-    * Checks if right movement is possible.
-    * @param row to check. 
-    * @param col to check.
-    * @return true if it's possible, false otherwise.
-    */
-    public boolean canMoveRight(int posY, int posX){
-        boolean can = true;
-       
-        can = checkMovablePosition(posX + 1, posY);
-        
-        return can;
-    }
-    
-    
-    
-    /**
-    * Checks if left movement is possible.
-    * @param row to check.
-    * @param col to check
-    * @return true if it's possible, false otherwise.
-    */
-    public boolean canMoveLeft(int posY, int posX){
-        boolean can = true;
-        
-        can = checkMovablePosition(posX-1, posY);
-        
-        return can;
-    }
-
-    /**
-    * Checks if up movement is possible.
-    * @param row to check.
-    * @param col to check
-    * @return true if it's possible, false otherwise.
-    */
-    public boolean canMoveUp(int posY, int posX){
-        boolean can = true;
-        
-        can = checkMovablePosition(posX, posY-1);
-        
-        return can;
-    }
-    /**
-    * Checks if down movement is possible.
-    * @param row to check.
-    * @param col to check.
-    * @return true if it's possible, false otherwise.
-    */
-    public boolean canMoveDown(int posY, int posX){
-    	boolean can = true;
-        
-    	can = checkMovablePosition(posX, posY+1);
-    	
-        return can;
-    }
-    
     /**
      * Checks if the cell that contains the position posX posY is walkable.
      * @param posX position of the verification on the X axis.
@@ -393,14 +350,8 @@ public class Map {
      * @return true if the cell is walkable, false if it is not.
      */
     private boolean checkMovablePosition(int posX, int posY) {
-    	
-    	boolean canMove = true;
-    	
         
-        canMove = getCellByPosition(posX, posY).getWalkable();
-    	
-        
-    	return canMove;
+    	return getCellByPosition(posX, posY).getWalkable();
     
     }
 
@@ -416,14 +367,6 @@ public class Map {
     
     	int cellWidth = cells[0][0].getWidth();
         int cellHeight = cells[0][0].getHeight();
-        
-        /*
-        int posCellX = posX - (posX % cellWidth);
-        int posCellY = posY - (posY % cellHeight);
-        
-        int colCell = posCellX / cellWidth;
-        int rowCell = posCellY / cellHeight;
-        */
         
         int colCell = posX / cellWidth;
         int rowCell = posY / cellHeight;
@@ -456,9 +399,7 @@ public class Map {
      */
     public boolean checkIfInIntersection(int posX, int posY) {
     	
-    	Cell obtainedCell = getCellByPosition(posX, posY);
-    	
-    	return obtainedCell.isIntersection();
+    	return getCellByPosition(posX, posY).isIntersection();
     	
     }
 
@@ -572,25 +513,12 @@ public class Map {
 		
 		Pickeable result = null;
 		
-		LinkedList<Cell> cellList = new LinkedList<Cell>();
-		
-		Cell aux1 = getCellByPosition(c.getPosX(), c.getPosY());     	
-		
-        cellList.add(aux1);
-		
-		Cell aux2 = getCellByPosition(c.getPosX() + c.getWidth(), c.getPosY() + c.getHeight());
-		
-        if(aux1 != aux2) {
-        	cellList.add(aux2);
-        }
+		Cell cellAux = getCellByPosition(c.getPosX(), c.getPosY());     	
 
-        for(Cell cellAux : cellList){
-        	
-        	if(cellAux.getPickup() != null && (c.collidesWith( cellAux.getPickup() )) ) {
-        		result = cellAux.getPickup();
-        	}
-        	 	
-        }
+    	if(cellAux.getPickup() != null && (c.collidesWith( cellAux.getPickup() )) ) {
+    		result = cellAux.getPickup();
+    	}
+        	 
         
 		return result;
 		
@@ -633,15 +561,24 @@ public class Map {
 	
 	
 	public void removeCharacterOnTop(Role R, int posX, int posY) {
-		Cell cellToRemoveCharacter = getCellByPosition(posX, posY);
-		cellToRemoveCharacter.removeCharacterOnTop(R);
+		getCellByPosition(posX, posY).removeCharacterOnTop(R);
 		
 	}
 	
 	public void addCharacterOnTop(Role R, int posX, int posY) {
+		getCellByPosition(posX, posY).addCharacterOnTop(R);
+	}
+	
+	public LinkedList<Cell> getCorners(){
 		
-		Cell cellToAddCharacter = getCellByPosition(posX, posY);
-		cellToAddCharacter.addCharacterOnTop(R);
+		LinkedList<Cell> result = new LinkedList<Cell>();
+		
+		result.add(cells[0][0]);
+		result.add(cells[0][width-1]);
+		result.add(cells[height-1][0]);
+		result.add(cells[height-1][width-1]);
+	
+		return result;
 	}
 	
 }

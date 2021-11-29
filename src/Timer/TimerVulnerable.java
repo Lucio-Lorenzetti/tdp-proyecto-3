@@ -1,15 +1,15 @@
-package GameLogic;
+package Timer;
 
-import CharacterElements.Ghost;
+import GameLogic.Game;
 
-public class TimerSpeedPotion extends Timer{
+public class TimerVulnerable extends Timer{
 
 	/**
 	 * Creates and initializes a TimerGhost.
 	 * @param del Delay for the movement of the Ghosts.
 	 * @param game Game that the timer calls.
 	 */
-	public TimerSpeedPotion(long del, Game game) {
+	public TimerVulnerable(long del, Game game) {
 		super(del, game);
 	}
 
@@ -24,12 +24,7 @@ public class TimerSpeedPotion extends Timer{
 				e.printStackTrace();
 			}
 					
-				
-			myGame.changeSpdPacMan(40);
-						
-			Game.getPacMan().ChangeState(0);
-			
-			myGame.updateCharacterGraphic(Game.PacMan);
+			myGame.returnVulnerableGhostToNormal();
 			
 	}
 	

@@ -1,4 +1,6 @@
-package GameLogic;
+package Timer;
+
+import GameLogic.Game;
 
 /**
  * Timer Class.

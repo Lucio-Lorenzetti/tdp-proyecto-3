@@ -14,7 +14,7 @@ import Maps.Map;
 * 
 * Defines the applicable operations of a Character.
 * 
-* @author Agustín Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
+* @author Agustï¿½n Cuello, Guillermo Rodriguez, Lucio Lorenzetti.
 *
 */
 public abstract class Role extends Element {
@@ -27,6 +27,8 @@ public abstract class Role extends Element {
     protected Map myMap;
     
     protected int speed;
+    protected int speedX;
+    protected int speedY;
 
     
     /**
@@ -148,39 +150,6 @@ public abstract class Role extends Element {
     	actualDirection = nextDirection;
     	
     }
-    
-    
-    
-
-
-    /**
-    * Moves the character up.
-    */
-    protected void moveUp() {
-    	posYPX = posYPX - speed;
-    }
-    
-    /**
-    * Moves the character down.
-    */
-     protected void moveDown() {
-    	 posYPX = posYPX + speed;
-     }
-    
-    /**
-    * Moves the character left.
-    */
-     protected  void moveLeft() {
-    	 posXPX = posXPX - speed;
-     }
-    
-    /**
-    * Moves the character right.
-    */
-     protected  void moveRight() {
-    	 posXPX = posXPX + speed;
-     }
-    
      
      
    
@@ -242,7 +211,6 @@ public abstract class Role extends Element {
     	
     	LinkedList<Role> elementosColisionados1 = myMap.checkCharacterColitions(this, topLeftCorner[0], topLeftCorner[1]);
     	LinkedList<Role> elementosColisionados2 = myMap.checkCharacterColitions(this, bottomRightCorner[0], bottomRightCorner[1]);
-    	
     	
     	for(Role colision : elementosColisionados1) {
     		colision.accept(myVisitor); 
