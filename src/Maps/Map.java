@@ -86,38 +86,37 @@ public class Map {
         
         
 		//WALL AND LIMITS
-		cellSelection.put('■', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, wallImages[0]));
-        cellSelection.put('▌', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[1]));
-		cellSelection.put('▬', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[2]));
-		cellSelection.put('╓', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[3]));
-		cellSelection.put('╙', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[4]));
-		cellSelection.put('╖', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[5]));
-		cellSelection.put('╜', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[6]));	
+		cellSelection.put('W', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, wallImages[0]));
+        cellSelection.put('!', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[1]));
+		cellSelection.put('_', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[2]));
+		cellSelection.put('S', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[3]));
+		cellSelection.put('A', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[4]));
+		cellSelection.put('F', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[5]));
+		cellSelection.put('D', new Cell(0, 0,null,false, cellHeightPX, cellWidthPX, wallImages[6]));	
     	
     	//GHOST HOME
-		cellSelection.put('┉', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, ghostHomeImages[0]));
-		cellSelection.put('┌', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, ghostHomeImages[1]));
-		cellSelection.put('└', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, ghostHomeImages[2]));
-		cellSelection.put('┐', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, ghostHomeImages[3]));
-		cellSelection.put('┘', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, ghostHomeImages[4]));
-		cellSelection.put('━', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, ghostHomeImages[0]));
+		cellSelection.put('P', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, ghostHomeImages[0]));
+		cellSelection.put('X', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, ghostHomeImages[1]));
+		cellSelection.put('Z', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, ghostHomeImages[2]));
+		cellSelection.put('C', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, ghostHomeImages[3]));
+		cellSelection.put('V', new Cell(0, 0, null, false, cellHeightPX, cellWidthPX, ghostHomeImages[4]));
 
 		//ROAD
 		
-		cellSelection.put('═', new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, roadImages[0]));
-		cellSelection.put('║', new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, roadImages[1]));
+		cellSelection.put('-', new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, roadImages[0]));
+		cellSelection.put('|', new Cell(0, 0, null, true, cellHeightPX, cellWidthPX, roadImages[1]));
 		
-        cellSelection.put('╔', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[2]));
-        cellSelection.put('╚', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[3]));        
-        cellSelection.put('╗', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[4]));
-        cellSelection.put('╝', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[5]));
+        cellSelection.put('3', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[2]));
+        cellSelection.put('1', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[3]));        
+        cellSelection.put('2', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[4]));
+        cellSelection.put('4', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[5]));
          
-       	cellSelection.put('╦', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[6]));
-        cellSelection.put('╩', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[7]));
-        cellSelection.put('╠', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[8]));
-        cellSelection.put('╣', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[9]));
+       	cellSelection.put('7', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[6]));
+        cellSelection.put('8', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[7]));
+        cellSelection.put('5', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[8]));
+        cellSelection.put('6', new Cell(0, 0, null, true, true, cellHeightPX, cellWidthPX, roadImages[9]));
 		
-		cellSelection.put('╬', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[10]));
+		cellSelection.put('+', new Cell(0,0, null, true, true, cellHeightPX, cellWidthPX, roadImages[10]));
 		
 
 		//PIKEABLES
@@ -155,7 +154,7 @@ public class Map {
 						cells[actualRow][col] = cellSelection.get( actualLine.charAt(col) ).cloneInPosition(actualRow, col);
 					}
 					
-					if(actualLine.charAt(col) == '┉'){
+					if(actualLine.charAt(col) == 'P'){
                         ghostHomes.add( cells[actualRow][col] );
                     }
 					
