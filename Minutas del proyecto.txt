@@ -8,3 +8,9 @@ Minutas del proyecto:
 		*No cuenta con sonidos (extras a la musica de fondo)	
 		
 	Dificultad de los niveles: va aumentando la velocidad de los fantasmas, y se modifica el laberinto sacando paredes 		y generando más espacios por los que los fantasmas te pueden atrapar
+
+	Problemas conocidos:
+		*El juego tiene un sistema de movimientos basado en comparación de objetos, esto resulta en dificultad
+		de interpretación del código y (probablemente) problemas de rendimiento. Esto no fue cambiado ya que
+		su modificación supondría un gran cambio en el juego, lo que implica redefinir y rehacer numerosos métodos
+		que son parte del funcionamiento principal de la aplicación.

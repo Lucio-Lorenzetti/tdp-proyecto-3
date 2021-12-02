@@ -6,7 +6,7 @@ import GUI.GraphicEntity;
 import GameLogic.Directions;
 import Images.ResourceManager;
 import Visitor.*;
-//import Images.ResourceProvider;
+import GameLogic.Game;
 import Maps.Map;
 import PickeableElements.Pickeable;
 
@@ -23,7 +23,7 @@ public class PacMan extends Role{
 
     private int hearts;
     private int state;
-    private int counter;
+    private Game myGame;
 
     /**
     * Creates and initialize a PacMan;
@@ -32,7 +32,7 @@ public class PacMan extends Role{
     * @param width of the PacMan.
     * @param heigth of the PacMan.
     */
-    public PacMan(int posY, int posX, int width, int height, Map map){
+    public PacMan(int posY, int posX, int width, int height, Map map, Game game){
     	
         super(posY, posX, width, height, new GraphicEntity( ResourceManager.getProvider().getPacManImages()[0] ), 3, map);
         
@@ -41,8 +41,9 @@ public class PacMan extends Role{
         state = 0; 
 
         myVisitor = new VisitorPacMan(this);
+
+        myGame = game;
         
-        counter = 0;
         
     }
 
@@ -69,6 +70,8 @@ public class PacMan extends Role{
 			myMap.consumePickeable(detectedPickeable);
     			
     	}
+    	
+    	checkColitions();
     	
     }
     
@@ -115,11 +118,8 @@ public class PacMan extends Role{
         //updateGraphics(actualDirection);
         
     }
-
-    public void hurtPacMan(){
-        hearts--;
-    }
-
+    
+    
     public int getHearts(){ 
         return hearts;
     }
@@ -167,12 +167,25 @@ public class PacMan extends Role{
 
 	
 	public void death() {
-		hearts--;
+		
+			hearts--;
+			
+			System.out.println("PACMAN HEARTS: " + hearts);
+			
+			if(hearts > 0) {
+				myGame.pacmanDeath();
+			} else {
+				myGame.gameOver();
+			}
+
+		
+		
 	}
 	
 	public void accept(Visitor v) {
 		v.visitPacMan(this);
 	}
+
 
 	@Override
 	public void onMapUpdate() {

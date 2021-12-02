@@ -22,6 +22,7 @@ import PickeableElements.Pickeable;
 import PickeableElements.PickeableManager;
 import PickeableElements.PowerPellet;
 import PickeableElements.SpeedPotion;
+import GameLogic.ColisionManager;
 
 /**
  *
@@ -514,7 +515,7 @@ public class Map {
 		
 		Cell cellAux = getCellByPosition(c.getPosX(), c.getPosY());     	
 
-    	if(cellAux.getPickup() != null && (c.collidesWith( cellAux.getPickup() )) ) {
+    	if(cellAux.getPickup() != null && (ColisionManager.checkIntersection(c, cellAux.getPickup() )) ) {
     		result = cellAux.getPickup();
     	}
         	 
@@ -549,7 +550,7 @@ public class Map {
 		LinkedList<Role> roleList = cell.getCharactersOnTop();
 
 		for(Role cellRole : roleList) {
-			if(r != cellRole && r.collidesWith(cellRole) ) {
+			if(r != cellRole && ColisionManager.checkIntersection(r, cellRole) ) {
 				returnList.add(cellRole);
 			}
 		}

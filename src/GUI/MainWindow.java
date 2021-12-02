@@ -40,6 +40,8 @@ import javax.swing.JTable;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 public class MainWindow extends JFrame{
@@ -86,6 +88,17 @@ public class MainWindow extends JFrame{
 
 	private Clip music;
 	private boolean muteMusic;
+	private JPanel ElementInformationPanel;
+	private JButton pauseMusic;
+	private JLabel lifeCounter;
+	private JPanel BlinkyDisplay;
+	private JPanel InkyDisplay;
+	private JPanel ClydeDisplay;
+	private JPanel PinkyDisplay;
+	private JPanel PacmanDisplay1;
+	private JPanel PacmanDisplay2;
+	private JPanel PacmanDisplay3;
+	private JButton PAUSE_BUTTON;
 	
 	
 	/**
@@ -147,23 +160,23 @@ public class MainWindow extends JFrame{
 				System.exit(EXIT_ON_CLOSE);
 			}
 		});
-		EXIT_BUTTON.setBounds(224, 385, 202, 35);
+		EXIT_BUTTON.setBounds(10, 479, 202, 35);
 		panel.add(EXIT_BUTTON);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(224, 279, 202, 95);
-		panel.add(panel_1);
-		panel_1.setLayout(null);
+		JPanel ScorePanel = new JPanel();
+		ScorePanel.setBounds(224, 279, 202, 95);
+		panel.add(ScorePanel);
+		ScorePanel.setLayout(null);
 		
 		JLabel Score = new JLabel("Score");
 		Score.setHorizontalAlignment(SwingConstants.CENTER);
 		Score.setBounds(10, 11, 182, 14);
-		panel_1.add(Score);
+		ScorePanel.add(Score);
 		
 		lblscore = new JLabel("-Score-");
 		lblscore.setHorizontalAlignment(SwingConstants.CENTER);
 		lblscore.setBounds(10, 50, 182, 14);
-		panel_1.add(lblscore);
+		ScorePanel.add(lblscore);
 		
 		
 		ScoreboardPanel = new JScrollPane();
@@ -177,25 +190,64 @@ public class MainWindow extends JFrame{
 		table.setRowSelectionAllowed(false);
 		ScoreboardPanel.add(table);
 		
-		JButton pauseMusic = new JButton("Mute Music");
+		pauseMusic = new JButton("Mute Music");
 		pauseMusic.setBounds(10, 11, 204, 95);
 		panel.add(pauseMusic);
-		pauseMusic.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(!muteMusic){
-					muteMusic = true;
-					pauseMusic.setText("Unmute Music");
-					music.stop();
-				} else {
-					muteMusic = false;
-					pauseMusic.setText("Mute Music");
-					music.start();
-				}
-				
-				obtainFocus();
-			}
-		});
+		
+		ElementInformationPanel = new JPanel();
+		ElementInformationPanel.setBounds(10, 117, 202, 291);
+		panel.add(ElementInformationPanel);
+		ElementInformationPanel.setLayout(null);
+		
+		BlinkyDisplay = new JPanel();
+		BlinkyDisplay.setBounds(22, 11, 56, 56);
+		ElementInformationPanel.add(BlinkyDisplay);
+		
+		InkyDisplay = new JPanel();
+		InkyDisplay.setBounds(119, 11, 56, 56);
+		ElementInformationPanel.add(InkyDisplay);
+		
+		ClydeDisplay = new JPanel();
+		ClydeDisplay.setBounds(22, 96, 56, 56);
+		ElementInformationPanel.add(ClydeDisplay);
+		
+		PinkyDisplay = new JPanel();
+		PinkyDisplay.setBounds(119, 96, 56, 56);
+		ElementInformationPanel.add(PinkyDisplay);
+		
+		PacmanDisplay1 = new JPanel();
+		PacmanDisplay1.setBounds(10, 206, 56, 56);
+		ElementInformationPanel.add(PacmanDisplay1);
+		
+		PacmanDisplay2 = new JPanel();
+		PacmanDisplay2.setBounds(76, 206, 56, 56);
+		ElementInformationPanel.add(PacmanDisplay2);
+		
+		PacmanDisplay3 = new JPanel();
+		PacmanDisplay3.setBounds(142, 206, 56, 56);
+		ElementInformationPanel.add(PacmanDisplay3);
+		
+		JPanel HealthPanel = new JPanel();
+		HealthPanel.setBounds(223, 385, 203, 86);
+		panel.add(HealthPanel);
+		HealthPanel.setLayout(null);
+		
+		JLabel lblLives = new JLabel("Lives");
+		lblLives.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLives.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblLives.setBounds(10, 5, 183, 14);
+		HealthPanel.add(lblLives);
+		
+		lifeCounter = new JLabel("-Lives-");
+		lifeCounter.setHorizontalTextPosition(SwingConstants.CENTER);
+		lifeCounter.setHorizontalAlignment(SwingConstants.CENTER);
+		lifeCounter.setBounds(10, 45, 183, 14);
+		HealthPanel.add(lifeCounter);
+		
+		PAUSE_BUTTON = new JButton("PAUSE");
+		PAUSE_BUTTON.setBounds(10, 419, 202, 35);
+		panel.add(PAUSE_BUTTON);
+		
 		
 		
 		
@@ -259,7 +311,7 @@ public class MainWindow extends JFrame{
 		this.setVisible(true);
 		
 		music = ResourceManager.getProvider().getBackgroundMusic()[0];
-		music.loop(music.LOOP_CONTINUOUSLY);
+		music.loop(Clip.LOOP_CONTINUOUSLY);
 		music.start();	
 		
 		
@@ -269,9 +321,7 @@ public class MainWindow extends JFrame{
 		
 		for(int i = 0; i < gridWidth ; i++) {
 			for(int k = 0; k < gridHeight ; k++) {
-							
-				ImageIcon iconoLabel = new ImageIcon(this.getClass().getResource("/Images/AmongUs/tiles/road/road.png"));
-				
+
 				temp = BottomLayer[i][k];
 				
 				updateLabelIcon(temp, null);
@@ -424,14 +474,57 @@ public class MainWindow extends JFrame{
 		table.repaint();
 	}
 	
+	private void setElementDisplayBackground() {
+
+		setBackground(BlinkyDisplay, ResourceManager.getProvider().getBlinkyImages()[4]);
+		setBackground(InkyDisplay, ResourceManager.getProvider().getInkyImages()[4]);
+		setBackground(ClydeDisplay, ResourceManager.getProvider().getClydeImages()[4]);
+		setBackground(PinkyDisplay, ResourceManager.getProvider().getPinkyImages()[4]);
+		
+		setBackground(PacmanDisplay1, ResourceManager.getProvider().getPacManSPImages()[4]);
+		setBackground(PacmanDisplay2, ResourceManager.getProvider().getPacManImages()[4]);
+		setBackground(PacmanDisplay3, ResourceManager.getProvider().getPacManBPImages()[4]);
+		
+	}
+	
+	private void setBackground(JPanel back, ImageIcon image) {
+		
+		Image imagen;
+		
+		
+		imagen = image.getImage();
+	
+		
+		if(imagen != null) {
+			Image nuevaImagen = imagen.getScaledInstance(back.getWidth(), back.getHeight(), Image.SCALE_FAST);
+			image.setImage(nuevaImagen);
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		JLabel backgroundLabelHolder = new JLabel("" , image , JLabel.CENTER);
+		
+		background.setBounds(back.getX(), back.getY(), back.getWidth(), back.getHeight());
+		
+		image.setImageObserver(backgroundLabelHolder); //Sets image observer as the background label to allow to play gif animations.
+		
+		
+		
+		
+		back.add(backgroundLabelHolder);
+		
+		
+		
+		back.repaint();
+	}
+	
+	
 	private void setBackground(){
 
 		//Selects a background image from the resource manager randomly
 		ImageIcon[] backgroundImages = ResourceManager.getProvider().getBackgroundImages();
 		
 		int imageSelection = (int) (java.lang.System.currentTimeMillis() % backgroundImages.length);
-		
-		//ImageIcon fondo = new ImageIcon(this.getClass().getResource("/Images/backgrounds/background5.gif"));
 		
 		ImageIcon fondo = backgroundImages[imageSelection];
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -473,6 +566,7 @@ public class MainWindow extends JFrame{
 		
 		
 		createTable();
+		setElementDisplayBackground();
 
 		
 		////////////////////////////////////////////////////////////////////////////////////
@@ -481,17 +575,25 @@ public class MainWindow extends JFrame{
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_UP) {
-					myGame.changeDirection(Directions.getUp(), myGame.getPacMan());
+					myGame.changeDirection(Directions.getUp(), Game.getPacMan());
 				}
 				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-					myGame.changeDirection(Directions.getDown(), myGame.getPacMan());
+					myGame.changeDirection(Directions.getDown(), Game.getPacMan());
 				}
 				if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-					myGame.changeDirection(Directions.getLeft(), myGame.getPacMan());
+					myGame.changeDirection(Directions.getLeft(), Game.getPacMan());
 				}
 				if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-					myGame.changeDirection(Directions.getRight(), myGame.getPacMan());
+					myGame.changeDirection(Directions.getRight(), Game.getPacMan());
 				}
+			}
+		});
+		
+		PAUSE_BUTTON.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				myGame.pauseOrUnpause();				
+				obtainFocus();
 			}
 		});
 		
@@ -515,6 +617,16 @@ public class MainWindow extends JFrame{
 	
 	public void obtainFocus() {
 		this.requestFocus();
+	}
+
+	/**
+	 * Updates the display that indicates the actual lives of the main character.
+	 * @param hearts amount of lives to update.
+	 */
+	public void updateLifeCounter(int hearts) {
+		
+		lifeCounter.setText(Integer.toString(hearts));
+		
 	}
 }
 

@@ -98,7 +98,7 @@ public abstract class Role extends Element {
     		result = true;
     	}
     	
-        checkColitions();
+        
         
         
         for(int[] i : corners) {
@@ -222,6 +222,7 @@ public abstract class Role extends Element {
     
     public abstract void accept(Visitor v);
     
+    //public abstract void resetStartingPosition();
 
     public abstract void onMapUpdate();
     

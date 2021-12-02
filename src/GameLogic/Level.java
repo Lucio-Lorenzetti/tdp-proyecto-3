@@ -58,7 +58,6 @@ public class Level {
 	 * @param cellWidthPX width of the map's cells.
 	 */
 	public void passLevel() {
-		
 		changeMap();
 		levelNumber++;	
 	}
@@ -84,17 +83,21 @@ public class Level {
 	 * @param cellHeightPX height of the map's cells.
 	 * @param cellWidthPX width of the map's cells.
 	 */
-	public void changeMap() {
+	private void changeMap() {
 		myGame.pauseGame();
 	
 		Map newMap = Factories.get( levelNumber % cantFactories ).CreateMap(myGame, heightOfCell, widthOfCell);
 		
 		myGame.setMap(newMap);
 	
-		myGame.startGame();
+		//myGame.startGame();
 	}
 	
-	
+	public void resetMap() {
+		
+		changeMap();
+		
+	}
 	
 	
 	

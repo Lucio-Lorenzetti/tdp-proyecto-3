@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import Elements.Element;
 import GUI.GraphicEntity;
+import GameLogic.ColisionManager;
 import GameLogic.Game;
 import IA.AliveGhostGPS;
 import IA.DeadGhostGPS;
@@ -12,6 +13,7 @@ import IA.VulnerableGhostGPS;
 import Maps.Map;
 import Visitor.*;
 import java.lang.Math;
+
 
 /**
 *
@@ -91,11 +93,10 @@ public abstract class Ghost extends Role {
     
     public void reviveCheck(Element C) {
     	
-    	if(this.collidesWith(C)) {
+    	if(ColisionManager.checkIntersection(this, C)) {
     		ChangeState(aliveState);
     	}
-    	
-    	
+
     }
     
     public void accept(Visitor v) {

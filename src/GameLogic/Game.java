@@ -43,7 +43,7 @@ public class Game {
     protected Level myLevel;
     
     
-    protected static Role PacMan;
+    protected static PacMan myPacMan;
     protected static Role myBlinky;
     protected static Role myPinky;
     protected static Role myInky;
@@ -52,7 +52,7 @@ public class Game {
     
     private String playerName;
     protected int actualScore;
-    
+    protected boolean paused;
     
     
     /**
@@ -89,7 +89,7 @@ public class Game {
     	myLevel = new Level(this, myGUI.getCellHeight(), myGUI.getCellWidth());
     	
     	
-    	PacMan = new PacMan(myGUI.getCellHeight() * 12,  myGUI.getCellWidth() * 10 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, myMap);
+    	myPacMan = new PacMan(myGUI.getCellHeight() * 12,  myGUI.getCellWidth() * 10 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, myMap, this);
     	
     	myBlinky = new Blinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, myMap );
     	myPinky = new Pinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, myMap );
@@ -101,31 +101,16 @@ public class Game {
     	ghostList.add((Ghost) myInky);
     	ghostList.add((Ghost) myClyde);
     	
-    	myLevel.passLevel();
+    	myLevel.resetMap();
     	
-    	
-    	
-    	startGame();
+    	//startGame();
     }
 
     
     
-    /**
-     * Finish the game, add the player who was playing with his score to the scoreBoard.
-     * Set actualScore to 0.
-     * @return if the game is over or not.
-     */
-    public void gameOver(){
-    	
-    }
-    
-    public void resetGame() {
-		myLevel.changeMap();
-	}
-    
    
     /**
-     * Set the atributte playerName.
+     * Set the atribute playerName.
      * @param p the name of the player.
      */
     public void setPlayerName(String p){
@@ -205,33 +190,45 @@ public class Game {
     	myTimerGhosts.setDelay( myLevel.getGhostDelay() );
 
     	
-    	PacMan.setMap(m);
+    	myPacMan.setMap(m);
     	
     	
-    	myGUI.createCharacterGraphic(PacMan);
+    	myGUI.createCharacterGraphic(myPacMan);
     	
     	
     	for(Ghost g : ghostList) {
     		g.setMap(m);
+    		myGUI.createCharacterGraphic(g);
+    		g.ChangeState(Ghost.getAliveState());
     	}
     	
-    	for(Role R : ghostList) {
-    		myGUI.createCharacterGraphic(R);
+    	
+    	
+    	
+    }
+    
+    public void pauseOrUnpause() {
+    	if(paused) {
+    		startGame();
+    	} else {
+    		pauseGame();
     	}
-    	
-    	
-    	
     	
     }
     
     public void startGame() {
-    	myTimerPacMan.setPaused(false);
-    	myTimerGhosts.setPaused(false);
+    	paused = false;
+    	onPauseChange();
     }
     
     public void pauseGame() {
-    	myTimerPacMan.setPaused(true);
-    	myTimerGhosts.setPaused(true);
+    	paused = true;
+    	onPauseChange();
+    }
+    
+    private void onPauseChange() {
+    	myTimerPacMan.setPaused(paused);
+    	myTimerGhosts.setPaused(paused);	
     }
 
     public void scareAllGhosts() {
@@ -260,7 +257,11 @@ public class Game {
 	}
     
     
-    
+    /**
+     * Changes the delay of the movements of the pacman to the speed indicated for <time> milliseconds
+     * @param time Time amount of time before the speed of pacman returns to normal. 
+     * @param speed Speed of pacman during the time indicated.
+     */
     public void changeSpdPacMan(long time, long speed) {
     	
     	this.myTimerPacMan.setDelay(speed);
@@ -270,17 +271,15 @@ public class Game {
     	myTimerSpeedThread = new Thread(myTimerSpeed);
 
 
-		PacMan.ChangeState(1);
-
-		updateCharacterGraphic(PacMan);
-	
-		
-		myTimerSpeedThread.start();
+		myPacMan.ChangeState(1);
 		
     	
     }
 
-    
+    /**
+     * Creates a bomb effect after the time indicated by its parameters.
+     * @param time Amount of time before the bomb effect.
+     */
     public void bombAfterTime(long time) {
 
     	myTimerBomb = new TimerBombPotion(time, this);
@@ -288,16 +287,19 @@ public class Game {
     	myTimerBombThread = new Thread(myTimerBomb);
 
 
-		PacMan.ChangeState(2);
+		myPacMan.ChangeState(2);
 
-		updateCharacterGraphic(PacMan);
+		updateCharacterGraphic(myPacMan);
 	
 		myTimerBombThread.start();
     	
     }
     
     
-    
+    /**
+     * Changes the speed of PacMan.
+     * @param speed new pacman speed.
+     */
     public void changeSpdPacMan(long speed) {
     	this.myTimerPacMan.setDelay(speed);
     }
@@ -309,36 +311,16 @@ public class Game {
     public void explodeArea(int centerX, int centerY) {
     
     	LinkedList<Role> detectedAliveGhostInArea = myMap.explode(centerX, centerY, 2, 2);
-    	
-    	LinkedList<Ghost> temporaryVulnerability = new LinkedList<Ghost>();
-    	
-    	
-    	for(Ghost r : ghostList) {
-    		
-    		if(r.getIndexState() == Ghost.getAliveState()) {
-    		
-    			r.ChangeState(Ghost.getVulnerableState());
-    			temporaryVulnerability.add(r);
-	
-    		}
-    		
-    	}
 
     	for(Role g : detectedAliveGhostInArea) {
-    		g.accept(PacMan.getVisitor());
-    	}
-    	
-    	for(Ghost r : temporaryVulnerability) {
-    		if(r.getIndexState() == Ghost.getVulnerableState()) {
-    			r.ChangeState(Ghost.getAliveState());
-    		}
+    		g.ChangeState(Ghost.getDeathState());
     	}
     	
     }
 
     
     public static Role getPacMan() {
-    	return PacMan;
+    	return myPacMan;
     }
     
     public static Role getBlinky() {
@@ -402,6 +384,40 @@ public class Game {
 	}
 
 
+
+	public void pacmanDeath() {
+		
+		pauseGame();
+		
+		myGUI.updateLifeCounter(myPacMan.getHearts());
+		
+		myLevel.resetMap();
+	
+		
+		myPacMan.onMapUpdate();
+		updateCharacterGraphic(myPacMan);
+		myGUI.displaceCharacter(myPacMan);
+		for(Ghost g : ghostList) {
+			g.onMapUpdate();
+			updateCharacterGraphic(g);
+			myGUI.displaceCharacter(g);
+		}
+
+	
+		System.out.println("a");
+	}
+	
+
+	/**
+     * Finish the game, add the player who was playing with his score to the scoreBoard.
+     * Set actualScore to 0.
+     * @return if the game is over or not.
+     */
+    public void gameOver(){
+    	myGUI.updateLifeCounter(myPacMan.getHearts());
+    	pauseGame();
+		
+    }
 	
 	
 	

@@ -36,9 +36,8 @@ public abstract class Element {
    	* Check if the element called by message collides with the element on param.
    	* @param E element to check the colision.
     * @return true if both elements collides, false otherwise.
-    */
+    
 	 public boolean collidesWith(Element E) {
-		boolean sameArea = false;
 		 
 		int limitThisHigher = posYPX;
 		int limitThisLower  = posYPX + this.heightPX;
@@ -54,7 +53,7 @@ public abstract class Element {
 		return limitThisLeft <= limitERight && limitThisRight >= limitELeft 
 				&& limitThisHigher <= limitELower && limitThisLower >= limitEHigher;
 	 }
-	
+	*/
 	
 	/**
      * Returns the GraphicEntity of the Element.
