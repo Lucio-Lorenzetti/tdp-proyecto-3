@@ -44,6 +44,8 @@ public abstract class ResourceProvider {
 	protected ImageIcon[] clydeDeathImages;
 	protected ImageIcon[] scaredImages;
 	
+	protected ImageIcon gameOver;
+	
 	
 	protected ImageIcon[] tileImages;
 	protected ImageIcon[] pickeableImages;
@@ -240,6 +242,8 @@ public abstract class ResourceProvider {
 		pickeableRoutes.add(themeRoute +  "/pickeable/speedPotion.gif");
 		pickeableRoutes.add(themeRoute +  "/pickeable/bombPotion.gif");
 		
+		
+		
 		//MUSIC
 		backgroundMusicRoutes.add(themeRoute +  "/music/backgroundMusic/BM1.wav");
 		
@@ -283,6 +287,9 @@ public abstract class ResourceProvider {
 		
 		backgroundImages = new ImageIcon[backgroundRoutes.size()];
 		createImages(backgroundRoutes, backgroundImages);
+		
+		gameOver = new ImageIcon(this.getClass().getResource(themeRoute +  "/gameOver.gif"));
+		
 		
 		pickeableImages = new ImageIcon[pickeableRoutes.size()];
 		createImages(pickeableRoutes, pickeableImages);
@@ -475,19 +482,67 @@ public abstract class ResourceProvider {
 		return backgroundMusic;
 	}
 	
+	public ImageIcon getGameOverScreen() {
+		return gameOver;
+	}
 	
 	
 	
 	public void resizeTiles(int height, int width) {
+		for(ImageIcon m : tileImages) {
+			resize(m, width, height);
+		}
+		for(ImageIcon m : roadImages) {
+			resize(m, width, height);
+		}
+		for(ImageIcon m : wallImages) {
+			resize(m, width, height);
+		}
+		for(ImageIcon m : ghostHomeImages) {
+			resize(m, width, height);
+		}
+		
 		
 	}
 	
 	public void resizeCharacters(int height, int width) {
+		for(ImageIcon m : blinkyImages) {
+			resize(m, width, height);
+		}
+		for(ImageIcon m : inkyImages) {
+			resize(m, width, height);
+		}
+		for(ImageIcon m : pinkyImages) {
+			resize(m, width, height);
+		}
+		for(ImageIcon m : clydeImages) {
+			resize(m, width, height);
+		}
+		
+		
+		for(ImageIcon m : blinkyDeathImages) {
+			resize(m, width, height);
+		}
+		for(ImageIcon m : inkyDeathImages) {
+			resize(m, width, height);
+		}
+		for(ImageIcon m : pinkyDeathImages) {
+			resize(m, width, height);
+		}
+		for(ImageIcon m : clydeDeathImages) {
+			resize(m, width, height);
+		}
+		
+		for(ImageIcon m : pacmanImages) {
+			resize(m, width, height);
+		}
 		
 	}
 	
 	public void resizePickeables(int height, int width) {
-		
+		for(ImageIcon m : pickeableImages) {
+			resize(m, width, height);
+		}	
 	}
 
 	

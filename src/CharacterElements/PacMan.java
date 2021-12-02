@@ -23,7 +23,11 @@ public class PacMan extends Role{
 
     private int hearts;
     private int state;
+    
+    private boolean isAlive;
+    
     private Game myGame;
+    
 
     /**
     * Creates and initialize a PacMan;
@@ -44,12 +48,16 @@ public class PacMan extends Role{
 
         myGame = game;
         
+        isAlive = true;
+        
         
     }
 
-    public PacMan(Map map) {
+    public PacMan(Map map, Game game) {
     	
     	super(0, 0, 0, 0, new GraphicEntity( ResourceManager.getProvider().getPacManImages()[0] ), 4, map);
+    	
+    	myGame = game;
     	
         hearts = 3;
         
@@ -81,7 +89,8 @@ public class PacMan extends Role{
         updateGraphics(actualDirection);
     	
     }
-    
+  
+    @Override
     public void ChangeState(int s){
         ImageIcon[] imageState = null;
         switch(state){
@@ -90,7 +99,7 @@ public class PacMan extends Role{
                 if(s == 1){
                     myGraphicEntity.setIcon(imageState[7]);
                 }else{
-                    myGraphicEntity.setIcon(imageState[6]);;
+                    myGraphicEntity.setIcon(imageState[6]);
                 }
                 break;
             }
@@ -99,7 +108,7 @@ public class PacMan extends Role{
                 if(s == 0){
                     myGraphicEntity.setIcon(imageState[6]);
                 }else{
-                    myGraphicEntity.setIcon(imageState[7]);;
+                    myGraphicEntity.setIcon(imageState[7]);
                 }
                 break;
             }
@@ -108,14 +117,13 @@ public class PacMan extends Role{
                 if(s == 0){
                     myGraphicEntity.setIcon(imageState[6]);
                 }else{
-                    myGraphicEntity.setIcon(imageState[7]);;
+                    myGraphicEntity.setIcon(imageState[7]);
                 }
                 break;
             }
 
         }        
         state = s;
-        //updateGraphics(actualDirection);
         
     }
     
@@ -123,7 +131,14 @@ public class PacMan extends Role{
     public int getHearts(){ 
         return hearts;
     }
+    
+    public boolean getIsAlive() {
+    	return isAlive;
+    }
    
+    public void setIsAlive(boolean alive) {
+    	isAlive = alive;
+    }
 
 	@Override
 	public void updateGraphics(Object d) {
@@ -167,7 +182,8 @@ public class PacMan extends Role{
 
 	
 	public void death() {
-		
+		if(isAlive) {
+			
 			hearts--;
 			
 			System.out.println("PACMAN HEARTS: " + hearts);
@@ -176,8 +192,8 @@ public class PacMan extends Role{
 				myGame.pacmanDeath();
 			} else {
 				myGame.gameOver();
-			}
-
+			}			
+		}
 		
 		
 	}

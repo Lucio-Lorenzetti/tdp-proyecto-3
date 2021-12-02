@@ -173,7 +173,7 @@ public class MainWindow extends JFrame{
 		Score.setBounds(10, 11, 182, 14);
 		ScorePanel.add(Score);
 		
-		lblscore = new JLabel("-Score-");
+		lblscore = new JLabel("0");
 		lblscore.setHorizontalAlignment(SwingConstants.CENTER);
 		lblscore.setBounds(10, 50, 182, 14);
 		ScorePanel.add(lblscore);
@@ -238,7 +238,7 @@ public class MainWindow extends JFrame{
 		lblLives.setBounds(10, 5, 183, 14);
 		HealthPanel.add(lblLives);
 		
-		lifeCounter = new JLabel("-Lives-");
+		lifeCounter = new JLabel("3");
 		lifeCounter.setHorizontalTextPosition(SwingConstants.CENTER);
 		lifeCounter.setHorizontalAlignment(SwingConstants.CENTER);
 		lifeCounter.setBounds(10, 45, 183, 14);
@@ -626,6 +626,11 @@ public class MainWindow extends JFrame{
 	public void updateLifeCounter(int hearts) {
 		
 		lifeCounter.setText(Integer.toString(hearts));
+		
+	}
+
+	public void showGameOver() {
+		// TODO Auto-generated method stub
 		
 	}
 }

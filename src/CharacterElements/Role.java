@@ -45,8 +45,8 @@ public abstract class Role extends Element {
         
         speed = characterSpeed;
         
-        actualDirection = Directions.getDown();
-        nextDirection = Directions.getDown();
+        actualDirection = Directions.getNeutral();
+        nextDirection = Directions.getNeutral();
     }
     
     /**
@@ -163,6 +163,10 @@ public abstract class Role extends Element {
      */
     protected abstract void doOnDirectionChange();
 	
+    /**
+     * Changes the state of the character to the state indicated.
+     * @param index new state index.
+     */
     public abstract void ChangeState(int index);
     
     public abstract void updateGraphics(Object d);

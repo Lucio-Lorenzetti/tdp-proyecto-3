@@ -76,8 +76,6 @@ public class Game {
     	myTimerPacManThread.start();
     	myTimerGhostsThread.start();	
     	
-    	pauseGame();
-    	
     	
     	myScoreboard = new ScoreBoard<Player>(20, new scoreComparator<Player>());
     	
@@ -91,6 +89,7 @@ public class Game {
     	
     	myPacMan = new PacMan(myGUI.getCellHeight() * 12,  myGUI.getCellWidth() * 10 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, myMap, this);
     	
+    	
     	myBlinky = new Blinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, myMap );
     	myPinky = new Pinky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, myMap );
     	myInky = new Inky(myGUI.getCellHeight() * 14,  myGUI.getCellWidth() * 12 , myGUI.getCellWidth() - 1, myGUI.getCellHeight() - 1, myMap );
@@ -103,7 +102,8 @@ public class Game {
     	
     	myLevel.resetMap();
     	
-    	//startGame();
+    	pauseGame();
+
     }
 
     
@@ -219,11 +219,13 @@ public class Game {
     public void startGame() {
     	paused = false;
     	onPauseChange();
+    	myPacMan.setIsAlive(true);
     }
     
     public void pauseGame() {
     	paused = true;
     	onPauseChange();
+    	myPacMan.setIsAlive(false);
     }
     
     private void onPauseChange() {
@@ -386,25 +388,24 @@ public class Game {
 
 
 	public void pacmanDeath() {
-		
-		pauseGame();
-		
-		myGUI.updateLifeCounter(myPacMan.getHearts());
-		
-		myLevel.resetMap();
-	
-		
-		myPacMan.onMapUpdate();
-		updateCharacterGraphic(myPacMan);
-		myGUI.displaceCharacter(myPacMan);
-		for(Ghost g : ghostList) {
-			g.onMapUpdate();
-			updateCharacterGraphic(g);
-			myGUI.displaceCharacter(g);
-		}
+		if(myPacMan.getIsAlive()) {
+			
+			myPacMan.setIsAlive(false);
+			
+			pauseGame();
+			
+			myGUI.updateLifeCounter(myPacMan.getHearts());
+			
+			myPacMan.onMapUpdate();
+			updateCharacterGraphic(myPacMan);
+			myGUI.displaceCharacter(myPacMan);
+			for(Ghost g : ghostList) {
+				g.onMapUpdate();
+				updateCharacterGraphic(g);
+				myGUI.displaceCharacter(g);
+			}
 
-	
-		System.out.println("a");
+		}
 	}
 	
 
@@ -414,7 +415,13 @@ public class Game {
      * @return if the game is over or not.
      */
     public void gameOver(){
+    	
+    	myPacMan.setIsAlive(false);
+    	
     	myGUI.updateLifeCounter(myPacMan.getHearts());
+    	
+    	myGUI.showGameOver();
+    	
     	pauseGame();
 		
     }
