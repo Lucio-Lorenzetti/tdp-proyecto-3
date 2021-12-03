@@ -76,7 +76,7 @@ public class MainWindow extends JFrame{
 	private JPanel CharacterLayerPanel;
 	private JPanel GameOverPanel;
 	private JPanel contentPane;
-	private JPanel panel;
+	private JPanel menuPanel;
 	private JScrollPane ScoreboardPanel;
 	
 	private int gridWidth;
@@ -87,7 +87,6 @@ public class MainWindow extends JFrame{
 	private JTable table;
 
 	private Clip music;
-	private boolean muteMusic;
 	private JPanel ElementInformationPanel;
 	private JButton pauseMusic;
 	private JLabel lifeCounter;
@@ -99,6 +98,7 @@ public class MainWindow extends JFrame{
 	private JPanel PacmanDisplay2;
 	private JPanel PacmanDisplay3;
 	private JButton PAUSE_BUTTON;
+	private JButton RESTART_BUTTON;
 	
 	
 	/**
@@ -146,11 +146,11 @@ public class MainWindow extends JFrame{
 		BottomLayerPanel = createGamePanel();
 		
 		
-		panel = new JPanel();
-		panel.setOpaque(false);
-		panel.setBounds(542, 40, 448, 525);
-		this.getContentPane().add(panel);
-		panel.setLayout(null);
+		menuPanel = new JPanel();
+		menuPanel.setOpaque(false);
+		menuPanel.setBounds(542, 40, 448, 525);
+		this.getContentPane().add(menuPanel);
+		menuPanel.setLayout(null);
 		
 		JButton EXIT_BUTTON = new JButton("EXIT");
 		EXIT_BUTTON.addMouseListener(new MouseAdapter() {
@@ -161,11 +161,11 @@ public class MainWindow extends JFrame{
 			}
 		});
 		EXIT_BUTTON.setBounds(10, 479, 202, 35);
-		panel.add(EXIT_BUTTON);
+		menuPanel.add(EXIT_BUTTON);
 		
 		JPanel ScorePanel = new JPanel();
 		ScorePanel.setBounds(224, 279, 202, 95);
-		panel.add(ScorePanel);
+		menuPanel.add(ScorePanel);
 		ScorePanel.setLayout(null);
 		
 		JLabel Score = new JLabel("Score");
@@ -181,7 +181,7 @@ public class MainWindow extends JFrame{
 		
 		ScoreboardPanel = new JScrollPane();
 		ScoreboardPanel.setBounds(224, 11, 202, 257);
-		panel.add(ScoreboardPanel);
+		menuPanel.add(ScoreboardPanel);
 		ScoreboardPanel.setLayout(null);
 		
 		table = new JTable();
@@ -192,11 +192,11 @@ public class MainWindow extends JFrame{
 		
 		pauseMusic = new JButton("Mute Music");
 		pauseMusic.setBounds(10, 11, 204, 95);
-		panel.add(pauseMusic);
+		menuPanel.add(pauseMusic);
 		
 		ElementInformationPanel = new JPanel();
 		ElementInformationPanel.setBounds(10, 117, 202, 291);
-		panel.add(ElementInformationPanel);
+		menuPanel.add(ElementInformationPanel);
 		ElementInformationPanel.setLayout(null);
 		
 		BlinkyDisplay = new JPanel();
@@ -229,7 +229,7 @@ public class MainWindow extends JFrame{
 		
 		JPanel HealthPanel = new JPanel();
 		HealthPanel.setBounds(223, 385, 203, 86);
-		panel.add(HealthPanel);
+		menuPanel.add(HealthPanel);
 		HealthPanel.setLayout(null);
 		
 		JLabel lblLives = new JLabel("Lives");
@@ -246,8 +246,16 @@ public class MainWindow extends JFrame{
 		
 		PAUSE_BUTTON = new JButton("PAUSE");
 		PAUSE_BUTTON.setBounds(10, 419, 202, 35);
-		panel.add(PAUSE_BUTTON);
+		menuPanel.add(PAUSE_BUTTON);
 		
+		GameOverPanel = new JPanel();
+		GameOverPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
+		this.setBackground(GameOverPanel, ResourceManager.getProvider().getGameOverScreen() );
+		
+		RESTART_BUTTON = new JButton("RETRY");
+		RESTART_BUTTON.setBounds(this.getHeight()/2 - 15, (this.getWidth() * 2) / 3, 200, 30 );
+		
+		GameOverPanel.add(RESTART_BUTTON);
 		
 		
 		
@@ -504,7 +512,7 @@ public class MainWindow extends JFrame{
 		
 		JLabel backgroundLabelHolder = new JLabel("" , image , JLabel.CENTER);
 		
-		background.setBounds(back.getX(), back.getY(), back.getWidth(), back.getHeight());
+		backgroundLabelHolder.setBounds(back.getX(), back.getY(), back.getWidth(), back.getHeight());
 		
 		image.setImageObserver(backgroundLabelHolder); //Sets image observer as the background label to allow to play gif animations.
 		
@@ -546,7 +554,7 @@ public class MainWindow extends JFrame{
 		fondo.setImageObserver(background); //Sets image observer as the background label to allow to play gif animations.
 		
 		
-		background.setBounds(0, 0, this.getWidth(), this.getHeight());
+		background.setBounds(10, -11, this.getWidth(), this.getHeight());
 
 		getContentPane().add(background);
 	
@@ -630,7 +638,54 @@ public class MainWindow extends JFrame{
 	}
 
 	public void showGameOver() {
-		// TODO Auto-generated method stub
+	
+		boolean gameOver = false;
+		
+		clearGameScreen();
+		
+		BottomLayerPanel.setVisible(gameOver);
+		PickupLayerPanel.setVisible(gameOver);
+		CharacterLayerPanel.setVisible(gameOver);
+		
+		menuPanel.setVisible(gameOver);
+		
+		
+		BottomLayerPanel.setEnabled(gameOver);
+		PickupLayerPanel.setEnabled(gameOver);
+		CharacterLayerPanel.setEnabled(gameOver);
+		
+		menuPanel.setEnabled(gameOver);
+
+		RESTART_BUTTON.setVisible(true);
+		
+		this.setContentPane(GameOverPanel);
+		
+		this.contentPane.add(RESTART_BUTTON);
+		
+		this.repaint();
+		
+		
+	}
+	
+	public void resumeGame() {
+		
+		boolean gameOver = true;
+		
+		clearGameScreen();
+		
+		BottomLayerPanel.setVisible(gameOver);
+		PickupLayerPanel.setVisible(gameOver);
+		CharacterLayerPanel.setVisible(gameOver);
+		
+		menuPanel.setVisible(gameOver);
+		
+		
+		BottomLayerPanel.setEnabled(gameOver);
+		PickupLayerPanel.setEnabled(gameOver);
+		CharacterLayerPanel.setEnabled(gameOver);
+		
+		menuPanel.setEnabled(gameOver);
+		
 		
 	}
 }
