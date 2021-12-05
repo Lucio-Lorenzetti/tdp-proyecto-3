@@ -21,10 +21,7 @@ import PickeableElements.Pickeable;
 */
 public class PacMan extends Role{
 
-    private int hearts;
     private int state;
-    
-    private boolean isAlive;
     
     private Game myGame;
     
@@ -40,15 +37,12 @@ public class PacMan extends Role{
     	
         super(posY, posX, width, height, new GraphicEntity( ResourceManager.getProvider().getPacManImages()[0] ), 3, map);
         
-        hearts = 3;
-        
         state = 0; 
 
         myVisitor = new VisitorPacMan(this);
 
         myGame = game;
-        
-        isAlive = true;
+
         
         
     }
@@ -58,8 +52,6 @@ public class PacMan extends Role{
     	super(0, 0, 0, 0, new GraphicEntity( ResourceManager.getProvider().getPacManImages()[0] ), 4, map);
     	
     	myGame = game;
-    	
-        hearts = 3;
         
         state = 0;
 
@@ -127,18 +119,6 @@ public class PacMan extends Role{
         
     }
     
-    
-    public int getHearts(){ 
-        return hearts;
-    }
-    
-    public boolean getIsAlive() {
-    	return isAlive;
-    }
-   
-    public void setIsAlive(boolean alive) {
-    	isAlive = alive;
-    }
 
 	@Override
 	public void updateGraphics(Object d) {
@@ -182,19 +162,8 @@ public class PacMan extends Role{
 
 	
 	public void death() {
-		if(isAlive) {
-			
-			hearts--;
-			
-			System.out.println("PACMAN HEARTS: " + hearts);
-			
-			if(hearts > 0) {
-				myGame.pacmanDeath();
-			} else {
-				myGame.gameOver();
-			}			
-		}
-		
+
+		myGame.pacmanDeath();	
 		
 	}
 	

@@ -49,10 +49,10 @@ public class Game {
     protected static Role myInky;
     protected static Role myClyde;
     
-    
-    private String playerName;
     protected int actualScore;
     protected boolean paused;
+    protected boolean pacmanIsAlive;
+    protected int lives;
     
     
     /**
@@ -60,8 +60,6 @@ public class Game {
      * @param g
      */
     public Game(MainWindow g){
-
-    	playerName = "";
 
     	actualScore = 0;
     	
@@ -102,25 +100,26 @@ public class Game {
     	
     	myLevel.resetMap();
     	
+    	lives = 3;
+    	
+    	pacmanIsAlive = true;
+    	
     	pauseGame();
 
     }
+    
+    public void resetGame() {
+    	lives = 3;
+    	myLevel.resetMap();
+    	
+    }
 
     
-    
-   
-    /**
-     * Set the atribute playerName.
-     * @param p the name of the player.
-     */
-    public void setPlayerName(String p){
-    	playerName = p;
-    }
     
 	/**
 	* Change the direction of the character.
 	* @param dir the next direction.
-	* @param C the charactar whose direction is to be changed
+	* @param C the character whose direction is to be changed
 	*/
     public void changeDirection(Object dir, CharacterElements.Role C) {
     	C.setNextDirection(dir);
@@ -219,13 +218,13 @@ public class Game {
     public void startGame() {
     	paused = false;
     	onPauseChange();
-    	myPacMan.setIsAlive(true);
+    	pacmanIsAlive = true;
     }
     
     public void pauseGame() {
     	paused = true;
     	onPauseChange();
-    	myPacMan.setIsAlive(false);
+    	pacmanIsAlive = false;
     }
     
     private void onPauseChange() {
@@ -388,23 +387,28 @@ public class Game {
 
 
 	public void pacmanDeath() {
-		if(myPacMan.getIsAlive()) {
+		if(pacmanIsAlive) {
 			
-			myPacMan.setIsAlive(false);
-			
+			lives--;
 			pauseGame();
+			pacmanIsAlive = false;
 			
-			myGUI.updateLifeCounter(myPacMan.getHearts());
-			
-			myPacMan.onMapUpdate();
-			updateCharacterGraphic(myPacMan);
-			myGUI.displaceCharacter(myPacMan);
-			for(Ghost g : ghostList) {
-				g.onMapUpdate();
-				updateCharacterGraphic(g);
-				myGUI.displaceCharacter(g);
-			}
+			if(lives > 0) {
 
+				myGUI.updateLifeCounter(lives);
+				
+				myPacMan.onMapUpdate();
+				updateCharacterGraphic(myPacMan);
+				myGUI.displaceCharacter(myPacMan);
+				for(Ghost g : ghostList) {
+					g.onMapUpdate();
+					updateCharacterGraphic(g);
+					myGUI.displaceCharacter(g);
+				}
+			} else {
+				gameOver();
+			}
+						
 		}
 	}
 	
@@ -416,16 +420,15 @@ public class Game {
      */
     public void gameOver(){
     	
-    	myPacMan.setIsAlive(false);
+    	pacmanIsAlive = false;
     	
-    	myGUI.updateLifeCounter(myPacMan.getHearts());
+    	myGUI.updateLifeCounter(lives);
     	
-    	myGUI.showGameOver();
+    	myGUI.showGameOver(false);
     	
     	pauseGame();
 		
     }
-	
 	
 	
 	
