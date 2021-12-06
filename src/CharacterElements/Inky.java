@@ -48,7 +48,7 @@ public class Inky extends Ghost{
 		
 		ImageIcon[] images = null;
 		
-		if(indexState == 2) {
+		if(indexState == aliveState || indexState == neutralState) {
 			images = ResourceManager.getProvider().getInkyImages();
 		} else if (indexState == 1) {
 			images = ResourceManager.getProvider().getScaredImages();

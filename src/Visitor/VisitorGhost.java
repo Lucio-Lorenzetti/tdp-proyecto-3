@@ -29,10 +29,10 @@ public class VisitorGhost extends Visitor{
 
 		int ghostState = myGhost.getIndexState();
 		
-		if( ghostState == Ghost.getAliveState() ) {
+		if( ghostState == Ghost.getAliveState() || ghostState == Ghost.getNeutralState() ) {
 			p.death();
 		} else if( ghostState == Ghost.getVulnerableState() ) {
-			myGhost.ChangeState(0);
+			myGhost.ChangeState(Ghost.getDeathState());
 		}
 		
 	}

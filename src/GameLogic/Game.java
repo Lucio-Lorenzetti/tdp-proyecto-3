@@ -6,10 +6,17 @@ import PickeableElements.Pickeable;
 import Timer.Timer;
 import Timer.TimerBombPotion;
 import Timer.TimerGhost;
+import Timer.TimerNeutralCycle;
 import Timer.TimerPacMan;
 import Timer.TimerSpeedPotion;
 import Timer.TimerVulnerable;
 import CharacterElements.*;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 
 /**
@@ -25,7 +32,7 @@ public class Game {
 
 	protected LinkedList<Ghost> ghostList;
 	
-    protected ScoreBoard<Player> myScoreboard;
+    protected ScoreBoard myScoreboard;
     
     protected Timer myTimerPacMan;
     protected Thread myTimerPacManThread;
@@ -37,6 +44,8 @@ public class Game {
     protected Thread myTimerSpeedThread;
     protected Timer myTimerBomb;
     protected Thread myTimerBombThread;
+    protected Timer myTimerNeutralCycle;
+    protected Thread myTimerNeutralCycleThread;
     
     protected Map myMap;
     protected MainWindow myGUI;
@@ -53,6 +62,7 @@ public class Game {
     protected boolean paused;
     protected boolean pacmanIsAlive;
     protected int lives;
+    protected String playerName;
     
     
     /**
@@ -71,11 +81,20 @@ public class Game {
     	
     	myTimerGhostsThread = new Thread(myTimerGhosts);
     	
+    	myTimerNeutralCycle = new TimerNeutralCycle(8000, this);
+    	
+    	myTimerNeutralCycleThread = new Thread(myTimerNeutralCycle);
+    	
     	myTimerPacManThread.start();
     	myTimerGhostsThread.start();	
+    	myTimerNeutralCycleThread.start();
     	
     	
-    	myScoreboard = new ScoreBoard<Player>(20, new scoreComparator<Player>());
+    	
+    	myScoreboard = new ScoreBoard(20, new scoreComparator<Player>());
+    	
+    	loadScoreBoard();
+    	
     	
     	
     	ghostList = new LinkedList<Ghost>();
@@ -108,12 +127,59 @@ public class Game {
 
     }
     
+
+    
     public void resetGame() {
     	lives = 3;
+    	actualScore = 0;
+    	playerName = "";
     	myLevel.resetMap();
     	
     }
-
+    
+    public void setPlayerName(String name) {
+    	playerName = name;
+    }
+    
+    public String[][] getScoreBoard(int cantPlayers){
+    	
+    	String[][] result = new String[cantPlayers][3];
+    	
+    	Player aux[] = new Player[cantPlayers];
+    	
+    	if(myScoreboard.size() < cantPlayers) {
+    		cantPlayers = myScoreboard.size();
+    	}
+    	
+    	for(int i = 0; i < cantPlayers; i++) {
+    		aux[i] = myScoreboard.remove();
+    		
+    		result[i][0] = Integer.toString( i + 1 );
+    		result[i][1] = aux[i].getName();
+    		result[i][2] = Integer.toString( aux[i].getPoints() );
+    	}
+    	
+    	for(int i = 0; i < cantPlayers; i++) {
+    		myScoreboard.add(aux[i]);
+    	}
+    	
+    	
+    	return result;
+    }
+    
+    public void saveScores() {
+    	myScoreboard.saveScores();
+    }
+    
+    private void loadScoreBoard() {
+    	
+    	myScoreboard.loadScores();
+        
+    }
+   
+    public void pushScoreBoard() {
+    	myScoreboard.add(new Player(playerName, actualScore));
+    }
     
     
 	/**
@@ -228,8 +294,20 @@ public class Game {
     }
     
     private void onPauseChange() {
+    	
     	myTimerPacMan.setPaused(paused);
     	myTimerGhosts.setPaused(paused);	
+    	myTimerNeutralCycle.setPaused(paused);
+    	if(myTimerVulnerable != null) {
+    		myTimerVulnerable.setPaused(paused);
+    	}
+    	if(myTimerBomb != null) {
+    		myTimerBomb.setPaused(paused);
+    	}
+    	if(myTimerSpeed != null) {
+    		myTimerSpeed.setPaused(paused);
+    	}
+    
     }
 
     public void scareAllGhosts() {
@@ -429,6 +507,14 @@ public class Game {
     	pauseGame();
 		
     }
+
+	public void alternateNeutralAndAlive() {
+		
+		for(Ghost g : ghostList) {
+			g.alternateNeutralChase();
+		}
+		
+	}
 	
 	
 	

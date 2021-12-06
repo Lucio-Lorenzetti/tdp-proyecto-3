@@ -48,9 +48,9 @@ public class Blinky extends Ghost{
 		
 		ImageIcon[] images = null;
 		
-		if(indexState == 2) {
+		if(indexState == aliveState || indexState == neutralState) {
 			images = ResourceManager.getProvider().getBlinkyImages();
-		} else if (indexState == 1) {
+		} else if (indexState == vulnerableState) {
 			images = ResourceManager.getProvider().getScaredImages();
 		} else {
 			images = ResourceManager.getProvider().getBlinkyDeathImages();

@@ -33,10 +33,10 @@ public class VisitorPacMan extends Visitor{
 	public void visitGhost(Ghost g) {
 		int ghostState = g.getIndexState();
 		
-		if( ghostState == 2 ) {
+		if( ghostState == Ghost.getAliveState() || ghostState == Ghost.getNeutralState() ) {
 			myPacMan.death();
-		} else if( ghostState == 1 ) {
-			g.ChangeState(0);
+		} else if( ghostState == Ghost.getVulnerableState() ) {
+			g.ChangeState(Ghost.getDeathState());
 		}
 		
 		

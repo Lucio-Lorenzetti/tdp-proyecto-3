@@ -8,6 +8,7 @@ import java.awt.Color;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -69,8 +70,6 @@ public class MainWindow extends JFrame{
 	String[] tableHeaders;
 	
 	
-	private Font gameFont;
-	
 	private JPanel BottomLayerPanel;
 	private JPanel PickupLayerPanel;
 	private JPanel CharacterLayerPanel;
@@ -87,19 +86,14 @@ public class MainWindow extends JFrame{
 	private JTable table;
 
 	private Clip music;
-	private JPanel ElementInformationPanel;
 	private JButton pauseMusic;
 	private JLabel lifeCounter;
-	private JPanel BlinkyDisplay;
-	private JPanel InkyDisplay;
-	private JPanel ClydeDisplay;
-	private JPanel PinkyDisplay;
-	private JPanel PacmanDisplay1;
-	private JPanel PacmanDisplay2;
-	private JPanel PacmanDisplay3;
 	private JButton PAUSE_BUTTON;
-	private JButton RESTART_BUTTON;
 	private JButton RESETGAME;
+	private JButton EXIT_BUTTON;
+	
+	private boolean stopMusic;
+	private JButton SeeScores;
 	
 	
 	/**
@@ -110,6 +104,9 @@ public class MainWindow extends JFrame{
 	 * Initialize the contents of the frame.
 	 */	
 	public MainWindow() {
+		
+		stopMusic = false;
+		
 		setUndecorated(true);
 		
 		
@@ -117,9 +114,6 @@ public class MainWindow extends JFrame{
 		this.requestFocus();
 		
 		characterLabels = new HashMap<Object, JLabel>();
-		
-		
-		gameFont = null;
 
 		
 		gridHeight = 22;
@@ -153,21 +147,22 @@ public class MainWindow extends JFrame{
 		menuPanel.setLayout(null);
 		
 		
-		JButton EXIT_BUTTON = new JButton("EXIT");
+		EXIT_BUTTON = new JButton("EXIT");
 		EXIT_BUTTON.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(EXIT_BUTTON.isEnabled()) {
 					obtainFocus();
+					myGame.saveScores();
 					System.exit(EXIT_ON_CLOSE);
 				}
 			}
 		});
-		EXIT_BUTTON.setBounds(10, 479, 202, 35);
+		EXIT_BUTTON.setBounds(12, 390, 202, 124);
 		menuPanel.add(EXIT_BUTTON);
 		
 		JPanel ScorePanel = new JPanel();
-		ScorePanel.setBounds(224, 279, 202, 95);
+		ScorePanel.setBounds(12, 175, 202, 95);
 		menuPanel.add(ScorePanel);
 		ScorePanel.setLayout(null);
 		
@@ -183,45 +178,26 @@ public class MainWindow extends JFrame{
 		
 	
 		
-		pauseMusic = new JButton("Mute Music");
+		pauseMusic = new JButton("MUTE MUSIC");
 		pauseMusic.setBounds(10, 11, 204, 95);
 		menuPanel.add(pauseMusic);
-		
-		ElementInformationPanel = new JPanel();
-		ElementInformationPanel.setBounds(10, 117, 202, 291);
-		menuPanel.add(ElementInformationPanel);
-		ElementInformationPanel.setLayout(null);
-		
-		BlinkyDisplay = new JPanel();
-		BlinkyDisplay.setBounds(22, 11, 56, 56);
-		ElementInformationPanel.add(BlinkyDisplay);
-		
-		InkyDisplay = new JPanel();
-		InkyDisplay.setBounds(119, 11, 56, 56);
-		ElementInformationPanel.add(InkyDisplay);
-		
-		ClydeDisplay = new JPanel();
-		ClydeDisplay.setBounds(22, 96, 56, 56);
-		ElementInformationPanel.add(ClydeDisplay);
-		
-		PinkyDisplay = new JPanel();
-		PinkyDisplay.setBounds(119, 96, 56, 56);
-		ElementInformationPanel.add(PinkyDisplay);
-		
-		PacmanDisplay1 = new JPanel();
-		PacmanDisplay1.setBounds(10, 206, 56, 56);
-		ElementInformationPanel.add(PacmanDisplay1);
-		
-		PacmanDisplay2 = new JPanel();
-		PacmanDisplay2.setBounds(76, 206, 56, 56);
-		ElementInformationPanel.add(PacmanDisplay2);
-		
-		PacmanDisplay3 = new JPanel();
-		PacmanDisplay3.setBounds(142, 206, 56, 56);
-		ElementInformationPanel.add(PacmanDisplay3);
+		pauseMusic.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				stopMusic = !stopMusic;
+				if(stopMusic) {
+					music.stop();
+					pauseMusic.setText("UNMUTE MUSIC");
+				} else {
+					music.start();
+					pauseMusic.setText("MUTE MUSIC");
+				}
+			}
+		});
 		
 		JPanel HealthPanel = new JPanel();
-		HealthPanel.setBounds(223, 385, 203, 86);
+		HealthPanel.setBounds(11, 281, 203, 86);
 		menuPanel.add(HealthPanel);
 		HealthPanel.setLayout(null);
 		
@@ -238,12 +214,8 @@ public class MainWindow extends JFrame{
 		HealthPanel.add(lifeCounter);
 		
 		PAUSE_BUTTON = new JButton("PAUSE");
-		PAUSE_BUTTON.setBounds(10, 419, 202, 35);
+		PAUSE_BUTTON.setBounds(12, 117, 202, 35);
 		menuPanel.add(PAUSE_BUTTON);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(224, 11, 201, 262);
-		menuPanel.add(scrollPane);
 		
 		
 		
@@ -322,35 +294,43 @@ public class MainWindow extends JFrame{
 		
 		setBackground();
  
-        // Data to be displayed in the JTable
-        String[][] data = {
-            { "Kundan Kumar Jha", "4031", "CSE" },
-            { "Anand Jha", "6014", "IT" }
-        };
- 
-        // Column Names
-        String[] columnNames = { "Name", "Roll Number", "Department" };
- 
-        // Initializing the JTable
-        JTable j = new JTable(data, columnNames);
-        j.setBounds(30, 40, 200, 300);
- 
-        scrollPane.add(j);
         
-        RESETGAME = new JButton("RESET GAME");
+        RESETGAME = new JButton("RESTART GAME");
         RESETGAME.setEnabled(false);
         RESETGAME.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		if(RESETGAME.isEnabled()) {
         			showGameOver(true);
+        			lblscore.setText(Integer.toString(0));
+        			lifeCounter.setText(Integer.toString(3));
         		}
         	}
         });
-        RESETGAME.setBounds(222, 479, 204, 35);
+        RESETGAME.setBounds(224, 281, 204, 233);
         menuPanel.add(RESETGAME);
-        scrollPane.setVisible(true);
-        j.setVisible(true);
-        scrollPane.repaint();
+        
+        SeeScores = new JButton("SCOREBOARD");
+        SeeScores.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		JFrame f;    
+        	    f=new JFrame();    
+        	    f.setResizable(false);
+        	    String data[][]= myGame.getScoreBoard(50);
+        	    String column[]={"POSITION","SCORE","NAME"};         
+        	    JTable jt=new JTable(data,column);
+        	    jt.setColumnSelectionAllowed(false);
+        	    jt.setEnabled(false);
+        	    jt.setBounds(30,40,200,300);          
+        	    JScrollPane sp=new JScrollPane(jt);    
+        	    f.getContentPane().add(sp);          
+        	    f.setSize(300,400);    
+        	    f.setVisible(true); 
+        	}
+        });
+        SeeScores.setBounds(224, 11, 204, 259);
+        menuPanel.add(SeeScores);
+       
         
 		
        
@@ -514,18 +494,7 @@ public class MainWindow extends JFrame{
 		table.repaint();
 	}
 	
-	private void setElementDisplayBackground() {
 
-		setBackground(BlinkyDisplay, ResourceManager.getProvider().getBlinkyImages()[4]);
-		setBackground(InkyDisplay, ResourceManager.getProvider().getInkyImages()[4]);
-		setBackground(ClydeDisplay, ResourceManager.getProvider().getClydeImages()[4]);
-		setBackground(PinkyDisplay, ResourceManager.getProvider().getPinkyImages()[4]);
-		
-		setBackground(PacmanDisplay1, ResourceManager.getProvider().getPacManSPImages()[4]);
-		setBackground(PacmanDisplay2, ResourceManager.getProvider().getPacManImages()[4]);
-		setBackground(PacmanDisplay3, ResourceManager.getProvider().getPacManBPImages()[4]);
-		
-	}
 	
 	private void setBackground(JPanel back, ImageIcon image) {
 		
@@ -547,8 +516,6 @@ public class MainWindow extends JFrame{
 		backgroundLabelHolder.setBounds(back.getX(), back.getY(), back.getWidth(), back.getHeight());
 		
 		image.setImageObserver(backgroundLabelHolder); //Sets image observer as the background label to allow to play gif animations.
-		
-		
 		
 		
 		back.add(backgroundLabelHolder);
@@ -600,14 +567,6 @@ public class MainWindow extends JFrame{
 	public void setGame(Game g) {
 		
 		myGame = g;
-		
-		
-		////////////////////////////////////////////////////////////////////////////////////
-		
-	
-		
-		setElementDisplayBackground();
-
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		
@@ -688,6 +647,7 @@ public class MainWindow extends JFrame{
 		CharacterLayerPanel.setEnabled(gameOver);
 		
 		GameOverPanel.setEnabled(!gameOver);
+		
 	
 		
 		for(Component c : menuPanel.getComponents()) {
@@ -695,13 +655,15 @@ public class MainWindow extends JFrame{
 		}
 		
 		RESETGAME.setEnabled(!gameOver);
-		
-		
-		//this.setContentPane(GameOverPanel);
-		
+		EXIT_BUTTON.setEnabled(true);
+		SeeScores.setEnabled(true);
 		
 		if(endingGame) {
 			myGame.resetGame();
+		} else {
+			String s = (String) JOptionPane.showInputDialog("TYPE YOUR NAME");
+			myGame.setPlayerName(s);
+			myGame.pushScoreBoard();
 		}
 		
 		this.repaint();

@@ -9,6 +9,7 @@ import GameLogic.Game;
 import IA.AliveGhostGPS;
 import IA.DeadGhostGPS;
 import IA.GhostGPS;
+import IA.NeutralGhostGPS;
 import IA.VulnerableGhostGPS;
 import Maps.Map;
 import Visitor.*;
@@ -27,11 +28,12 @@ import java.lang.Math;
 public abstract class Ghost extends Role {
     
 	protected GhostGPS myIA;
-    protected LinkedList<GhostGPS> ghostState;
+    protected LinkedList<GhostGPS> ghostState; 
     protected int indexState;
     protected static int deathState = 0;
     protected static int vulnerableState = 1;
-    protected static int aliveState = 2;
+    protected static int neutralState = 2;
+    protected static int aliveState = 3;
     
     
     /**
@@ -48,8 +50,9 @@ public abstract class Ghost extends Role {
         ghostState = new LinkedList<GhostGPS>();
         ghostState.addLast(new DeadGhostGPS(myMap, this));
         ghostState.addLast(new VulnerableGhostGPS(myMap, this));
+        ghostState.addLast(new NeutralGhostGPS(myMap, this));
         
-        indexState = 2;
+        indexState = 3;
     }
     
 
@@ -63,6 +66,10 @@ public abstract class Ghost extends Role {
     
     public static int getVulnerableState(){
         return vulnerableState;
+    }
+    
+    public static int getNeutralState(){
+        return neutralState;
     }
     
     public static int getAliveState(){
@@ -103,12 +110,24 @@ public abstract class Ghost extends Role {
     	v.visitGhost(this);
 	}
     
+    /**
+     * Alternates between the neutral and chase IA of the Ghost.
+     */
+    public void alternateNeutralChase() {
+    	if(indexState == aliveState) {
+    		ChangeState(neutralState);
+    	} else if (indexState == neutralState) {
+    		ChangeState(aliveState);
+    	}
+    }
+    
     
     public void onMapUpdate() {
 
     	for(GhostGPS g : ghostState) {
     		g.setMap(myMap);
     	}
+    	
     	
     	Element myStartingHome = myMap.getRandomGhostHome();
     	
